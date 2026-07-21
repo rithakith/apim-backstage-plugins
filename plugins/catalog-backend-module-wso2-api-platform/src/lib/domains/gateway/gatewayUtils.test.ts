@@ -1,0 +1,147 @@
+/*
+ * Copyright 2026 WSO2 LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { discoverWSO2PlatformGatewayApis } from './gatewayUtils';
+import { Wso2Client } from '../../client';
+import { PlatformGateway } from './types';
+
+jest.mock('../../client');
+
+describe('gateway/gatewayUtils', () => {
+  let mockGetGatewayApis: jest.Mock;
+  let mockGetGatewayApiDetail: jest.Mock;
+  let mockClient: Wso2Client;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockGetGatewayApis = jest.fn();
+    mockGetGatewayApiDetail = jest.fn();
+
+    (Wso2Client as jest.Mock).mockImplementation(() => ({
+      getGatewayApis: mockGetGatewayApis,
+      getGatewayApiDetail: mockGetGatewayApiDetail,
+    }));
+    mockClient = new Wso2Client({} as any);
+  });
+
+  it('should skip discovery if no gateway has discoveryUrl configured', async () => {
+    const gateways: PlatformGateway[] = [
+      { environmentName: 'gw-1', environmentType: 'PROD', urls: ['https://gw1.com'] },
+    ];
+
+    const result = await discoverWSO2PlatformGatewayApis(gateways, mockClient);
+    expect(result).toEqual([]);
+    expect(mockGetGatewayApis).not.toHaveBeenCalled();
+  });
+
+  it('should successfully discover and map APIs from gateways', async () => {
+    const gateways: PlatformGateway[] = [
+      {
+        environmentName: 'MySelfHostedGate',
+        environmentType: 'PRODUCTION',
+        urls: ['https://gateway.com'],
+        discoveryUrl: 'https://discovery-service.com/apis',
+        discoveryAuth: 'Basic abc-auth',
+      },
+    ];
+
+    const mockApisList = {
+      apis: [
+        { id: 'api-1', name: 'Service One' },
+        { id: 'api-2', name: 'Service Two' },
+      ],
+    };
+
+    const mockApiDetail1 = {
+      status: 'success',
+      api: {
+        id: 'api-1',
+        description: 'Details 1',
+        configuration: { spec: { version: '1.0.0', context: 's1' } },
+      },
+    };
+
+    const mockApiDetail2 = {
+      status: 'success',
+      api: {
+        id: 'api-2',
+        description: 'Details 2',
+        configuration: { spec: { version: '2.0.0', context: 's2' } },
+      },
+    };
+
+    mockGetGatewayApis.mockResolvedValueOnce(mockApisList);
+    mockGetGatewayApiDetail.mockImplementation(async (url, id) => {
+      if (id === 'api-1') return mockApiDetail1;
+      if (id === 'api-2') return mockApiDetail2;
+      return null;
+    });
+
+    const result = await discoverWSO2PlatformGatewayApis(gateways, mockClient);
+
+    expect(result).toHaveLength(2);
+    expect(result[0]).toEqual(expect.objectContaining({
+      id: 'api-1',
+      description: 'Details 1',
+      environmentType: 'PRODUCTION',
+      initiatedFromGateway: true,
+      isDirectDiscovery: true,
+      environmentName: 'MySelfHostedGate',
+      gatewayUrls: ['https://gateway.com'],
+      fullConfig: mockApiDetail1.api.configuration,
+      fetchedSwagger: JSON.stringify(mockApiDetail1.api.configuration.spec, null, 2),
+    }));
+
+    expect(mockGetGatewayApis).toHaveBeenCalledWith(
+      'https://discovery-service.com/apis',
+      'Basic abc-auth'
+    );
+  });
+
+  it('should gracefully log and continue if one of the detail fetches fails', async () => {
+    const gateways: PlatformGateway[] = [
+      {
+        environmentName: 'MySelfHostedGate',
+        environmentType: 'PRODUCTION',
+        urls: ['https://gateway.com'],
+        discoveryUrl: 'https://discovery-service.com/apis',
+        discoveryAuth: 'Basic abc-auth',
+      },
+    ];
+
+    mockGetGatewayApis.mockResolvedValueOnce({ apis: [{ id: 'api-1' }] });
+    mockGetGatewayApiDetail.mockRejectedValueOnce(new Error('Connection abort'));
+
+    const result = await discoverWSO2PlatformGatewayApis(gateways, mockClient);
+    expect(result).toEqual([]);
+  });
+
+  it('should gracefully log and catch outer fetch connection errors', async () => {
+    const gateways: PlatformGateway[] = [
+      {
+        environmentName: 'MySelfHostedGate',
+        environmentType: 'PRODUCTION',
+        urls: ['https://gateway.com'],
+        discoveryUrl: 'https://discovery-service.com/apis',
+      },
+    ];
+
+    mockGetGatewayApis.mockRejectedValueOnce(new Error('Discovery service offline'));
+
+    const result = await discoverWSO2PlatformGatewayApis(gateways, mockClient);
+    expect(result).toEqual([]);
+  });
+});

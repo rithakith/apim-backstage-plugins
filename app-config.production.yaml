@@ -1,0 +1,36 @@
+app:
+  # Should be the same as backend.baseUrl when using the `app-backend` plugin.
+  baseUrl: ${APP_BASE_URL}
+
+backend:
+  baseUrl: ${BACKEND_BASE_URL}
+  listen:
+    port: ${BACKEND_PORT}
+    # The following host directive binds to all IPv4 interfaces when its value
+    # is "0.0.0.0". This is the most permissive setting. The right value depends on your specific deployment.
+    host: 0.0.0.0
+
+  # config options: https://node-postgres.com/api/client
+  database:
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+      # https://node-postgres.com/features/ssl
+      # you can set the sslmode configuration option via the `PGSSLMODE` environment variable
+      # see https://www.postgresql.org/docs/current/libpq-ssl.html Table 33.1. SSL Mode Descriptions (e.g. require)
+      # ssl:
+      #   rejectUnauthorized: false
+
+catalog:
+  # Overrides the default list locations from app-config.yaml as these contain example data.
+  # See https://backstage.io/docs/features/software-catalog/#adding-components-to-the-catalog for more details
+  # on how to get entities into the catalog.
+  locations: []
+
+wso2ApiManager:
+  tls:
+    # Production should verify the WSO2 API Manager certificate chain.
+    rejectUnauthorized: true

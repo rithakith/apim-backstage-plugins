@@ -1,0 +1,66 @@
+export interface Config {
+  catalog?: {
+    providers?: {
+      wso2Apim?: {
+        /**
+         * Namespace to use for WSO2 catalog entities.
+         */
+        namespace?: string;
+        schedule: {
+          frequency: {
+            minutes?: number;
+          } | string;
+          timeout: {
+            minutes?: number;
+          } | string;
+          initialDelay?: {
+            seconds?: number;
+          } | string;
+        };
+      };
+    };
+  };
+  wso2ApiManager?: {
+    /**
+     * Enables WSO2 API Manager publisher and service catalog ingestion.
+     * Defaults to false.
+     */
+    enabled?: boolean;
+    baseUrl: string;
+    publisherBasePath: string;
+    serviceCatalogBasePath?: string;
+    /**
+     * Request timeout in seconds. Defaults to 30.
+     */
+    requestTimeoutSeconds?: number;
+    tls?: {
+      rejectUnauthorized?: boolean;
+    };
+    auth: {
+      tokenUrl?: string;
+      /** @visibility secret */
+      clientId: string;
+      /** @visibility secret */
+      clientSecret: string;
+      requiredScopes: string[];
+    };
+  };
+  wso2PlatformGateway?: {
+    /**
+     * Enables WSO2 API Platform Gateway discovery.
+     * Defaults to false.
+     */
+    enabled?: boolean;
+    gateways?: Array<{
+      name: string;
+      urls: string[];
+      discoveryUrl?: string;
+      /** @visibility secret */
+      discoveryUsername?: string;
+      /** @visibility secret */
+      discoveryPassword?: string;
+      environmentType?: string;
+      organizationId?: string;
+    }>;
+  };
+}
