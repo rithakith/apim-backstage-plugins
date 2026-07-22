@@ -17,15 +17,15 @@
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 import {
   Wso2ApiRevisionsResponse,
-  Wso2ApiManagerApi,
-  Wso2ApiManagerRuntimeConfig,
+  Wso2ApiPlatformApi,
+  Wso2ApiPlatformRuntimeConfig,
   Wso2GenerateApiKeyOptions
 } from './types';
 
 /**
  * Client for interacting with the WSO2 API Manager backend.
  */
-export class Wso2ApiManagerClient implements Wso2ApiManagerApi {
+export class Wso2ApiPlatformClient implements Wso2ApiPlatformApi {
   private readonly discoveryApi: DiscoveryApi;
   private readonly fetchApi: FetchApi;
 
@@ -35,7 +35,7 @@ export class Wso2ApiManagerClient implements Wso2ApiManagerApi {
   }
 
   private async getBaseUrl(): Promise<string> {
-    return await this.discoveryApi.getBaseUrl('wso2-api-manager');
+    return await this.discoveryApi.getBaseUrl('wso2-api-platform');
   }
 
   /**
@@ -129,8 +129,8 @@ export class Wso2ApiManagerClient implements Wso2ApiManagerApi {
     return Array.isArray(result) ? result : [];
   }
 
-  async getRuntimeConfig(token?: string): Promise<Wso2ApiManagerRuntimeConfig> {
-    return this.request<Wso2ApiManagerRuntimeConfig>('/config', { token });
+  async getRuntimeConfig(token?: string): Promise<Wso2ApiPlatformRuntimeConfig> {
+    return this.request<Wso2ApiPlatformRuntimeConfig>('/config', { token });
   }
 
   async getApiWsdl(apiId: string, token?: string): Promise<Blob> {

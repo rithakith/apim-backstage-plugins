@@ -18,7 +18,7 @@ import { useMemo } from 'react';
 import { useAsync } from 'react-use';
 import { Entity } from '@backstage/catalog-model';
 import { useApi } from '@backstage/core-plugin-api';
-import { wso2ApiManagerApiRef } from '../../../../api';
+import { wso2ApiPlatformApiRef } from '../../../../api';
 
 const API_POLICY_DETAILS_ANNOTATION = 'wso2.com/api-level-policies';
 const API_OPERATIONS_ANNOTATION = 'wso2.com/operation-level-policies';
@@ -38,7 +38,7 @@ export const useWso2ApiPolicies = (options: {
   isApiPlatform: boolean;
 }) => {
   const { entity, apiId, isApiPlatform } = options;
-  const apiClient = useApi(wso2ApiManagerApiRef);
+  const apiClient = useApi(wso2ApiPlatformApiRef);
 
   const details = useMemo(() => {
     const annotations = entity.metadata.annotations || {};

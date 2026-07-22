@@ -16,7 +16,7 @@
 
 export {
   default,
-  wso2ApiManagerPage,
+  wso2ApiPlatformPage,
   entityWso2ApiDefinitionCard,
   entityWso2DocumentsCard,
   entityWso2OverviewCard,

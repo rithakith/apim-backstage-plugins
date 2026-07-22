@@ -5,7 +5,7 @@ import { Box, Tabs, Tab, CircularProgress, Typography, Button } from '@material-
 import { makeStyles } from '@material-ui/core/styles';
 import { useAsync } from 'react-use';
 import { useApi } from '@backstage/core-plugin-api';
-import { wso2ApiManagerApiRef } from '../../../api';
+import { wso2ApiPlatformApiRef } from '../../../api';
 import { ApiDefinitionViewer } from './ApiDefinitionViewer';
 import { isApiProductEntity } from '../../../utils';
 import { EntityWso2ApiProductResourcesTab } from './ApiProductResourcesTab';
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 export const EntityWso2ApiDefinitionTab = () => {
   const classes = useStyles();
   const { entity } = useEntity();
-  const apiClient = useApi(wso2ApiManagerApiRef);
+  const apiClient = useApi(wso2ApiPlatformApiRef);
   const [activeTab, setActiveTab] = useState<'source' | 'wsdl' | 'resources'>('source');
 
   const definitionStr = entity.spec?.definition as string | undefined;

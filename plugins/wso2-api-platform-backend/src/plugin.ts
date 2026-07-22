@@ -21,8 +21,8 @@ import {
 import { createRouter } from './service/router';
 import { catalogServiceRef } from '@backstage/plugin-catalog-node';
 
-export const wso2ApiManagerPlugin = createBackendPlugin({
-  pluginId: 'wso2-api-manager',
+export const wso2ApiPlatformPlugin = createBackendPlugin({
+  pluginId: 'wso2-api-platform',
   register(env) {
     env.registerInit({
       deps: {

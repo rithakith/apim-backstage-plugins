@@ -1,7 +1,7 @@
 export interface Config {
   catalog?: {
     providers?: {
-      wso2Apim?: {
+      wso2ApiPlatform?: {
         /**
          * Namespace to use for WSO2 catalog entities.
          */
@@ -20,7 +20,7 @@ export interface Config {
       };
     };
   };
-  wso2ApiManager?: {
+  wso2ApiPlatform?: {
     /**
      * Enables WSO2 API Manager publisher and service catalog ingestion.
      * Defaults to false.

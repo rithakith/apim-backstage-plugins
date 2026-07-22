@@ -27,7 +27,7 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-import { wso2ApiManagerApiRef } from '../../../api';
+import { wso2ApiPlatformApiRef } from '../../../api';
 import { useStyles } from './styles';
 import { isAsyncType, isMcpEntity, isServiceEntity } from '../../../utils';
 import { useApiKeyGenerator } from './hooks/useApiKeyGenerator';
@@ -54,7 +54,7 @@ const WSO2_GATEWAY_API_ID_ANNOTATION = 'wso2-gateway.com/api-id';
 const EntityWso2TryOutTabContent = () => {
   const classes = useStyles();
   const { entity } = useEntity();
-  const apiClient = useApi(wso2ApiManagerApiRef);
+  const apiClient = useApi(wso2ApiPlatformApiRef);
 
   const apiId =
     entity.metadata.annotations?.[WSO2_API_ID_ANNOTATION] ||

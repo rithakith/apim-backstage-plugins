@@ -7,7 +7,7 @@ This directory contains the documentation for the WSO2 APIs that are internally 
 You can view the generated documentation by opening the respective `index.html` files directly in your web browser. The documentation provides a comprehensive look at the endpoints, request/response models, and authentication methods used by the plugins.
 
 For example, to view the documentation:
-- `wso2-api-manager-backend/index.html`
+- `wso2-api-platform-backend/index.html`
 - `catalog-backend-module-wso2-apim/index.html`
 
 ## How to Regenerate Documentation
@@ -22,9 +22,9 @@ Ensure you have Node.js and `npx` installed on your machine.
 
 We use the `@redocly/cli` tool to build the static HTML documentation based on the configuration in `redocly.yaml`. To regenerate the documentation, run the following commands from inside the `api-docs` directory:
 
-1. **For the Backend Plugin (`wso2-api-manager-backend`):**
+1. **For the Backend Plugin (`wso2-api-platform-backend`):**
    ```bash
-   npx @redocly/cli build-docs wso2-api-manager-backend@v1 -o ./wso2-api-manager-backend/index.html
+   npx @redocly/cli build-docs wso2-api-platform-backend@v1 -o ./wso2-api-platform-backend/index.html
    ```
 
 2. **For the Catalog Backend Module (`catalog-backend-module-wso2-apim`):**

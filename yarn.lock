@@ -15753,9 +15753,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wso2/backstage-plugin-catalog-backend-module-wso2-apim@workspace:^, @wso2/backstage-plugin-catalog-backend-module-wso2-apim@workspace:plugins/catalog-backend-module-wso2-apim":
+"@wso2/backstage-plugin-catalog-backend-module-wso2-api-platform@workspace:^, @wso2/backstage-plugin-catalog-backend-module-wso2-api-platform@workspace:plugins/catalog-backend-module-wso2-api-platform":
   version: 0.0.0-use.local
-  resolution: "@wso2/backstage-plugin-catalog-backend-module-wso2-apim@workspace:plugins/catalog-backend-module-wso2-apim"
+  resolution: "@wso2/backstage-plugin-catalog-backend-module-wso2-api-platform@workspace:plugins/catalog-backend-module-wso2-api-platform"
   dependencies:
     "@backstage/backend-defaults": "npm:^0.17.1"
     "@backstage/backend-plugin-api": "npm:^1.9.1"
@@ -15773,9 +15773,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wso2/backstage-plugin-wso2-api-manager-backend@workspace:^, @wso2/backstage-plugin-wso2-api-manager-backend@workspace:plugins/wso2-api-manager-backend":
+"@wso2/backstage-plugin-wso2-api-platform-backend@workspace:^, @wso2/backstage-plugin-wso2-api-platform-backend@workspace:plugins/wso2-api-platform-backend":
   version: 0.0.0-use.local
-  resolution: "@wso2/backstage-plugin-wso2-api-manager-backend@workspace:plugins/wso2-api-manager-backend"
+  resolution: "@wso2/backstage-plugin-wso2-api-platform-backend@workspace:plugins/wso2-api-platform-backend"
   dependencies:
     "@backstage/backend-defaults": "npm:^0.17.1"
     "@backstage/backend-plugin-api": "npm:^1.9.1"
@@ -15788,7 +15788,7 @@ __metadata:
     "@types/express": "npm:^4.17.6"
     "@types/jest": "npm:^30"
     "@types/supertest": "npm:^2.0.8"
-    "@wso2/backstage-plugin-catalog-backend-module-wso2-apim": "workspace:^"
+    "@wso2/backstage-plugin-catalog-backend-module-wso2-api-platform": "workspace:^"
     express: "npm:^4.17.6"
     express-promise-router: "npm:^4.1.0"
     jose: "npm:^5.10.0"
@@ -15797,9 +15797,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@wso2/backstage-plugin-wso2-api-manager@workspace:^, @wso2/backstage-plugin-wso2-api-manager@workspace:plugins/wso2-api-manager":
+"@wso2/backstage-plugin-wso2-api-platform@workspace:^, @wso2/backstage-plugin-wso2-api-platform@workspace:plugins/wso2-api-platform":
   version: 0.0.0-use.local
-  resolution: "@wso2/backstage-plugin-wso2-api-manager@workspace:plugins/wso2-api-manager"
+  resolution: "@wso2/backstage-plugin-wso2-api-platform@workspace:plugins/wso2-api-platform"
   dependencies:
     "@backstage/catalog-model": "npm:^1.9.0"
     "@backstage/cli": "npm:^0.26.0"
@@ -16366,7 +16366,7 @@ __metadata:
     "@testing-library/react": "npm:^14.0.0"
     "@testing-library/user-event": "npm:^14.0.0"
     "@types/react-dom": "npm:*"
-    "@wso2/backstage-plugin-wso2-api-manager": "workspace:^"
+    "@wso2/backstage-plugin-wso2-api-platform": "workspace:^"
     cross-env: "npm:^7.0.0"
     react: "npm:^18.0.2"
     react-dom: "npm:^18.0.2"
@@ -17094,8 +17094,8 @@ __metadata:
     "@backstage/plugin-search-backend-node": "npm:^1.4.4"
     "@backstage/plugin-signals-backend": "npm:^0.3.15"
     "@backstage/plugin-techdocs-backend": "npm:^2.2.0"
-    "@wso2/backstage-plugin-catalog-backend-module-wso2-apim": "workspace:^"
-    "@wso2/backstage-plugin-wso2-api-manager-backend": "workspace:^"
+    "@wso2/backstage-plugin-catalog-backend-module-wso2-api-platform": "workspace:^"
+    "@wso2/backstage-plugin-wso2-api-platform-backend": "workspace:^"
     app: "link:../app"
     better-sqlite3: "npm:^12.0.0"
     node-gyp: "npm:^10.0.0"

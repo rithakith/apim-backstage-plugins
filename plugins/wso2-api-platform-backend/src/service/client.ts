@@ -18,23 +18,23 @@ import { LoggerService } from '@backstage/backend-plugin-api';
 import { fetch as undiciFetch, Response } from 'undici';
 import {
   Wso2ApiDocument,
-  Wso2ApiManagerConfig,
+  Wso2ApiPlatformConfig,
   Wso2ApiRevisionsResponse,
 } from './types';
 import { joinUrl } from './urlUtils';
 import { Config } from '@backstage/config';
 import { Wso2Client as BaseWso2Client } from '@wso2/backstage-plugin-catalog-backend-module-wso2-apim';
 
-export { readWso2ApiManagerConfig } from './config';
+export { readWso2ApiPlatformConfig } from './config';
 
-export class Wso2ApiManagerClient extends BaseWso2Client {
-  public readonly config: Wso2ApiManagerConfig;
+export class Wso2ApiPlatformClient extends BaseWso2Client {
+  public readonly config: Wso2ApiPlatformConfig;
   private readonly publisherBaseUrl: string;
   private readonly devportalBaseUrl: string;
   private readonly serviceCatalogBaseUrl: string;
 
   constructor(options: {
-    config: Wso2ApiManagerConfig;
+    config: Wso2ApiPlatformConfig;
     rawConfig: Config;
     logger: LoggerService;
   }) {
@@ -352,7 +352,7 @@ export class Wso2ApiManagerClient extends BaseWso2Client {
   /**
    * Returns the resolved runtime client configuration.
    */
-  getConfig(): Wso2ApiManagerConfig {
+  getConfig(): Wso2ApiPlatformConfig {
     return this.config;
   }
 

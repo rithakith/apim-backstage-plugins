@@ -15,7 +15,7 @@
  */
 
 import { RootConfigService } from '@backstage/backend-plugin-api';
-import { Wso2ApiManagerConfig } from './types';
+import { Wso2ApiPlatformConfig } from './types';
 
 function getOptionalBoolean(
   config: RootConfigService,
@@ -44,10 +44,10 @@ function getOptionalString(config: RootConfigService, key: string) {
   }
 }
 
-export function readWso2ApiManagerConfig(
+export function readWso2ApiPlatformConfig(
   config: RootConfigService,
-): Wso2ApiManagerConfig {
-  const wso2Config = config.getOptionalConfig('wso2ApiManager');
+): Wso2ApiPlatformConfig {
+  const wso2Config = config.getOptionalConfig('wso2ApiPlatform');
   const apiManagerEnabled = wso2Config?.getOptionalBoolean('enabled') ?? false;
 
   const baseUrl = apiManagerEnabled ? wso2Config!.getString('baseUrl') : '';
@@ -69,11 +69,11 @@ export function readWso2ApiManagerConfig(
   const tokenUrl = authConfig?.getOptionalString('tokenUrl');
   const username = apiManagerEnabled
     ? (authConfig?.getOptionalString('username') ??
-      getOptionalString(config, 'catalog.providers.wso2Apim.username'))
+      getOptionalString(config, 'catalog.providers.wso2ApiPlatform.username'))
     : undefined;
   const password = apiManagerEnabled
     ? (authConfig?.getOptionalString('password') ??
-      getOptionalString(config, 'catalog.providers.wso2Apim.password'))
+      getOptionalString(config, 'catalog.providers.wso2ApiPlatform.password'))
     : undefined;
 
   const tlsRejectUnauthorized =

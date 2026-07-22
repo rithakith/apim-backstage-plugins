@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export { Wso2ApiManagerPage } from './ApiManagerPage';
+export { Wso2ApiPlatformPage } from './ApiManagerPage';

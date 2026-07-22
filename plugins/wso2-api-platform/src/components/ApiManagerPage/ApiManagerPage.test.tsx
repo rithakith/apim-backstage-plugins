@@ -27,7 +27,7 @@ import {
   act,
 } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { Wso2ApiManagerPage } from './ApiManagerPage';
+import { Wso2ApiPlatformPage } from './ApiManagerPage';
 
 const mockWso2Api = {
   getGateways: jest.fn(),
@@ -54,17 +54,17 @@ const mockConfigApi = {
 };
 
 jest.mock('../../api', () => ({
-  wso2ApiManagerApiRef: { id: 'plugin.wso2-api-manager.service' },
-  wso2AuthApiRef: { id: 'plugin.wso2-api-manager.auth' },
+  wso2ApiPlatformApiRef: { id: 'plugin.wso2-api-platform.service' },
+  wso2AuthApiRef: { id: 'plugin.wso2-api-platform.auth' },
 }));
 
 jest.mock('@backstage/core-plugin-api', () => ({
   configApiRef: { id: 'core.config' },
   useApi: (apiRef: { id: string }) => {
-    if (apiRef.id === 'plugin.wso2-api-manager.service') {
+    if (apiRef.id === 'plugin.wso2-api-platform.service') {
       return mockWso2Api;
     }
-    if (apiRef.id === 'plugin.wso2-api-manager.auth') {
+    if (apiRef.id === 'plugin.wso2-api-platform.auth') {
       return mockOAuthApi;
     }
     if (apiRef.id === 'core.config') {
@@ -247,7 +247,7 @@ function setupMocks(options?: {
     if (options?.exposeFrontendConfig === false) {
       return undefined;
     }
-    if (key === 'wso2ApiManager.enabled') {
+    if (key === 'wso2ApiPlatform.enabled') {
       return options?.apimEnabled ?? true;
     }
     if (key === 'wso2PlatformGateway.enabled') {
@@ -319,7 +319,7 @@ function setupMocks(options?: {
   }
 }
 
-describe('Wso2ApiManagerPage', () => {
+describe('Wso2ApiPlatformPage', () => {
   beforeAll(() => {
     global.URL.createObjectURL = jest.fn().mockReturnValue('mock-url');
     global.URL.revokeObjectURL = jest.fn();
@@ -339,7 +339,7 @@ describe('Wso2ApiManagerPage', () => {
   });
 
   it('renders the page header, filters, tabs, and API table rows', async () => {
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(screen.getByText('WSO2 API Platform')).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'APIs' })).toBeInTheDocument();
@@ -401,7 +401,7 @@ describe('Wso2ApiManagerPage', () => {
         totalItems: 501,
       });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('Final Paged API')).toBeInTheDocument();
     expect(mockCatalogApi.getEntities).toHaveBeenNthCalledWith(
@@ -415,7 +415,7 @@ describe('Wso2ApiManagerPage', () => {
   });
 
   it('shows and clears the API search empty state dynamically', async () => {
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     await screen.findByText('Customer API');
 
@@ -459,7 +459,7 @@ describe('Wso2ApiManagerPage', () => {
       ],
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     await screen.findByText('Customer API');
     expect(screen.getByText('Orders API')).toBeInTheDocument();
@@ -481,7 +481,7 @@ describe('Wso2ApiManagerPage', () => {
   it('shows an API loading state while catalog entities are still loading', async () => {
     mockCatalogApi.getEntities.mockReturnValue(new Promise(() => {}));
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('Fetching APIs...')).toBeInTheDocument();
   });
@@ -505,7 +505,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -524,7 +524,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -557,7 +557,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -595,7 +595,7 @@ describe('Wso2ApiManagerPage', () => {
     });
     mockWso2Api.getGateways.mockReturnValue(new Promise(() => {}));
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -615,7 +615,7 @@ describe('Wso2ApiManagerPage', () => {
       apiPlatformEnabled: false,
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('No WSO2 API source enabled'),
@@ -641,7 +641,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Adding API Manager APIs'),
@@ -657,7 +657,7 @@ describe('Wso2ApiManagerPage', () => {
   it('shows a blocking API error when catalog loading fails', async () => {
     setupMocks({ catalogError: new Error('Catalog is unavailable') });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('Failed to load APIs')).toBeInTheDocument();
     expect(screen.getByText('Catalog is unavailable')).toBeInTheDocument();
@@ -674,7 +674,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -709,7 +709,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -741,7 +741,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -781,7 +781,7 @@ describe('Wso2ApiManagerPage', () => {
       .mockResolvedValueOnce(gateways)
       .mockReturnValue(new Promise(() => {}));
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('3 loaded')).toBeInTheDocument();
     expect(screen.getByText('1 / 1 gateways online')).toBeInTheDocument();
@@ -816,7 +816,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -852,7 +852,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('Customer API')).toBeInTheDocument();
     expect(
@@ -879,7 +879,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -914,7 +914,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('Live Gateway API')).toBeInTheDocument();
     expect(
@@ -949,7 +949,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -985,7 +985,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -1007,7 +1007,7 @@ describe('Wso2ApiManagerPage', () => {
       ],
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Gateway Discovery Warning'),
@@ -1017,7 +1017,7 @@ describe('Wso2ApiManagerPage', () => {
   });
 
   it('renders API Products, MCP Servers, and Services from their tabs', async () => {
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     await waitFor(() => {
       expect(screen.getByText('Customer API')).toBeInTheDocument();
@@ -1047,7 +1047,7 @@ describe('Wso2ApiManagerPage', () => {
   });
 
   it('shows and clears result-not-found messages for other table searches', async () => {
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     await screen.findByText('Customer API');
 
@@ -1110,7 +1110,7 @@ describe('Wso2ApiManagerPage', () => {
         },
       ],
     });
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('Customer API')).toBeInTheDocument();
     expect(screen.getByText('Live Gateway API')).toBeInTheDocument();
@@ -1118,7 +1118,7 @@ describe('Wso2ApiManagerPage', () => {
   });
 
   it('filters APIs by selecting a type and gateway', async () => {
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
     await screen.findByText('Customer API');
 
     // Material-UI Select trigger is a button/div with role button
@@ -1138,7 +1138,7 @@ describe('Wso2ApiManagerPage', () => {
   });
 
   it('only shows API type and gateway filters on the APIs tab', async () => {
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
     await screen.findByText('Customer API');
 
     expect(
@@ -1160,7 +1160,7 @@ describe('Wso2ApiManagerPage', () => {
 
   it('renders API Products empty state', async () => {
     setupMocks({ entities: [] });
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
     fireEvent.click(screen.getByRole('tab', { name: 'API Products' }));
     expect(
       await screen.findByText('Discovering API Products...'),
@@ -1169,7 +1169,7 @@ describe('Wso2ApiManagerPage', () => {
 
   it('renders MCP empty state', async () => {
     setupMocks({ entities: [] });
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
     fireEvent.click(screen.getByRole('tab', { name: 'MCP Servers' }));
     expect(
       await screen.findByText('Scanning for MCP Servers...'),
@@ -1180,7 +1180,7 @@ describe('Wso2ApiManagerPage', () => {
     mockWso2Api.getAllServices.mockRejectedValue(
       new Error('Failed service fetch'),
     );
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
     await screen.findByText('Customer API'); // Wait for initial catalog load to complete
 
     fireEvent.click(screen.getByRole('tab', { name: 'Services' }));
@@ -1266,7 +1266,7 @@ describe('Wso2ApiManagerPage', () => {
     ];
 
     setupMocks({ entities: customEntities });
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('GW API 1')).toBeInTheDocument();
     expect(screen.getByText('GW API 2')).toBeInTheDocument();
@@ -1329,7 +1329,7 @@ describe('Wso2ApiManagerPage', () => {
       .mockResolvedValueOnce([disconnectedGateway])
       .mockResolvedValue([reconnectedGateway]);
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Reconnected Self Hosted API'),
@@ -1403,7 +1403,7 @@ describe('Wso2ApiManagerPage', () => {
       ],
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('Platform Casing API')).toBeInTheDocument();
 
@@ -1482,7 +1482,7 @@ describe('Wso2ApiManagerPage', () => {
       ],
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('WSO2 Visible API')).toBeInTheDocument();
     expect(screen.getByText('Self Hosted Visible API')).toBeInTheDocument();
@@ -1518,7 +1518,7 @@ describe('Wso2ApiManagerPage', () => {
         },
       ],
     });
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
     await screen.findByText('Customer API');
 
     fireEvent.click(screen.getByRole('tab', { name: 'Services' }));
@@ -1556,7 +1556,7 @@ describe('Wso2ApiManagerPage', () => {
         },
       ],
     });
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('Customer API')).toBeInTheDocument();
   });
@@ -1565,7 +1565,7 @@ describe('Wso2ApiManagerPage', () => {
     mockWso2Api.getGateways.mockRejectedValueOnce(
       new Error('Gateway fetch failed'),
     );
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
     expect(await screen.findByText('Customer API')).toBeInTheDocument();
   });
 
@@ -1587,7 +1587,7 @@ describe('Wso2ApiManagerPage', () => {
         totals: {},
       },
     });
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     const refreshBtn = await screen.findByRole('button', {
       name: 'Refresh Now',
@@ -1604,7 +1604,7 @@ describe('Wso2ApiManagerPage', () => {
       .mockResolvedValueOnce({ items: [] })
       .mockReturnValue(new Promise(() => {}));
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     // Flush microtasks to settle the first catalogState promise resolution
     await act(async () => {
@@ -1647,7 +1647,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('Loading WSO2 API Manager'),
@@ -1675,7 +1675,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     await screen.findByText('Loading WSO2 API Manager');
     await waitFor(() => {
@@ -1704,7 +1704,7 @@ describe('Wso2ApiManagerPage', () => {
       },
     });
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     await screen.findByText('Loading WSO2 API Manager');
     expect(mockWso2Api.getCatalogSyncStatus).toHaveBeenCalledTimes(1);
@@ -1729,7 +1729,7 @@ describe('Wso2ApiManagerPage', () => {
     // Catalog never resolves
     mockCatalogApi.getEntities.mockReturnValue(new Promise(() => {}));
 
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     // Advance time to trigger timeout
     act(() => {
@@ -1762,7 +1762,7 @@ describe('Wso2ApiManagerPage', () => {
         totals: {},
       },
     });
-    render(<Wso2ApiManagerPage />);
+    render(<Wso2ApiPlatformPage />);
 
     expect(
       await screen.findByText('No WSO2 Resources Available'),

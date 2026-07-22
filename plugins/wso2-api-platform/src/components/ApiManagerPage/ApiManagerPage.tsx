@@ -27,7 +27,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { Content, Header, Page } from '@backstage/core-components';
 import { useApi, configApiRef } from '@backstage/core-plugin-api';
 import { catalogApiRef } from '@backstage/plugin-catalog-react';
-import { wso2ApiManagerApiRef } from '../../api';
+import { wso2ApiPlatformApiRef } from '../../api';
 import {
   apiColumns,
   apiProductColumns,
@@ -54,10 +54,10 @@ import {
 } from '../../utils/apiManagerUtils';
 
 // ─── Main Page ────────────────────────────────────────────────────────────
-export const Wso2ApiManagerPage = () => {
+export const Wso2ApiPlatformPage = () => {
   const classes = useStyles();
   const catalogApi = useApi(catalogApiRef);
-  const wso2Api = useApi(wso2ApiManagerApiRef);
+  const wso2Api = useApi(wso2ApiPlatformApiRef);
   const configApi = useApi(configApiRef);
 
   const [tabValue, setTabValue] = useState(0);
@@ -69,11 +69,11 @@ export const Wso2ApiManagerPage = () => {
   const [serviceSearchText, setServiceSearchText] = useState('');
 
   const isApimModeEnabled =
-    configApi.getOptionalBoolean('wso2ApiManager.enabled') ?? false;
+    configApi.getOptionalBoolean('wso2ApiPlatform.enabled') ?? false;
   const isApiPlatformModeEnabled =
     configApi.getOptionalBoolean('wso2PlatformGateway.enabled') ?? false;
   const hasKnownSourceConfig =
-    configApi.getOptionalBoolean('wso2ApiManager.enabled') !== undefined ||
+    configApi.getOptionalBoolean('wso2ApiPlatform.enabled') !== undefined ||
     configApi.getOptionalBoolean('wso2PlatformGateway.enabled') !== undefined;
 
   const gatewaysState = useAsyncRetry(async () => {

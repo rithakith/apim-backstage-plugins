@@ -21,8 +21,8 @@ import {
 
 import { rootRouteRef, viewTechDocRouteRef } from './routes';
 
-export const wso2ApiManagerPlugin = createPlugin({
-  id: 'wso2-api-manager',
+export const wso2ApiPlatformPlugin = createPlugin({
+  id: 'wso2-api-platform',
   routes: {
     root: rootRouteRef,
   },
@@ -31,12 +31,12 @@ export const wso2ApiManagerPlugin = createPlugin({
   },
 });
 
-export const Wso2ApiManagerPage = wso2ApiManagerPlugin.provide(
+export const Wso2ApiPlatformPage = wso2ApiPlatformPlugin.provide(
   createRoutableExtension({
-    name: 'Wso2ApiManagerPage',
+    name: 'Wso2ApiPlatformPage',
     component: () =>
       import('./components/ApiManagerPage').then(
-        m => m.Wso2ApiManagerPage,
+        m => m.Wso2ApiPlatformPage,
       ),
     mountPoint: rootRouteRef,
   }),

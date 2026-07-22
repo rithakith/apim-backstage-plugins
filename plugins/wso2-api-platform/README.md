@@ -1,11 +1,11 @@
-# WSO2 API Manager Frontend Plugin (`@wso2/backstage-plugin-wso2-api-manager`)
+# WSO2 API Manager Frontend Plugin (`@wso2/backstage-plugin-wso2-api-platform`)
 
 This plugin provides the frontend React UI integration for **WSO2 API Manager** in Backstage. It includes a comprehensive discovery dashboard for browsing APIs, API Products, and MCP Servers, as well as specialized Catalog Entity Cards for detailed exploration and interactive API testing.
 
 ## Technical Features
 
-### 1. Global API Discovery Dashboard (`<Wso2ApiManagerPage>`)
-A standalone route (typically accessible at `/wso2-api-manager`) that acts as a global discovery portal. It queries the Backstage Software Catalog to aggregate all entities ingested by the WSO2 Catalog Module.
+### 1. Global API Discovery Dashboard (`<Wso2ApiPlatformPage>`)
+A standalone route (typically accessible at `/wso2-api-platform`) that acts as a global discovery portal. It queries the Backstage Software Catalog to aggregate all entities ingested by the WSO2 Catalog Module.
 - **Unified Tables:** Distinct tabs for exploring native APIs, API Products, MCP Servers, and Services.
 - **Advanced Filtering:** Built-in search and dropdown filters to narrow down APIs by Gateway environment and API Type (e.g., HTTP, GraphQL, WebSocket).
 - **Interactive Data Rendering:** Utilizes custom table renderers to display dynamic chip-based API types, gateways, and version information.
@@ -25,8 +25,8 @@ A powerful, built-in testing environment allowing developers to test WSO2 APIs d
   - **GraphQL:** GraphiQL integration.
   - **Async APIs:** Dedicated consoles for SSE (Server-Sent Events), WebSockets, and WebSub.
 
-### 4. Client API (`Wso2ApiManagerClient`)
-Provides a heavily typed TypeScript API client (`wso2ApiManagerApiRef`) that standardizes all communication between the React frontend and the backend plugin. It handles dynamic data fetching for revisions, WSDL payloads, and authorization token negotiation.
+### 4. Client API (`Wso2ApiPlatformClient`)
+Provides a heavily typed TypeScript API client (`wso2ApiPlatformApiRef`) that standardizes all communication between the React frontend and the backend plugin. It handles dynamic data fetching for revisions, WSDL payloads, and authorization token negotiation.
 
 ## Setup & Routing
 

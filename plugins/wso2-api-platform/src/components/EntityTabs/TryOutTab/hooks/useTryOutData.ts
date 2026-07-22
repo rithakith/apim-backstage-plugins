@@ -18,7 +18,7 @@ import { useMemo } from 'react';
 import { useAsync } from 'react-use';
 import { Entity } from '@backstage/catalog-model';
 import { useApi } from '@backstage/core-plugin-api';
-import { wso2ApiManagerApiRef, Wso2ApiDetail } from '../../../../api';
+import { wso2ApiPlatformApiRef, Wso2ApiDetail } from '../../../../api';
 import { formatGraphQL, formatAsyncApi, isAsyncType } from '../../../../utils';
 
 const API_ENDPOINTS_ANNOTATION = 'wso2.com/api-endpoints';
@@ -57,7 +57,7 @@ export const useTryOutData = (options: {
   isRevisionsLoading: boolean;
 } => {
   const { entity, apiId, isApiPlatform } = options;
-  const apiClient = useApi(wso2ApiManagerApiRef);
+  const apiClient = useApi(wso2ApiPlatformApiRef);
 
   const details = useMemo(() => {
     const annotations = entity.metadata.annotations || {};

@@ -30,7 +30,7 @@ catalog:
   # on how to get entities into the catalog.
   locations: []
 
-wso2ApiManager:
+wso2ApiPlatform:
   tls:
     # Production should verify the WSO2 API Manager certificate chain.
     rejectUnauthorized: true

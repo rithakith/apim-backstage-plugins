@@ -44,7 +44,7 @@ export class Wso2ApiEntityProvider implements EntityProvider {
     options: { id: string; logger: LoggerService },
   ) {
     const apiManagerEnabled =
-      config.getOptionalBoolean('wso2ApiManager.enabled') ?? false;
+      config.getOptionalBoolean('wso2ApiPlatform.enabled') ?? false;
     const client = apiManagerEnabled
       ? new Wso2Client({ config, logger: options.logger })
       : undefined;
@@ -91,11 +91,11 @@ export class Wso2ApiEntityProvider implements EntityProvider {
     this.logger.debug(`Running ${this.getProviderName()}`);
 
     const namespace =
-      this.config.getOptionalString('catalog.providers.wso2Apim.namespace') ||
+      this.config.getOptionalString('catalog.providers.wso2ApiPlatform.namespace') ||
       'default';
     const platformGateways = this.parseWso2PlatformGateways();
     const apiManagerEnabled =
-      this.config.getOptionalBoolean('wso2ApiManager.enabled') ?? false;
+      this.config.getOptionalBoolean('wso2ApiPlatform.enabled') ?? false;
     try {
       const allEntities = await this.discoveryService.discoverAll({
         namespace,

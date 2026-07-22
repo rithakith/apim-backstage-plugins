@@ -16,14 +16,14 @@
 
 import express from 'express';
 import { LoggerService } from '@backstage/backend-plugin-api';
-import { Wso2ApiManagerClient } from '../client';
+import { Wso2ApiPlatformClient } from '../client';
 
 export type EnsureAuthenticated = (
   req: express.Request,
 ) => Promise<string | undefined>;
 
 export type RouteContext = {
-  client: Wso2ApiManagerClient;
+  client: Wso2ApiPlatformClient;
   ensureAuthenticated: EnsureAuthenticated;
   logger: LoggerService;
 };

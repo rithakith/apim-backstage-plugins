@@ -30,7 +30,7 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import { makeStyles } from '@material-ui/core/styles';
 import { ApiDefinitionViewer } from './ApiDefinitionViewer';
-import { wso2ApiManagerApiRef } from '../../../api';
+import { wso2ApiPlatformApiRef } from '../../../api';
 
 const SERVICE_ID_ANNOTATION = 'wso2.com/service-id';
 

@@ -24,7 +24,7 @@ import {
 } from '@backstage/backend-plugin-api';
 import type { CatalogService } from '@backstage/plugin-catalog-node';
 
-import { Wso2ApiManagerClient, readWso2ApiManagerConfig } from './client';
+import { Wso2ApiPlatformClient, readWso2ApiPlatformConfig } from './client';
 import { registerApiRoutes } from './routes/apiRoutes';
 import { registerConfigRoutes } from './routes/configRoutes';
 import { registerStreamingRoutes } from './routes/streamingRoutes';
@@ -43,8 +43,8 @@ export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
   const { logger, httpAuth, config } = options;
-  const wso2Config = readWso2ApiManagerConfig(config);
-  const client = new Wso2ApiManagerClient({
+  const wso2Config = readWso2ApiPlatformConfig(config);
+  const client = new Wso2ApiPlatformClient({
     config: wso2Config,
     rawConfig: config,
     logger,

@@ -22,7 +22,7 @@ import {
 import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node';
 import { Wso2ApiEntityProvider } from './providers/Wso2ApiEntityProvider';
 
-export const catalogModuleWso2Apim = createBackendModule({
+export const catalogModuleWso2ApiPlatform = createBackendModule({
   pluginId: 'catalog',
   moduleId: 'wso2-apim',
   register(reg) {
@@ -48,7 +48,7 @@ export const catalogModuleWso2Apim = createBackendModule({
         // Schedule the provider to run periodically
         const schedule = scheduler.createScheduledTaskRunner(
           readSchedulerServiceTaskScheduleDefinitionFromConfig(
-            config.getConfig('catalog.providers.wso2Apim.schedule'),
+            config.getConfig('catalog.providers.wso2ApiPlatform.schedule'),
           ),
         );
 
@@ -66,4 +66,4 @@ export const catalogModuleWso2Apim = createBackendModule({
   },
 });
 
-export default catalogModuleWso2Apim;
+export default catalogModuleWso2ApiPlatform;

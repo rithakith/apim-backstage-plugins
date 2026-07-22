@@ -70,7 +70,7 @@ function createLegacyCredentials<
  * Creates the WSO2 API Manager router for legacy Backstage backends.
  *
  * Modern backends should use the default backend plugin export instead:
- * backend.add(import('@wso2/backstage-plugin-wso2-api-manager-backend')).
+ * backend.add(import('@wso2/backstage-plugin-wso2-api-platform-backend')).
  */
 export async function createLegacyRouter(
   options: LegacyRouterOptions,

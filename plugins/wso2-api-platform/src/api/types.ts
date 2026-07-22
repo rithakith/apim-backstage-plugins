@@ -180,7 +180,7 @@ export type Wso2HealthReport = {
 
 
 
-export type Wso2ApiManagerRuntimeConfig = {
+export type Wso2ApiPlatformRuntimeConfig = {
   apiManager: {
     enabled: boolean;
   };
@@ -200,7 +200,7 @@ export type Wso2GenerateApiKeyOptions = {
   };
 };
 
-export interface Wso2ApiManagerApi {
+export interface Wso2ApiPlatformApi {
   generateApiKey(
     apiId: string,
     options?: Wso2GenerateApiKeyOptions,
@@ -210,6 +210,6 @@ export interface Wso2ApiManagerApi {
     options?: { query?: string; token?: string },
   ): Promise<Wso2ApiRevisionsResponse>;
   getGateways(token?: string): Promise<any[]>;
-  getRuntimeConfig(token?: string): Promise<Wso2ApiManagerRuntimeConfig>;
+  getRuntimeConfig(token?: string): Promise<Wso2ApiPlatformRuntimeConfig>;
   getApiWsdl(apiId: string, token?: string): Promise<Blob>;
 }

@@ -35,8 +35,8 @@ import {
   rootRouteRef,
 } from '../routes';
 import {
-  Wso2ApiManagerClient,
-  wso2ApiManagerApiRef,
+  Wso2ApiPlatformClient,
+  wso2ApiPlatformApiRef,
 } from '../api';
 import { isMcpEntity, isServiceEntity } from '../utils';
 
@@ -174,20 +174,20 @@ export const entityWso2Header: ExtensionDefinition = EntityHeaderBlueprint.make(
 });
 
 /** @alpha */
-export const wso2ApiManagerApi: ExtensionDefinition = ApiBlueprint.make({
+export const wso2ApiPlatformApi: ExtensionDefinition = ApiBlueprint.make({
   params: defineParams => defineParams({
-    api: wso2ApiManagerApiRef,
+    api: wso2ApiPlatformApiRef,
     deps: {
       discoveryApi: discoveryApiRef,
       fetchApi: fetchApiRef,
     },
     factory: ({ discoveryApi, fetchApi }) =>
-      new Wso2ApiManagerClient({ discoveryApi, fetchApi }),
+      new Wso2ApiPlatformClient({ discoveryApi, fetchApi }),
   }),
 });
 
 /** @alpha */
-export const wso2ApiManagerPage: ExtensionDefinition = PageBlueprint.make({
+export const wso2ApiPlatformPage: ExtensionDefinition = PageBlueprint.make({
   params: {
     path: '/wso2-api-platform',
     title: 'WSO2 API Platform',
@@ -195,7 +195,7 @@ export const wso2ApiManagerPage: ExtensionDefinition = PageBlueprint.make({
     routeRef: rootRouteRef,
     noHeader: true,
     loader: () =>
-      import('../components/ApiManagerPage').then(m => <m.Wso2ApiManagerPage />),
+      import('../components/ApiManagerPage').then(m => <m.Wso2ApiPlatformPage />),
   },
 });
 
@@ -262,8 +262,8 @@ export const entityWso2TryOutTab: ExtensionDefinition = EntityCardBlueprint.make
 });
 
 const extensions = [
-  wso2ApiManagerApi as any,
-  wso2ApiManagerPage as any,
+  wso2ApiPlatformApi as any,
+  wso2ApiPlatformPage as any,
   entityWso2Header as any,
 
   entityWso2OverviewContent as any,
@@ -283,6 +283,6 @@ const extensions = [
 
 /** @alpha */
 export default createFrontendPlugin({
-  pluginId: 'wso2-api-manager',
+  pluginId: 'wso2-api-platform',
   extensions,
 });

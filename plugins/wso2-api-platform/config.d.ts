@@ -1,7 +1,7 @@
 export interface Config {
   catalog?: {
     providers?: {
-      wso2Apim?: {
+      wso2ApiPlatform?: {
         schedule?: {
           frequency?: {
             /**
@@ -13,7 +13,7 @@ export interface Config {
       };
     };
   };
-  wso2ApiManager?: {
+  wso2ApiPlatform?: {
     /**
      * @visibility frontend
      */

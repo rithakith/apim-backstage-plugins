@@ -16,8 +16,8 @@
 
 export { rootRouteRef } from './routes';
 export {
-	wso2ApiManagerPlugin,
-	Wso2ApiManagerPage,
+	wso2ApiPlatformPlugin,
+	Wso2ApiPlatformPage,
 } from './plugin';
 export { EntityWso2TryOutTab } from './components/EntityTabs/TryOutTab';
 export { EntityWso2DocumentsCard } from './components/EntityTabs/DocsTab';

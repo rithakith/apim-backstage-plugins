@@ -55,12 +55,12 @@ describe('Wso2ApiEntityProvider', () => {
       const config = new ConfigReader({
         catalog: {
           providers: {
-            wso2Apim: {
+            wso2ApiPlatform: {
               baseUrl: 'https://apim.wso2.com',
             },
           },
         },
-        wso2ApiManager: {
+        wso2ApiPlatform: {
           enabled: true,
           baseUrl: 'https://apim.wso2.com',
           auth: { clientId: 'id', clientSecret: 'secret' },
@@ -92,12 +92,12 @@ Static Factory fromConfig built successfully.
       const config = new ConfigReader({
         catalog: {
           providers: {
-            wso2Apim: {
+            wso2ApiPlatform: {
               baseUrl: 'https://apim.wso2.com',
             },
           },
         },
-        wso2ApiManager: {
+        wso2ApiPlatform: {
           enabled: true,
           baseUrl: 'https://apim.wso2.com',
           auth: { clientId: 'id', clientSecret: 'secret' },
@@ -136,9 +136,9 @@ Static Factory fromConfig built successfully.
     it('should throw an error if run is called before connect is established', async () => {
       const config = new ConfigReader({
         catalog: {
-          providers: { wso2Apim: { baseUrl: 'https://apim.wso2.com' } },
+          providers: { wso2ApiPlatform: { baseUrl: 'https://apim.wso2.com' } },
         },
-        wso2ApiManager: {
+        wso2ApiPlatform: {
           enabled: true,
           baseUrl: 'https://apim.wso2.com',
           auth: { clientId: 'id', clientSecret: 'secret' },
@@ -167,13 +167,13 @@ Expected Exception:
       const config = new ConfigReader({
         catalog: {
           providers: {
-            wso2Apim: {
+            wso2ApiPlatform: {
               baseUrl: 'https://apim.wso2.com',
               namespace: 'wso2-namespace',
             },
           },
         },
-        wso2ApiManager: {
+        wso2ApiPlatform: {
           enabled: true,
           baseUrl: 'https://apim.wso2.com',
           auth: { clientId: 'id', clientSecret: 'secret' },
@@ -257,9 +257,9 @@ Ingested Entities Count: ${mockEntities.length}
     it('should update status, log, and rethrow if discovery throws exceptions', async () => {
       const config = new ConfigReader({
         catalog: {
-          providers: { wso2Apim: { baseUrl: 'https://apim.wso2.com' } },
+          providers: { wso2ApiPlatform: { baseUrl: 'https://apim.wso2.com' } },
         },
-        wso2ApiManager: {
+        wso2ApiPlatform: {
           enabled: true,
           baseUrl: 'https://apim.wso2.com',
           auth: { clientId: 'id', clientSecret: 'secret' },

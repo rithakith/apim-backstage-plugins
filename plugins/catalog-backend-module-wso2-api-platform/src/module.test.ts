@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { catalogModuleWso2Apim } from './module';
+import { catalogModuleWso2ApiPlatform } from './module';
 import { mockServices } from '@backstage/backend-test-utils';
 import { Wso2ApiEntityProvider } from './providers/Wso2ApiEntityProvider';
 
@@ -24,7 +24,7 @@ jest.mock('./providers/Wso2ApiEntityProvider', () => ({
   },
 }));
 
-describe('catalogModuleWso2Apim', () => {
+describe('catalogModuleWso2ApiPlatform', () => {
   const formatTestCaseDoc = (details: string) => {
     return `\n================================================================================\nTEST CASE: ${
       expect.getState().currentTestName
@@ -63,7 +63,7 @@ describe('catalogModuleWso2Apim', () => {
         },
         catalog: {
           providers: {
-            wso2Apim: {
+            wso2ApiPlatform: {
               baseUrl: 'https://apim.wso2.com',
               schedule: {
                 frequency: 'PT30M',
@@ -73,14 +73,14 @@ describe('catalogModuleWso2Apim', () => {
             },
           },
         },
-        wso2ApiManager: {
+        wso2ApiPlatform: {
           auth: { clientId: 'id', clientSecret: 'secret' },
           publisherBasePath: '/api/am/publisher/v3',
         },
       },
     });
 
-    const [registration] = (catalogModuleWso2Apim as any).getRegistrations();
+    const [registration] = (catalogModuleWso2ApiPlatform as any).getRegistrations();
     await registration.init.func({
       catalog: { addEntityProvider },
       config,

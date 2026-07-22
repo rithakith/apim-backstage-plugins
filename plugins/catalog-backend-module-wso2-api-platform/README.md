@@ -4,7 +4,7 @@ This is the catalog backend module for the **WSO2 API Manager** integration. It 
 
 > [!IMPORTANT]
 > **This package is part of the WSO2 suite.**
-> Please see the [Main Plugin Page](https://npmjs.com/package/@wso2/backstage-plugin-wso2-api-manager) for full installation and configuration instructions.
+> Please see the [Main Plugin Page](https://npmjs.com/package/@wso2/backstage-plugin-wso2-api-platform) for full installation and configuration instructions.
 
 ## Polling and Scheduling
 

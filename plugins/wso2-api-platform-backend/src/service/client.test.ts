@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { readWso2ApiManagerConfig, Wso2ApiManagerClient } from './client';
+import { readWso2ApiPlatformConfig, Wso2ApiPlatformClient } from './client';
 import { ConfigReader } from '@backstage/config';
 import { mockServices } from '@backstage/backend-test-utils';
 import { fetch as undiciFetch } from 'undici';
@@ -32,7 +32,7 @@ jest.mock('undici', () => {
 
 const mockFetch = jest.mocked(undiciFetch);
 
-describe('client and Wso2ApiManagerClient', () => {
+describe('client and Wso2ApiPlatformClient', () => {
   const logger = mockServices.logger.mock();
 
   beforeEach(() => {
@@ -40,10 +40,10 @@ describe('client and Wso2ApiManagerClient', () => {
     jest.clearAllMocks();
   });
 
-  describe('readWso2ApiManagerConfig', () => {
+  describe('readWso2ApiPlatformConfig', () => {
     it('should successfully read complete configuration', () => {
       const config = new ConfigReader({
-        wso2ApiManager: {
+        wso2ApiPlatform: {
           enabled: true,
           baseUrl: 'https://apim.wso2.com',
           publisherBasePath: '/api/am/publisher/v3',
@@ -76,7 +76,7 @@ describe('client and Wso2ApiManagerClient', () => {
         },
       });
 
-      const result = readWso2ApiManagerConfig(config);
+      const result = readWso2ApiPlatformConfig(config);
 
       expect(result.baseUrl).toBe('https://apim.wso2.com');
       expect(result.publisherBasePath).toBe('/api/am/publisher/v3');
@@ -98,7 +98,7 @@ describe('client and Wso2ApiManagerClient', () => {
 
     it('should read API key Basic Auth credentials from catalog provider config', () => {
       const config = new ConfigReader({
-        wso2ApiManager: {
+        wso2ApiPlatform: {
           enabled: true,
           baseUrl: 'https://apim.wso2.com',
           publisherBasePath: '/api/am/publisher/v3',
@@ -110,7 +110,7 @@ describe('client and Wso2ApiManagerClient', () => {
         },
         catalog: {
           providers: {
-            wso2Apim: {
+            wso2ApiPlatform: {
               username: 'catalog-admin',
               password: 'catalog-password',
             },
@@ -118,7 +118,7 @@ describe('client and Wso2ApiManagerClient', () => {
         },
       });
 
-      const result = readWso2ApiManagerConfig(config);
+      const result = readWso2ApiPlatformConfig(config);
 
       expect(result.auth.username).toBe('catalog-admin');
       expect(result.auth.password).toBe('catalog-password');
@@ -126,7 +126,7 @@ describe('client and Wso2ApiManagerClient', () => {
 
     it('should default both integrations to disabled', () => {
       const config = new ConfigReader({});
-      const result = readWso2ApiManagerConfig(config);
+      const result = readWso2ApiPlatformConfig(config);
       expect(result.apiManager.enabled).toBe(false);
       expect(result.platformGateway.enabled).toBe(false);
       expect(result.selfHostedGateways).toEqual([]);
@@ -134,7 +134,7 @@ describe('client and Wso2ApiManagerClient', () => {
 
     it('should successfully read config with defaults and selfHostedGateway credentials', () => {
       const config = new ConfigReader({
-        wso2ApiManager: {
+        wso2ApiPlatform: {
           enabled: true,
           baseUrl: 'https://apim.wso2.com',
           publisherBasePath: '/api/am/publisher/v3',
@@ -154,7 +154,7 @@ describe('client and Wso2ApiManagerClient', () => {
         ],
       });
 
-      const result = readWso2ApiManagerConfig(config);
+      const result = readWso2ApiPlatformConfig(config);
 
       expect(result.tls.rejectUnauthorized).toBe(true);
       expect(result.selfHostedGateways.length).toBe(1);
@@ -165,8 +165,8 @@ describe('client and Wso2ApiManagerClient', () => {
     });
   });
 
-  describe('Wso2ApiManagerClient operations', () => {
-    let client: Wso2ApiManagerClient;
+  describe('Wso2ApiPlatformClient operations', () => {
+    let client: Wso2ApiPlatformClient;
     const clientConfig = {
       apiManager: {
         enabled: true,
@@ -192,9 +192,9 @@ describe('client and Wso2ApiManagerClient', () => {
     };
 
     beforeEach(() => {
-      client = new Wso2ApiManagerClient({
+      client = new Wso2ApiPlatformClient({
         config: clientConfig,
-        rawConfig: new ConfigReader({ wso2ApiManager: clientConfig }),
+        rawConfig: new ConfigReader({ wso2ApiPlatform: clientConfig }),
         logger,
       });
     });
@@ -254,9 +254,9 @@ describe('client and Wso2ApiManagerClient', () => {
           ...clientConfig,
           auth: { ...clientConfig.auth, tokenUrl: '' },
         };
-        const invalidClient = new Wso2ApiManagerClient({
+        const invalidClient = new Wso2ApiPlatformClient({
           config: invalidConfig,
-          rawConfig: new ConfigReader({ wso2ApiManager: invalidConfig }),
+          rawConfig: new ConfigReader({ wso2ApiPlatform: invalidConfig }),
           logger,
         });
 
@@ -350,9 +350,9 @@ describe('client and Wso2ApiManagerClient', () => {
           ...clientConfig,
           auth: { ...clientConfig.auth, username: '', password: '' },
         };
-        const basicAuthlessClient = new Wso2ApiManagerClient({
+        const basicAuthlessClient = new Wso2ApiPlatformClient({
           config: basicAuthlessConfig,
-          rawConfig: new ConfigReader({ wso2ApiManager: basicAuthlessConfig }),
+          rawConfig: new ConfigReader({ wso2ApiPlatform: basicAuthlessConfig }),
           logger,
         });
 

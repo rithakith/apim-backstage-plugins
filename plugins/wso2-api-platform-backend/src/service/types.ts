@@ -61,7 +61,7 @@ export type Wso2ApiRevisionsResponse = {
   list: Wso2ApiRevision[];
 };
 
-export type Wso2ApiManagerConfig = {
+export type Wso2ApiPlatformConfig = {
   apiManager: {
     enabled: boolean;
   };

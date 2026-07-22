@@ -27,7 +27,7 @@ backend:
 
 catalog:
   providers:
-    wso2Apim:
+    wso2ApiPlatform:
       baseUrl: https://127.0.0.1:9443
       username: admin
       password: admin
@@ -39,7 +39,7 @@ catalog:
         initialDelay:
           seconds: 15
 
-wso2ApiManager:
+wso2ApiPlatform:
   baseUrl: https://127.0.0.1:9443
   tls:
     # Local/self-signed HTTPS certificates often are not trusted by Node.

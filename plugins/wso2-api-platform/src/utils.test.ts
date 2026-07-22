@@ -27,7 +27,7 @@ import {
 } from './utils';
 import { Entity } from '@backstage/catalog-model';
 
-describe('wso2-api-manager utils', () => {
+describe('wso2-api-platform utils', () => {
   const formatTestCaseDoc = (details: string) => {
     return `\n================================================================================\nTEST CASE: ${expect.getState().currentTestName}\n================================================================================\n${details.trim()}\n================================================================================\n`;
   };

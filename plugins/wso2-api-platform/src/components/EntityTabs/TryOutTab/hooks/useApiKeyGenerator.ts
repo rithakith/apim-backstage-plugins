@@ -17,14 +17,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAsyncRetry } from 'react-use';
 import { useApi, alertApiRef } from '@backstage/core-plugin-api';
-import { wso2ApiManagerApiRef } from '../../../../api';
+import { wso2ApiPlatformApiRef } from '../../../../api';
 
 export const useApiKeyGenerator = (options: {
   apiId?: string;
   isApiPlatform: boolean;
 }) => {
   const { apiId, isApiPlatform } = options;
-  const apiClient = useApi(wso2ApiManagerApiRef);
+  const apiClient = useApi(wso2ApiPlatformApiRef);
   const alertApi = useApi(alertApiRef);
 
   const [apiKey, setApiKey] = useState<string | null>(null);

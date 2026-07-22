@@ -1,6 +1,6 @@
 apis:
-  wso2-api-manager-backend@v1:
-    root: ./wso2-api-manager-backend/openapi.yaml
+  wso2-api-platform-backend@v1:
+    root: ./wso2-api-platform-backend/openapi.yaml
   catalog-backend-module-wso2-apim@v1:
     root: ./catalog-backend-module-wso2-apim/openapi.yaml
 

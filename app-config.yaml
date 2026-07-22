@@ -26,22 +26,22 @@ app:
     - entity-content:catalog/overview:
         config:
           filter: not:kind:api
-    - entity-content:wso2-api-manager/wso2-overview:
+    - entity-content:wso2-api-platform/wso2-overview:
         config:
           group: wso2-overview
-    - entity-content:wso2-api-manager/wso2-definition:
+    - entity-content:wso2-api-platform/wso2-definition:
         config:
           group: wso2-definition
-    - entity-content:wso2-api-manager/wso2-tools:
+    - entity-content:wso2-api-platform/wso2-tools:
         config:
           group: wso2-tools
-    - entity-content:wso2-api-manager/wso2-policies:
+    - entity-content:wso2-api-platform/wso2-policies:
         config:
           group: wso2-policies
-    - entity-content:wso2-api-manager/wso2-try-out:
+    - entity-content:wso2-api-platform/wso2-try-out:
         config:
           group: wso2-try-out
-    - entity-content:wso2-api-manager/wso2-docs:
+    - entity-content:wso2-api-platform/wso2-docs:
         config:
           group: wso2-docs
     - entity-content:api-docs/definition:
@@ -124,7 +124,7 @@ catalog:
         - allow: [User, Group]
 
   providers:
-    wso2Apim:
+    wso2ApiPlatform:
       # TODO: Update the base URL for the WSO2 APIM Entity Provider
       baseUrl: ${WSO2_BASE_URL}
       namespace: wso2
@@ -138,7 +138,7 @@ catalog:
         initialDelay:
           seconds: ${WSO2_SYNC_INITIAL_DELAY_SECONDS}
 
-wso2ApiManager:
+wso2ApiPlatform:
   enabled: true
   # Maximum time (in seconds) the Backstage plugin will wait for a response when making an HTTP request to the WSO2 API Manager instance before aborting the request. Default is 30.
   requestTimeoutSeconds: 30
@@ -175,9 +175,9 @@ wso2ApiManager:
     grantType: client_credentials
   catalogSyncTimeoutSeconds: 60
 
-  
 
-wso2PlatformGateway:
+
+wso2ApiPlatformGateway:
   enabled: true
   gateways:
     - name: Self-Hosted-1

@@ -71,7 +71,7 @@ export const useWso2Documents = (options: {
     }
 
     try {
-      const url = `${backendUrl}/api/wso2-api-manager/apis/${apiId}/documents/${docId}/content`;
+      const url = `${backendUrl}/api/wso2-api-platform/apis/${apiId}/documents/${docId}/content`;
       const response = await fetch(url, { method: 'GET' });
 
       if (!response.ok) {
@@ -127,7 +127,7 @@ export const useWso2Documents = (options: {
     setPreviewContent(null);
 
     try {
-      const url = `${backendUrl}/api/wso2-api-manager/apis/${apiId}/documents/${docId}/content`;
+      const url = `${backendUrl}/api/wso2-api-platform/apis/${apiId}/documents/${docId}/content`;
       const response = await fetch(url, { method: 'GET' });
       if (!response.ok)
         throw new Error(`Failed to load: ${response.statusText}`);

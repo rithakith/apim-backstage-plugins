@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export { wso2ApiManagerPlugin as default } from './plugin';
+export { wso2ApiPlatformPlugin as default } from './plugin';
 export { createRouter } from './service/router';
 export { createLegacyRouter } from './legacy';
 export type { LegacyIdentityApi, LegacyRouterOptions } from './legacy';

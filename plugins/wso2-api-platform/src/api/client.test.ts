@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { Wso2ApiManagerClient } from './client';
+import { Wso2ApiPlatformClient } from './client';
 import { DiscoveryApi, FetchApi } from '@backstage/core-plugin-api';
 
-describe('Wso2ApiManagerClient', () => {
+describe('Wso2ApiPlatformClient', () => {
   let mockDiscoveryApi: jest.Mocked<DiscoveryApi>;
   let mockFetchApi: jest.Mocked<FetchApi>;
-  let client: Wso2ApiManagerClient;
+  let client: Wso2ApiPlatformClient;
 
   const formatTestCaseDoc = (details: string) => {
     return `\n================================================================================\nTEST CASE: ${
@@ -32,14 +32,14 @@ describe('Wso2ApiManagerClient', () => {
     mockDiscoveryApi = {
       getBaseUrl: jest
         .fn()
-        .mockResolvedValue('https://wso2-api-manager.backend'),
+        .mockResolvedValue('https://wso2-api-platform.backend'),
     } as any;
 
     mockFetchApi = {
       fetch: jest.fn(),
     } as any;
 
-    client = new Wso2ApiManagerClient({
+    client = new Wso2ApiPlatformClient({
       discoveryApi: mockDiscoveryApi,
       fetchApi: mockFetchApi,
     });
@@ -64,10 +64,10 @@ describe('Wso2ApiManagerClient', () => {
       });
 
       expect(mockDiscoveryApi.getBaseUrl).toHaveBeenCalledWith(
-        'wso2-api-manager',
+        'wso2-api-platform',
       );
       expect(mockFetchApi.fetch).toHaveBeenCalledWith(
-        'https://wso2-api-manager.backend/apis/api-123/generate-key',
+        'https://wso2-api-platform.backend/apis/api-123/generate-key',
         expect.objectContaining({
           method: 'POST',
           headers: {
@@ -99,7 +99,7 @@ describe('Wso2ApiManagerClient', () => {
       await client.generateApiKey('api/id with spaces');
 
       expect(mockFetchApi.fetch).toHaveBeenCalledWith(
-        'https://wso2-api-manager.backend/apis/api%2Fid%20with%20spaces/generate-key',
+        'https://wso2-api-platform.backend/apis/api%2Fid%20with%20spaces/generate-key',
         expect.anything(),
       );
     });
@@ -153,7 +153,7 @@ describe('Wso2ApiManagerClient', () => {
       });
 
       expect(mockFetchApi.fetch).toHaveBeenCalledWith(
-        'https://wso2-api-manager.backend/apis/api-123/revisions?query=status%3Aactive',
+        'https://wso2-api-platform.backend/apis/api-123/revisions?query=status%3Aactive',
         expect.objectContaining({
           method: 'GET',
           headers: {
@@ -177,7 +177,7 @@ describe('Wso2ApiManagerClient', () => {
       const result = await client.getGateways('user-token');
 
       expect(mockFetchApi.fetch).toHaveBeenCalledWith(
-        'https://wso2-api-manager.backend/gateways',
+        'https://wso2-api-platform.backend/gateways',
         expect.objectContaining({
           method: 'GET',
           headers: {
@@ -216,7 +216,7 @@ describe('Wso2ApiManagerClient', () => {
       const result = await client.getRuntimeConfig('user-token');
 
       expect(mockFetchApi.fetch).toHaveBeenCalledWith(
-        'https://wso2-api-manager.backend/config',
+        'https://wso2-api-platform.backend/config',
         expect.objectContaining({
           method: 'GET',
           headers: {
@@ -241,7 +241,7 @@ describe('Wso2ApiManagerClient', () => {
       const result = await client.getApiWsdl('api-123', 'user-token');
 
       expect(mockFetchApi.fetch).toHaveBeenCalledWith(
-        'https://wso2-api-manager.backend/apis/api-123/wsdl',
+        'https://wso2-api-platform.backend/apis/api-123/wsdl',
         expect.objectContaining({
           headers: {
             'X-WSO2-Access-Token': 'user-token',

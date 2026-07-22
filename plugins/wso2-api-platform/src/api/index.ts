@@ -15,13 +15,13 @@
  */
 
 import { createApiRef } from '@backstage/core-plugin-api';
-import { Wso2ApiManagerApi } from './types';
+import { Wso2ApiPlatformApi } from './types';
 
-export const wso2ApiManagerApiRef = createApiRef<Wso2ApiManagerApi>({
-  id: 'plugin.wso2-api-manager.service',
+export const wso2ApiPlatformApiRef = createApiRef<Wso2ApiPlatformApi>({
+  id: 'plugin.wso2-api-platform.service',
 });
 
-export { Wso2ApiManagerClient } from './client';
+export { Wso2ApiPlatformClient } from './client';
 export type {
   Wso2ApiSummary,
   Wso2GatewayInfo,

@@ -4,7 +4,7 @@ This is the backend plugin for **WSO2 API Manager** in Backstage. It acts as a s
 
 > [!IMPORTANT]
 > **This package is part of the WSO2 suite.**
-> Please see the [Main Plugin Page](https://npmjs.com/package/@wso2/backstage-plugin-wso2-api-manager) for full installation and configuration instructions.
+> Please see the [Main Plugin Page](https://npmjs.com/package/@wso2/backstage-plugin-wso2-api-platform) for full installation and configuration instructions.
 
 ## Responsibilities
 
@@ -20,10 +20,10 @@ The frontend plugin fetches data dynamically from this backend plugin. The follo
 
 | HTTP Method | Backend Route                                                     | Frontend JavaScript Trigger   | Purpose                                                                              |
 | -------------| -------------------------------------------------------------------| -------------------------------| --------------------------------------------------------------------------------------|
-| **POST**    | `/api/wso2-api-manager/apis/:apiId/generate-key`                  | `wso2Api.generateApiKey(...)` | Generates a temporary access token for the Gateway via Basic Auth/OAuth credentials. |
-| **GET**     | `/api/wso2-api-manager/apis/:apiId/revisions`                     | `wso2Api.getRevisions(...)`   | Lists deployment revisions of an API in real-time.                                   |
-| **GET**     | `/api/wso2-api-manager/apis/:apiId/wsdl`                          | `wso2Api.getApiWsdl(...)`     | Downloads the SOAP API WSDL file/archive payload.                                    |
-| **GET**     | `/api/wso2-api-manager/apis/:apiId/documents/:documentId/content` | *Direct Link URL in UI*       | Streams document file downloads (PDF, MD, TXT, etc.) on-demand.                      |
+| **POST**    | `/api/wso2-api-platform/apis/:apiId/generate-key`                  | `wso2Api.generateApiKey(...)` | Generates a temporary access token for the Gateway via Basic Auth/OAuth credentials. |
+| **GET**     | `/api/wso2-api-platform/apis/:apiId/revisions`                     | `wso2Api.getRevisions(...)`   | Lists deployment revisions of an API in real-time.                                   |
+| **GET**     | `/api/wso2-api-platform/apis/:apiId/wsdl`                          | `wso2Api.getApiWsdl(...)`     | Downloads the SOAP API WSDL file/archive payload.                                    |
+| **GET**     | `/api/wso2-api-platform/apis/:apiId/documents/:documentId/content` | *Direct Link URL in UI*       | Streams document file downloads (PDF, MD, TXT, etc.) on-demand.                      |
 
 ## License
 

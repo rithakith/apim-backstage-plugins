@@ -1,5 +1,5 @@
 export interface Config {
-  wso2ApiManager?: {
+  wso2ApiPlatform?: {
     /**
      * Enables WSO2 API Manager integration.
      * Defaults to false.

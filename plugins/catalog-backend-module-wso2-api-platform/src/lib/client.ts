@@ -39,38 +39,38 @@ export class Wso2Client {
   protected readonly tokenUrl: string;
 
   constructor(options: { config: Config; logger: LoggerService }) {
-    this.baseUrl = options.config.getString('wso2ApiManager.baseUrl');
+    this.baseUrl = options.config.getString('wso2ApiPlatform.baseUrl');
 
-    this.clientId = options.config.getString('wso2ApiManager.auth.clientId');
+    this.clientId = options.config.getString('wso2ApiPlatform.auth.clientId');
     this.clientSecret = options.config.getString(
-      'wso2ApiManager.auth.clientSecret',
+      'wso2ApiPlatform.auth.clientSecret',
     );
     this.logger = options.logger;
 
     const rejectUnauthorized =
       options.config.getOptionalBoolean(
-        'wso2ApiManager.tls.rejectUnauthorized',
+        'wso2ApiPlatform.tls.rejectUnauthorized',
       ) ?? true;
     this.dispatcher = new Agent({ connect: { rejectUnauthorized } });
 
     this.publisherBasePath = options.config.getString(
-      'wso2ApiManager.publisherBasePath',
+      'wso2ApiPlatform.publisherBasePath',
     );
     this.serviceCatalogBasePath = options.config.getOptionalString(
-      'wso2ApiManager.serviceCatalogBasePath',
+      'wso2ApiPlatform.serviceCatalogBasePath',
     ) ?? '/api/am/service-catalog/v1';
     this.requestTimeoutMs =
       (options.config.getOptionalNumber(
-        'wso2ApiManager.requestTimeoutSeconds',
+        'wso2ApiPlatform.requestTimeoutSeconds',
       ) ?? 30) * 1000;
     const requiredScopes = options.config.getStringArray(
-      'wso2ApiManager.auth.requiredScopes',
+      'wso2ApiPlatform.auth.requiredScopes',
     );
     this.scopes = Array.from(new Set([...requiredScopes])).join(' ');
 
     // Token URL configuration: use explicit tokenUrl if provided, otherwise default to baseUrl/oauth2/token
     this.tokenUrl =
-      options.config.getOptionalString('wso2ApiManager.auth.tokenUrl') ??
+      options.config.getOptionalString('wso2ApiPlatform.auth.tokenUrl') ??
       `${this.baseUrl}/oauth2/token`;
   }
 

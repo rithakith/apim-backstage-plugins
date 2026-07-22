@@ -26,7 +26,7 @@ jest.mock('undici', () => ({
   request: jest.fn(),
 }));
 
-// Mock instance to control Wso2ApiManagerClient methods in router
+// Mock instance to control Wso2ApiPlatformClient methods in router
 const mockClientInstance = {
   generateApiKey: jest.fn(),
   getRevisions: jest.fn(),
@@ -47,13 +47,13 @@ jest.mock('./client', () => {
   const actual = jest.requireActual('./client');
   return {
     ...actual,
-    Wso2ApiManagerClient: jest
+    Wso2ApiPlatformClient: jest
       .fn()
       .mockImplementation(() => mockClientInstance),
   };
 });
 
-describe('wso2-api-manager-backend router', () => {
+describe('wso2-api-platform-backend router', () => {
   let app: express.Express;
   let mockHttpAuth: { credentials: jest.Mock };
   let mockAuth: {
@@ -69,7 +69,7 @@ describe('wso2-api-manager-backend router', () => {
       backend: {
         baseUrl: 'http://localhost:7007',
       },
-      wso2ApiManager: {
+      wso2ApiPlatform: {
         enabled: true,
         baseUrl: 'https://apim.wso2.com',
         publisherBasePath: '/api/am/publisher/v3',
