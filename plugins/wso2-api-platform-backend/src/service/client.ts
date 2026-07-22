@@ -23,7 +23,7 @@ import {
 } from './types';
 import { joinUrl } from './urlUtils';
 import { Config } from '@backstage/config';
-import { Wso2Client as BaseWso2Client } from '@wso2/backstage-plugin-catalog-backend-module-wso2-apim';
+import { Wso2Client as BaseWso2Client } from '@wso2/backstage-plugin-catalog-backend-module-wso2-api-platform';
 
 export { readWso2ApiPlatformConfig } from './config';
 

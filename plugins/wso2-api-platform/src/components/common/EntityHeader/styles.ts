@@ -5,7 +5,10 @@ export const useStyles = makeStyles(theme => ({
     '[class*="BackstageHeaderTabs-tabsWrapper"]': {
       backgroundColor: theme.palette.type === 'dark' ? 'transparent' : '#ffffff',
       paddingLeft: theme.spacing(3),
-      paddingTop: theme.spacing(2),
+      paddingTop: theme.spacing(3),
+    },
+    '[class*="BackstageHeaderTabs-tabsWrapper"] .MuiTabs-root': {
+      minHeight: '40px !important',
     },
     '[class*="BackstageHeaderTabs-tabsWrapper"] .MuiTabs-flexContainer': {
       gap: theme.spacing(0.5),
@@ -27,8 +30,9 @@ export const useStyles = makeStyles(theme => ({
       backgroundColor: 'transparent !important',
     },
     '[class*="BackstageHeaderTabs-defaultTab"]': {
-      minHeight: 48,
-      padding: theme.spacing(1.25, 3),
+      minHeight: '40px !important',
+      height: '40px !important',
+      padding: '0 20px !important',
       border: '0 !important',
       borderRadius: '6px 6px 0 0',
       backgroundColor: 'transparent',

@@ -67,6 +67,6 @@ backend.add(import('@backstage/plugin-signals-backend'));
 backend.add(import('@backstage/plugin-mcp-actions-backend'));
 
 backend.add(import('../../../plugins/wso2-api-platform-backend/src'));
-backend.add(import('@wso2/backstage-plugin-catalog-backend-module-wso2-apim'));
+backend.add(import('@wso2/backstage-plugin-catalog-backend-module-wso2-api-platform'));
 
 backend.start();
