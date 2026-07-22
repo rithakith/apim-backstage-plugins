@@ -122,7 +122,7 @@ export const entityWso2TryOutContent: ExtensionDefinition = EntityContentBluepri
     path: '/try-out',
     title: 'Try Out',
     group: 'wso2-try-out',
-    filter: (e) => isWso2ApiEntityExceptServiceAndMcp(e) && !isSelfHostedGatewayEntity(e) && !isApiPlatformEntity(e),
+    filter: (e) => isWso2ApiEntityExceptServiceAndMcp(e) && !isApiPlatformEntity(e),
     loader: () =>
       import('../components/EntityTabs/TryOutTab').then(m => (
         <m.EntityWso2TryOutTab />

@@ -144,9 +144,9 @@ export class Wso2ApiEntityProvider implements EntityProvider {
 
   private parseWso2PlatformGateways(): PlatformGateway[] {
     const platformGatewayEnabled =
-      this.getOptionalBoolean('wso2PlatformGateway.enabled') ?? false;
+      this.getOptionalBoolean('wso2ApiPlatformGateway.enabled') ?? false;
     const gatewayConfigs =
-      this.getOptionalConfigArray('wso2PlatformGateway.gateways') ?? [];
+      this.getOptionalConfigArray('wso2ApiPlatformGateway.gateways') ?? [];
     if (!platformGatewayEnabled) {
       return [];
     }
