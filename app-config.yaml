@@ -1,0 +1,192 @@
+# LOCAL ENVIRONMENT SETUP INSTRUCTIONS:
+# This file relies on several environment variables.
+# For local development, you can provide these values in one of two ways.
+# Choose ONLY ONE option to avoid conflicts:
+# 
+# Option 1 (Using .env):
+#   cp .env.example .env
+#
+# Option 2 (Using app-config.local.yaml):
+#   cp app-config.local.yaml.example app-config.local.yaml
+#
+# DO NOT define values in both places.
+# -------------------------------------------------------------------------
+
+app:
+  title: Backstage Plugin for WSO2 API Manager
+  baseUrl: ${APP_BASE_URL}
+
+  # Enable all packages by default, this will discover packages from packages/app/package.json
+  packages: all
+
+  extensions:
+    - page:catalog:
+        config:
+          path: /
+    - entity-content:catalog/overview:
+        config:
+          filter: not:kind:api
+    - entity-content:wso2-api-platform/wso2-overview:
+        config:
+          group: wso2-overview
+    - entity-content:wso2-api-platform/wso2-definition:
+        config:
+          group: wso2-definition
+    - entity-content:wso2-api-platform/wso2-tools:
+        config:
+          group: wso2-tools
+    - entity-content:wso2-api-platform/wso2-policies:
+        config:
+          group: wso2-policies
+    - entity-content:wso2-api-platform/wso2-try-out:
+        config:
+          group: wso2-try-out
+    - entity-content:wso2-api-platform/wso2-docs:
+        config:
+          group: wso2-docs
+    - entity-content:api-docs/definition:
+        config:
+          filter: not:kind:api
+    - entity-content:techdocs:
+        config:
+          filter: not:kind:api
+    - entity-card:catalog/about
+
+organization:
+  name: WSO2
+
+backend:
+  # Used for enabling authentication, secret is shared by all backend plugins
+  # See https://backstage.io/docs/auth/service-to-service-auth for
+  # information on the format
+  # auth:
+  #   keys:
+  #     - secret: ${BACKEND_SECRET}
+  baseUrl: ${BACKEND_BASE_URL}
+  listen:
+    port: ${BACKEND_PORT}
+    # Uncomment the following host directive to bind to specific interfaces
+    # host: 127.0.0.1
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+    # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
+    # Default Helmet Content-Security-Policy values can be removed by setting the key to false
+  cors:
+    origin: ${APP_BASE_URL}
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  # This is for local development only, it is not recommended to use this in production
+  # The production database configuration is stored in app-config.production.yaml
+  database:
+      client: better-sqlite3
+      connection:
+        directory: backstage-data
+  # see https://backstage.io/docs/ai/mcp-actions#actions-configuration for more details
+  actions:
+    pluginSources:
+      - auth
+      - catalog
+      - scaffolder
+  # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+
+techdocs:
+  builder: 'local' # Alternatives - 'external'
+  generator:
+    runIn: 'docker' # Alternatives - 'local'
+  publisher:
+    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+
+auth:
+  providers:
+    guest: {}
+
+catalog:
+  import:
+    entityFilename: catalog-info.yaml
+    pullRequestBranchName: backstage-integration
+  rules:
+    - allow: [Component, System, API, Resource, Location]
+  locations:
+    # Local example data, file locations are relative to the backend process, typically `packages/backend`
+    - type: file
+      target: ../../examples/entities.yaml
+
+    # Local example template
+    - type: file
+      target: ../../examples/template/template.yaml
+      rules:
+        - allow: [Template]
+
+    # Local example organizational data
+    - type: file
+      target: ../../examples/org.yaml
+      rules:
+        - allow: [User, Group]
+
+  providers:
+    wso2ApiPlatform:
+      # TODO: Update the base URL for the WSO2 APIM Entity Provider
+      baseUrl: ${WSO2_BASE_URL}
+      namespace: wso2
+      username: ${WSO2_APIM_USERNAME}
+      password: ${WSO2_APIM_PASSWORD}
+      schedule:
+        frequency:
+          minutes: ${WSO2_SYNC_FREQUENCY_MINUTES}
+        timeout:
+          minutes: ${WSO2_SYNC_TIMEOUT_MINUTES}
+        initialDelay:
+          seconds: ${WSO2_SYNC_INITIAL_DELAY_SECONDS}
+
+wso2ApiPlatform:
+  enabled: true
+  # Maximum time (in seconds) the Backstage plugin will wait for a response when making an HTTP request to the WSO2 API Manager instance before aborting the request. Default is 30.
+  requestTimeoutSeconds: 30
+  # TODO: Update the base URL of your WSO2 API Manager instance
+  baseUrl: ${WSO2_BASE_URL}
+  publisherBasePath: ${WSO2_PUBLISHER_BASE_PATH}
+  developerBasePath: ${WSO2_DEVPORTAL_BASE_PATH}
+  serviceCatalogBasePath: ${WSO2_SERVICE_CATALOG_BASE_PATH}
+  tls:
+    rejectUnauthorized: ${WSO2_TLS_REJECT_UNAUTHORIZED}
+  auth:
+    # TODO: Update with your WSO2 APIM application credentials
+    clientId: ${WSO2_CLIENT_ID}
+    clientSecret: ${WSO2_CLIENT_SECRET}
+
+    # TODO: Update the token URL and grant type if necessary
+    tokenUrl: ${WSO2_BASE_URL}/oauth2/token
+    requiredScopes:
+      - apim:api_view
+      - apim:mcp_server_view
+      - apim:mcp_server_create
+      - apim:mcp_server_publish
+      - apim:mcp_server_generate_key
+      - apim:mcp_server_import_export
+      - apim:mcp_server_list_view
+      - apim:llm_provider_read
+      - apim:publisher_settings
+      - apim:api_create
+      - apim:api_publish
+      - apim:api_import_export
+
+    grantType: client_credentials
+  catalogSyncTimeoutSeconds: 60
+
+
+
+wso2ApiPlatformGateway:
+  enabled: true
+  gateways:
+    - name: Self-Hosted-1
+      environmentType: Development
+      urls:
+        - ${WSO2_GATEWAY_SELF_HOSTED_URL}
+      discoveryUrl: ${WSO2_GATEWAY_SELF_HOSTED_DISCOVERY_URL}
+      discoveryUsername: ${WSO2_GATEWAY_DISCOVERY_USERNAME}
+      discoveryPassword: ${WSO2_GATEWAY_DISCOVERY_PASSWORD}
+      description: 'Gateways in wso2 API platform environment (config_dump discovery)'
+devTools:
+  scheduledTasks:
+    plugins:
+      - catalog

@@ -1,0 +1,63 @@
+# LOCAL ENVIRONMENT SETUP INSTRUCTIONS:
+# You have two options to provide these configurations in your local environment.
+# Choose ONLY ONE of the following options (they are mutually exclusive):
+# 
+# Option 1 (Using app-config.local.yaml):
+#   Copy this file to app-config.local.yaml:
+#   cp app-config.local.yaml.example app-config.local.yaml
+#   Then, update the values directly in this file. Backstage will automatically 
+#   merge this file and override the variables defined in app-config.yaml.
+#
+# Option 2 (Using .env):
+#   Instead of using this file, you can copy .env.example to .env:
+#   cp .env.example .env
+#   Then, provide the environment variables there.
+# 
+# -------------------------------------------------------------------------
+
+app:
+  baseUrl: http://localhost:3000
+
+backend:
+  baseUrl: http://localhost:7007
+  listen:
+    port: 7007
+  cors:
+    origin: http://localhost:3000
+
+catalog:
+  providers:
+    wso2ApiPlatform:
+      baseUrl: https://127.0.0.1:9443
+      username: admin
+      password: admin
+      schedule:
+        frequency:
+          minutes: 20
+        timeout:
+          minutes: 5
+        initialDelay:
+          seconds: 15
+
+wso2ApiPlatform:
+  baseUrl: https://127.0.0.1:9443
+  tls:
+    # Local/self-signed HTTPS certificates often are not trusted by Node.
+    # Use this only with local development config, not production.
+    rejectUnauthorized: false
+  publisherBasePath: /api/am/publisher/v4
+  developerBasePath: /api/am/devportal/v3
+  serviceCatalogBasePath: /api/am/service-catalog/v1
+  auth:
+    clientId: your_client_id_here
+    clientSecret: your_client_secret_here
+    tokenUrl: https://127.0.0.1:9443/oauth2/token
+
+wso2PlatformGateway:
+  gateways:
+    - name: Self-Hosted-1
+      urls:
+        - http://development-default.openchoreoapis.localhost:8080
+      discoveryUrl: http://development-default.openchoreoapis.localhost:9090/rest-apis
+      discoveryUsername: admin
+      discoveryPassword: admin
