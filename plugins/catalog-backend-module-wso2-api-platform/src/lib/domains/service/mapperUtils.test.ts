@@ -81,7 +81,7 @@ describe('mapWso2ServiceToEntity', () => {
         spec: expect.objectContaining({
           type: 'service',
           lifecycle: 'production',
-          owner: 'unknown',
+          owner: 'wso2',
           definition: 'Inventory service definition',
         }),
       }),

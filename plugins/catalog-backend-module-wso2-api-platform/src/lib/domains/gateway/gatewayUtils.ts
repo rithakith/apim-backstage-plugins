@@ -32,9 +32,9 @@ export async function discoverWSO2PlatformGatewayApis(
     if (gw.discoveryUrl) {
       try {
         const data = await client.getGatewayApis(gw.discoveryUrl, gw.discoveryAuth);
-        const wso2PlatformGatewayApis = data.apis || data.list || data.items || (Array.isArray(data) ? data : [data]) || [];
+        const wso2ApiPlatformGatewayApis = data.apis || data.list || data.items || (Array.isArray(data) ? data : [data]) || [];
 
-        for (const gatewayApiItem of wso2PlatformGatewayApis) {
+        for (const gatewayApiItem of wso2ApiPlatformGatewayApis) {
           const gatewayApiId = gatewayApiItem.id;
           if (!gatewayApiId) continue;
 

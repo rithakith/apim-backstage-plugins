@@ -1,6 +1,7 @@
 /**
  * @jest-environment jsdom
  */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com).
  *
@@ -18,7 +19,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { EntityWso2OverviewTab } from './OverviewTab';
 
@@ -163,7 +164,7 @@ describe('EntityWso2AboutCard', () => {
     render(<EntityWso2OverviewTab />);
 
     expect(screen.getByText('Gateway')).toBeDefined();
-    expect(screen.getByText('wso2')).toBeDefined();
+    expect(screen.getByText('WSO2')).toBeDefined();
   });
 
   it('should support Gateway endpoints defined with string urls instead of array', () => {

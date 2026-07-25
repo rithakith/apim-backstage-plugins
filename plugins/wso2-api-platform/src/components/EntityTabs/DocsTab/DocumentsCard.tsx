@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 /* eslint-disable no-nested-ternary */
 import { useEntity } from '@backstage/plugin-catalog-react';
 import {

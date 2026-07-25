@@ -23,8 +23,9 @@ export interface Config {
      */
     catalogSyncTimeoutSeconds?: number;
   };
-  wso2PlatformGateway?: {
+  wso2ApiPlatformGateway?: {
     /**
+     * Enables WSO2 API Platform Gateway discovery.
      * @visibility frontend
      */
     enabled?: boolean;

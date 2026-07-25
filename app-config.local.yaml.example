@@ -53,7 +53,9 @@ wso2ApiPlatform:
     clientSecret: your_client_secret_here
     tokenUrl: https://127.0.0.1:9443/oauth2/token
 
-wso2PlatformGateway:
+# Self-Hosted Gateway Discovery Configuration
+wso2ApiPlatformGateway:
+  enabled: true
   gateways:
     - name: Self-Hosted-1
       urls:

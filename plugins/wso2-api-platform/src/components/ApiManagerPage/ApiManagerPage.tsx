@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useAsyncRetry } from 'react-use';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';

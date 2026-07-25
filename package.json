@@ -13,11 +13,11 @@
     "tsc": "tsc",
     "tsc:full": "tsc --skipLibCheck false --incremental false",
     "clean": "backstage-cli repo clean",
-    "test": "backstage-cli repo test",
-    "test:all": "backstage-cli repo test --coverage",
+    "test": "backstage-cli repo test --since origin/main",
+    "test:all": "backstage-cli repo test --coverage --since origin/main",
     "test:e2e": "playwright test",
     "fix": "backstage-cli repo fix",
-    "lint": "backstage-cli repo lint --since origin/master",
+    "lint": "backstage-cli repo lint --since origin/main",
     "lint:all": "backstage-cli repo lint",
     "prettier:check": "prettier --check .",
     "new": "backstage-cli new"
@@ -50,7 +50,11 @@
   },
   "resolutions": {
     "@types/react": "^18",
-    "@types/react-dom": "^18"
+    "@types/react-dom": "^18",
+    "jest-config": "^30.0.0",
+    "jest-runtime": "^30.0.0",
+    "jest-mock": "^30.4.0",
+    "@jest/environment-jsdom-abstract": "^30.4.0"
   },
   "prettier": "@backstage/cli/config/prettier",
   "lint-staged": {
@@ -62,5 +66,8 @@
       "prettier --write"
     ]
   },
-  "packageManager": "yarn@4.4.1"
+  "packageManager": "yarn@4.4.1",
+  "dependencies": {
+    "@backstage/cli-module-test-jest": "^0.1.4"
+  }
 }

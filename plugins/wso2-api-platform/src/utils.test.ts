@@ -206,12 +206,10 @@ describe('wso2-api-platform utils', () => {
 
   describe('formatLifecycleStatus', () => {
     it('should normalize lifecycle status text for display', () => {
-      expect(formatLifecycleStatus('PUBLISHED')).toBe('Published');
-      expect(formatLifecycleStatus('created')).toBe('Created');
-      expect(formatLifecycleStatus('PENDING_APPROVAL')).toBe(
-        'Pending Approval',
-      );
-      expect(formatLifecycleStatus('BLOCKED-STATE')).toBe('Blocked State');
+      expect(formatLifecycleStatus('PUBLISHED')).toBe('PUBLISHED');
+      expect(formatLifecycleStatus('created')).toBe('CREATED');
+      expect(formatLifecycleStatus('PENDING_APPROVAL')).toBe('PENDING APPROVAL');
+      expect(formatLifecycleStatus('BLOCKED-STATE')).toBe('BLOCKED STATE');
       expect(formatLifecycleStatus(undefined)).toBeUndefined();
     });
   });

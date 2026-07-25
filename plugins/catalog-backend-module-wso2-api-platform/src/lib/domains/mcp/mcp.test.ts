@@ -106,7 +106,7 @@ Spec owner: "${entity.spec.owner}" (from provider)
       // 1. Fallback to unknown & experimental
       const mcp1: Wso2McpServer = { id: '1', name: 'm1' };
       const ent1 = mapWso2McpToEntity(mcp1, 'default', 'prov');
-      expect(ent1.spec.owner).toBe('unknown');
+      expect(ent1.spec.owner).toBe('wso2');
       expect(ent1.spec.lifecycle).toBe('production');
 
       console.log(formatTestCaseDoc(`

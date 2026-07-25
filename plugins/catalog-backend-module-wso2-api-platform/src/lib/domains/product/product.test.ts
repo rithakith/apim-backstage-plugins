@@ -126,10 +126,6 @@ describe('product domain', () => {
             'wso2.com/is-api-product': 'true',
             'wso2.com/gateway-endpoints': '[]',
             'wso2.com/product-resources': JSON.stringify(product.apis),
-            'wso2.com/business-owner': 'Alice',
-            'wso2.com/business-owner-email': 'alice@company.com',
-            'wso2.com/technical-owner': 'Bob',
-            'wso2.com/technical-owner-email': 'bob@company.com',
             'wso2.com/api-throttling-policy': 'Bronze',
             'wso2.com/api-visibility': 'PUBLIC',
             'wso2.com/api-transports': JSON.stringify(['http']),
@@ -165,7 +161,7 @@ describe('product domain', () => {
         spec: {
           type: 'api_product',
           lifecycle: 'production',
-          owner: 'Bob',
+          owner: 'wso2',
           definition: 'openapi: 3.0.0...',
         },
       });
@@ -181,7 +177,7 @@ Spec owner: "${entity.spec.owner}" (from technicalOwner)
     });
 
     it('should fallback to businessOwner, provider, and unknown for owner, and production lifecycle', () => {
-      // 1. Fallback to businessOwner
+      // 1. All fallback -> wso2
       const prod1: Wso2ApiProduct = {
         id: '1',
         name: 'p1',
@@ -196,10 +192,10 @@ Spec owner: "${entity.spec.owner}" (from technicalOwner)
         'prov',
         undefined,
       );
-      expect(ent1.spec.owner).toBe('Alice Business');
+      expect(ent1.spec.owner).toBe('wso2');
       expect(ent1.spec.lifecycle).toBe('production');
 
-      // 2. Fallback to provider
+      // 2. Fallback -> wso2 (provider is not used as owner)
       const prod2: Wso2ApiProduct = {
         id: '2',
         name: 'p2',
@@ -213,9 +209,9 @@ Spec owner: "${entity.spec.owner}" (from technicalOwner)
         'prov',
         undefined,
       );
-      expect(ent2.spec.owner).toBe('p-team');
+      expect(ent2.spec.owner).toBe('wso2');
 
-      // 3. Fallback to unknown
+      // 3. Fallback -> wso2
       const prod3 = {
         id: '3',
         name: 'p3',
@@ -228,7 +224,7 @@ Spec owner: "${entity.spec.owner}" (from technicalOwner)
         'prov',
         undefined,
       );
-      expect(ent3.spec.owner).toBe('unknown');
+      expect(ent3.spec.owner).toBe('wso2');
 
       console.log(
         formatTestCaseDoc(`

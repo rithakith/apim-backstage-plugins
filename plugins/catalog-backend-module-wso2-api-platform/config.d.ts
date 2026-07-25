@@ -45,7 +45,7 @@ export interface Config {
       requiredScopes: string[];
     };
   };
-  wso2PlatformGateway?: {
+  wso2ApiPlatformGateway?: {
     /**
      * Enables WSO2 API Platform Gateway discovery.
      * Defaults to false.

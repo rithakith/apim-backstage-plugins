@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Table } from '@backstage/core-components';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';

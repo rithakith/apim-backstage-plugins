@@ -82,9 +82,9 @@ export function readWso2ApiPlatformConfig(
     wso2Config?.getOptionalBoolean('tls.rejectUnauthorized') ?? true;
 
   const platformGatewayConfigs =
-    getOptionalConfigArray(config, 'wso2PlatformGateway.gateways') ?? [];
+    getOptionalConfigArray(config, 'wso2ApiPlatformGateway.gateways') ?? [];
   const platformGatewayEnabled =
-    getOptionalBoolean(config, 'wso2PlatformGateway.enabled') ?? false;
+    getOptionalBoolean(config, 'wso2ApiPlatformGateway.enabled') ?? false;
 
   const selfHostedGateways = platformGatewayEnabled
     ? platformGatewayConfigs.map(gw => {
