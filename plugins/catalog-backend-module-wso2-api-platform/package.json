@@ -16,7 +16,8 @@
   "types": "src/index.ts",
   "files": [
     "dist",
-    "config.d.ts"
+    "config.d.ts",
+    "README.md"
   ],
   "scripts": {
     "build": "backstage-cli package build",

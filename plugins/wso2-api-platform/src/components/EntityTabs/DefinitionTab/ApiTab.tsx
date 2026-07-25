@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { InfoCard, EmptyState } from '@backstage/core-components';
 import { Box, Tabs, Tab, CircularProgress, Typography, Button } from '@material-ui/core';

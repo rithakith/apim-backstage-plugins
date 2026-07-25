@@ -15,7 +15,6 @@
  */
 
 
-import React from 'react';
 import { Entity } from '@backstage/catalog-model';
 import Wso2PulseIconUrl from '../assets/wso2-pulse.svg';
 import {

@@ -25,7 +25,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Alert from '@material-ui/lab/Alert';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { GraphiQL } from 'graphiql';
 import { buildSchema } from 'graphql';
 import 'graphiql/graphiql.css';
@@ -73,7 +73,6 @@ export const GraphQLConsole = ({
   details,
 }: GraphQLConsoleProps) => {
   const [selectedUrl, setSelectedUrl] = useState('');
-  const theme = useTheme();
   useStyles();
 
   // Initialize selected URL

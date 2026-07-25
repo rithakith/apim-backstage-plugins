@@ -3,7 +3,6 @@
  */
 
 
-import React from 'react';
 /*
  * Copyright 2026 WSO2 LLC
  *

@@ -64,8 +64,6 @@ export class Wso2DiscoveryService {
       providerId,
       platformGateways,
       apiManagerEnabled,
-      onPublisherApiProgress,
-      onCatalogResourceTotals,
     } = options;
 
     this.logger.info(

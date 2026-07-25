@@ -15,7 +15,7 @@
  */
 
 import { ApiEntity } from '@backstage/catalog-model';
-import { normalizeEntityName, normalizeGatewayType, resolveApiType } from '../api';
+import { normalizeEntityName, resolveApiType } from '../api';
 
 /**
  * Maps an API discovered directly from a gateway to a Backstage ApiEntity.

@@ -28,10 +28,6 @@ import {
 import { Entity } from '@backstage/catalog-model';
 
 describe('wso2-api-platform utils', () => {
-  const formatTestCaseDoc = (details: string) => {
-    return `\n================================================================================\nTEST CASE: ${expect.getState().currentTestName}\n================================================================================\n${details.trim()}\n================================================================================\n`;
-  };
-
   describe('isWso2Api', () => {
     it('should return true if wso2.com/api-id annotation is present', () => {
       const entity: Entity = {

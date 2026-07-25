@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAsyncRetry } from 'react-use';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -25,7 +25,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Content, Header, Page } from '@backstage/core-components';
-import { useApi, configApiRef } from '@backstage/core-plugin-api';
+import { useApi } from '@backstage/core-plugin-api';
 import { catalogApiRef } from '@backstage/plugin-catalog-react';
 import { wso2ApiPlatformApiRef } from '../../api';
 import {
@@ -48,7 +48,6 @@ import { McpServersTab } from './tabs/McpServersTab';
 import { ServicesTab } from './tabs/ServicesTab';
 import {
   filterRowsBySearchText,
-  normalizeGatewayName,
   normalizeGatewayType,
   expandByGateways,
 } from '../../utils/apiManagerUtils';
@@ -58,7 +57,6 @@ export const Wso2ApiPlatformPage = () => {
   const classes = useStyles();
   const catalogApi = useApi(catalogApiRef);
   const wso2Api = useApi(wso2ApiPlatformApiRef);
-  const configApi = useApi(configApiRef);
 
   const [tabValue, setTabValue] = useState(0);
   const [selectedGateway, setSelectedGateway] = useState('all');
@@ -67,14 +65,6 @@ export const Wso2ApiPlatformPage = () => {
   const [apiProductSearchText, setApiProductSearchText] = useState('');
   const [mcpSearchText, setMcpSearchText] = useState('');
   const [serviceSearchText, setServiceSearchText] = useState('');
-
-  const isApimModeEnabled =
-    configApi.getOptionalBoolean('wso2ApiPlatform.enabled') ?? false;
-  const isApiPlatformModeEnabled =
-    configApi.getOptionalBoolean('wso2PlatformGateway.enabled') ?? false;
-  const hasKnownSourceConfig =
-    configApi.getOptionalBoolean('wso2ApiPlatform.enabled') !== undefined ||
-    configApi.getOptionalBoolean('wso2PlatformGateway.enabled') !== undefined;
 
   const gatewaysState = useAsyncRetry(async () => {
     try {
@@ -150,8 +140,6 @@ export const Wso2ApiPlatformPage = () => {
   const apiCount = apiListValue?.apis?.length ?? 0;
   const apiProductCount = apiProductListState.value?.apiProducts?.length ?? 0;
   const mcpCount = mcpListState.value?.mcpServers?.length ?? 0;
-  const serviceCount = servicesListState.value?.list?.length ?? 0;
-  const catalogServiceCount = catalogState.value?.services?.length ?? 0;
   const totalCatalogResourceCount = apiCount + apiProductCount + mcpCount;
 
   const retryAll = () => {

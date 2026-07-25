@@ -15,7 +15,6 @@
  */
 
 
-import React from 'react';
 import { AboutField } from '@backstage/plugin-catalog';
 import {
   EmptyState,

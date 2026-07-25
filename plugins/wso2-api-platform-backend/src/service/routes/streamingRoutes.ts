@@ -20,17 +20,16 @@ import { pipeWebStreamToResponse } from './streamUtils';
 
 export function registerStreamingRoutes(
   router: express.Router,
-  { client, ensureAuthenticated, logger }: RouteContext,
+  { client, logger }: RouteContext,
 ) {
   router.get('/apis/:apiId/wsdl', async (req, res) => {
     const { apiId } = req.params;
     logger.debug(`[WSO2-Backend] WSDL request received for API: ${apiId}`);
     try {
-      const token = await ensureAuthenticated(req);
       logger.debug(
         `[WSO2-Backend] Fetching WSDL stream from APIM for API: ${apiId}`,
       );
-      const response = await client.getApiWsdlStream(apiId, token);
+      const response = await client.getApiWsdlStream(apiId);
 
       logger.debug(
         `[WSO2-Backend] APIM responded with status: ${response.status} for API WSDL: ${apiId}`,
@@ -92,16 +91,14 @@ export function registerStreamingRoutes(
   router.get('/apis/:apiId/documents/:documentId/content', async (req, res) => {
     const { apiId, documentId } = req.params;
     try {
-      const token = await ensureAuthenticated(req);
       const response = await client.getDocumentContentStream(
         apiId,
         documentId,
-        token,
       );
 
       if (!response.ok) {
         if (response.status === 404) {
-          const docData = await client.getDocument(apiId, documentId, token);
+          const docData = await client.getDocument(apiId, documentId);
           if (
             docData &&
             (docData.sourceType === 'INLINE' ||

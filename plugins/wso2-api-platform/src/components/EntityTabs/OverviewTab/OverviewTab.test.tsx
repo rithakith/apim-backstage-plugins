@@ -3,7 +3,6 @@
  */
 
 
-import React from 'react';
 /*
  * Copyright 2026 WSO2 LLC
  *
@@ -76,10 +75,6 @@ jest.mock('@backstage/core-components', () => ({
 }));
 
 describe('EntityWso2AboutCard', () => {
-  const formatTestCaseDoc = (details: string) => {
-    return `\n================================================================================\nTEST CASE: ${expect.getState().currentTestName}\n================================================================================\n${details.trim()}\n================================================================================\n`;
-  };
-
   beforeEach(() => {
     mockEntity = {
       apiVersion: 'backstage.io/v1alpha1',

@@ -20,7 +20,6 @@ import {
   fetchMcpServerDetail,
   fetchMcpServerList,
 } from './mcpUtils';
-import { mockServices } from '@backstage/backend-test-utils';
 import { Wso2McpServer } from './types';
 
 describe('mcp domain', () => {
@@ -28,7 +27,6 @@ describe('mcp domain', () => {
     return `\n================================================================================\nTEST CASE: ${expect.getState().currentTestName}\n================================================================================\n${details.trim()}\n================================================================================\n`;
   };
 
-  const logger = mockServices.logger.mock();
   const mockClient = {
     getPublisherBasePath: jest.fn().mockReturnValue('/api/am/publisher/v3'),
     getMcpDocuments: jest.fn(),
@@ -122,7 +120,7 @@ Fallback 2: lifecycle="${ent1.spec.lifecycle}" (undefined)
       const mockDocs = [{ id: 'doc-1' }];
       mockClient.getMcpDocuments.mockResolvedValueOnce(mockDocs);
 
-      const result = await fetchMcpDocuments(mockClient, logger, 'mcp-1');
+      const result = await fetchMcpDocuments(mockClient, 'mcp-1');
       expect(result).toEqual(mockDocs);
       expect(mockClient.getMcpDocuments).toHaveBeenCalledWith('mcp-1');
     });
@@ -134,7 +132,7 @@ Fallback 2: lifecycle="${ent1.spec.lifecycle}" (undefined)
       const detail = { ...summary, tools: [] };
       mockClient.getMcpServerDetail.mockResolvedValueOnce(detail);
 
-      const result = await fetchMcpServerDetail(mockClient, logger, summary);
+      const result = await fetchMcpServerDetail(mockClient, summary);
       expect(result).toEqual(detail);
       expect(mockClient.getMcpServerDetail).toHaveBeenCalledWith(summary);
     });
@@ -155,7 +153,7 @@ Fallback 2: lifecycle="${ent1.spec.lifecycle}" (undefined)
         tools: [],
       }));
 
-      const result = await fetchMcpServerList(mockClient, logger);
+      const result = await fetchMcpServerList(mockClient);
 
       expect(result).toHaveLength(2);
       expect(result[0]).toEqual(expect.objectContaining({ id: 'mcp-1', tools: [] }));
@@ -167,7 +165,7 @@ Fallback 2: lifecycle="${ent1.spec.lifecycle}" (undefined)
     it('should log error and throw on outer list fetch error', async () => {
       mockClient.getMcpServerList.mockRejectedValueOnce(new Error('List failure'));
 
-      await expect(fetchMcpServerList(mockClient, logger)).rejects.toThrow('List failure');
+      await expect(fetchMcpServerList(mockClient)).rejects.toThrow('List failure');
     });
   });
 });

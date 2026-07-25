@@ -116,6 +116,39 @@ export const ApiTab = ({
           </Box>
         </Box>
       )}
+    {!apiListState.loading &&
+      !isGatewayDiscoveryFailureEmptyState &&
+      offlineGatewayCount === 0 &&
+      apiCount === 0 && (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          my={10}
+          textAlign="center"
+        >
+          <Box mt={3} maxWidth={600}>
+            <Typography variant="h5" gutterBottom style={{ fontWeight: 500 }}>
+              No APIs Available
+            </Typography>
+            <Typography variant="body1" color="textSecondary">
+              We could not find any APIs in your catalog. If you just configured the plugin, please wait for the catalog synchronization to finish.
+            </Typography>
+            <Box mt={2}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => apiListState.retry()}
+                startIcon={<RefreshIcon />}
+                disabled={apiListState.loading}
+              >
+                Refresh Now
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      )}
     {apiCount > 0 && (
         <>
           {apiTableToolbar}

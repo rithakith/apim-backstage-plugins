@@ -3,7 +3,6 @@
  */
 
 
-import React from 'react';
 /*
  * Copyright 2026 WSO2 LLC
  *
@@ -22,7 +21,7 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { EntityWso2ApiProductResourcesTab } from './EntityWso2ApiProductResourcesTab';
+import { EntityWso2ApiProductResourcesTab } from './ApiProductResourcesTab';
 
 const mockEntity = {
   metadata: {

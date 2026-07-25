@@ -19,9 +19,6 @@ import request from 'supertest';
 import { createRouter } from './router';
 import { ConfigReader } from '@backstage/config';
 import { mockServices } from '@backstage/backend-test-utils';
-import { request as undiciRequest } from 'undici';
-
-
 jest.mock('undici', () => ({
   request: jest.fn(),
 }));

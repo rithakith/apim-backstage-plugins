@@ -22,12 +22,6 @@ describe('Wso2ApiPlatformClient', () => {
   let mockFetchApi: jest.Mocked<FetchApi>;
   let client: Wso2ApiPlatformClient;
 
-  const formatTestCaseDoc = (details: string) => {
-    return `\n================================================================================\nTEST CASE: ${
-      expect.getState().currentTestName
-    }\n================================================================================\n${details.trim()}\n================================================================================\n`;
-  };
-
   beforeEach(() => {
     mockDiscoveryApi = {
       getBaseUrl: jest

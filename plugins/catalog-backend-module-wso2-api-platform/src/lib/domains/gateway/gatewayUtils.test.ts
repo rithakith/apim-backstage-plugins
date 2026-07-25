@@ -84,7 +84,7 @@ describe('gateway/gatewayUtils', () => {
     };
 
     mockGetGatewayApis.mockResolvedValueOnce(mockApisList);
-    mockGetGatewayApiDetail.mockImplementation(async (url, id) => {
+    mockGetGatewayApiDetail.mockImplementation(async (_url, id) => {
       if (id === 'api-1') return mockApiDetail1;
       if (id === 'api-2') return mockApiDetail2;
       return null;

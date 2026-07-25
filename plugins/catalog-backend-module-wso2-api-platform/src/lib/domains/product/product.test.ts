@@ -20,7 +20,6 @@ import {
   fetchApiProductDetail,
   fetchApiProductList,
 } from './productUtils';
-import { mockServices } from '@backstage/backend-test-utils';
 import { Wso2ApiProduct } from './types';
 
 describe('product domain', () => {
@@ -30,7 +29,6 @@ describe('product domain', () => {
     }\n================================================================================\n${details.trim()}\n================================================================================\n`;
   };
 
-  const logger = mockServices.logger.mock();
   const mockClient = {
     getPublisherBasePath: jest.fn().mockReturnValue('/api/am/publisher/v3'),
     getApiProductDefinition: jest.fn(),
@@ -290,7 +288,7 @@ Fallback 3: owner="${ent3.spec.owner}" (unknown)
       const mockSwagger = 'swagger-def';
       mockClient.getApiProductDefinition.mockResolvedValueOnce(mockSwagger);
 
-      const result = await fetchApiProductDefinition(mockClient, logger, 'prod-1', 'MyProduct');
+      const result = await fetchApiProductDefinition(mockClient, 'prod-1', 'MyProduct');
       expect(result).toBe(mockSwagger);
       expect(mockClient.getApiProductDefinition).toHaveBeenCalledWith('prod-1', 'MyProduct');
     });
@@ -302,7 +300,7 @@ Fallback 3: owner="${ent3.spec.owner}" (unknown)
       const detail = { ...summary, enriched: true };
       mockClient.getApiProductDetail.mockResolvedValueOnce(detail);
 
-      const result = await fetchApiProductDetail(mockClient, logger, summary);
+      const result = await fetchApiProductDetail(mockClient, summary);
       expect(result).toEqual(detail);
       expect(mockClient.getApiProductDetail).toHaveBeenCalledWith(summary);
     });
@@ -323,7 +321,7 @@ Fallback 3: owner="${ent3.spec.owner}" (unknown)
         enriched: true,
       }));
 
-      const result = await fetchApiProductList(mockClient, logger);
+      const result = await fetchApiProductList(mockClient);
 
       expect(result).toHaveLength(2);
       expect(result[0]).toEqual(expect.objectContaining({ id: 'prod-1', enriched: true }));
@@ -335,7 +333,7 @@ Fallback 3: owner="${ent3.spec.owner}" (unknown)
     it('should log error and throw on outer list fetch error', async () => {
       mockClient.getApiProductList.mockRejectedValueOnce(new Error('List failure'));
 
-      await expect(fetchApiProductList(mockClient, logger)).rejects.toThrow('List failure');
+      await expect(fetchApiProductList(mockClient)).rejects.toThrow('List failure');
     });
   });
 });
