@@ -1,17 +1,19 @@
 /*
- * Copyright 2026 WSO2 LLC
+ * Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com).
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import { useMemo, useState } from 'react';
@@ -101,7 +103,6 @@ const EntityWso2TryOutTabContent = () => {
     isApiPlatform: skipKeyGeneration,
   });
 
-
   const apiType = (details?.type || '').toUpperCase();
 
   const hasSwaggerTab = !isMcp && apiType !== 'GRAPHQL' && !isAsyncType(apiType);
@@ -117,7 +118,6 @@ const EntityWso2TryOutTabContent = () => {
   const [generatedKey, setGeneratedKey] = useState<string | null>(null);
   const externalApiKey = '';
 
-
   const hasApiKeyHeader = useMemo(() => {
     if (!details) return true;
 
@@ -132,8 +132,6 @@ const EntityWso2TryOutTabContent = () => {
     if (!headers || !Array.isArray(headers)) return true;
     return headers.some(h => h.toLowerCase() === 'apikey');
   }, [details]);
-
-
 
   const hasSubscriptionlessPolicies = useMemo(() => {
     if (!details || !Array.isArray(details.policies)) return false;
@@ -220,8 +218,6 @@ const EntityWso2TryOutTabContent = () => {
       )}
     </Box>
   );
-
-
 
   const renderTryItOutSection = () => {
     if (isApiPlatform || isSelfHostedGateway) {
@@ -334,7 +330,6 @@ const EntityWso2TryOutTabContent = () => {
       />
     );
   };
-
 
   return (
     <InfoCard>

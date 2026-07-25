@@ -1,22 +1,22 @@
 /**
  * @jest-environment jsdom
  */
-
-
 /*
- * Copyright 2026 WSO2 LLC
+ * Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com).
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import { render, screen } from '@testing-library/react';
@@ -133,12 +133,10 @@ describe('EntityWso2AboutCard', () => {
     expect(screen.getByText('Gateway')).toBeDefined();
     expect(screen.getByText('Production (https://gw.wso2.com/test-context/1.0.0)')).toBeDefined();
 
-
     // TechDocs header vertical links
     expect(screen.getByText('View TechDocs')).toBeDefined();
     const link = screen.getByRole('link', { name: 'View TechDocs' }) as HTMLAnchorElement;
     expect(link.getAttribute('href')).toBe('/catalog/default/api/test-api/wso2');
-
 
   });
 
@@ -149,7 +147,6 @@ describe('EntityWso2AboutCard', () => {
     expect(screen.getByText('Gateway')).toBeDefined();
     expect(screen.getByText('Unknown')).toBeDefined();
 
-
   });
 
   it('should not render Gateway if api-endpoints array is empty and api-gateway is absent', () => {
@@ -157,7 +154,6 @@ describe('EntityWso2AboutCard', () => {
     render(<EntityWso2OverviewTab />);
 
     expect(screen.queryByText('Gateway')).toBeNull();
-
 
   });
 
@@ -195,7 +191,6 @@ describe('EntityWso2AboutCard', () => {
     expect(screen.getByText('/fallback-context')).toBeDefined();
     expect(screen.getByText('2.0.0')).toBeDefined();
 
-
   });
 
   it('should fallback display name to entity name if title is completely absent', () => {
@@ -219,9 +214,7 @@ describe('EntityWso2AboutCard', () => {
     expect(screen.queryByText('Version')).toBeNull();
     expect(screen.queryByText('Gateway')).toBeNull();
 
-
     expect(screen.queryByText('Description')).toBeNull();
-
 
   });
 
