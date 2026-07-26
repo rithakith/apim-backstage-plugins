@@ -255,10 +255,6 @@ describe('client and Wso2ApiPlatformClient', () => {
         expect(mockFetch).toHaveBeenCalledTimes(3);
       });
 
-      it.skip('should throw error if token URL is completely missing during grant', async () => {
-        // Skipped because getOptionalString throws on empty string and missing tokenUrl defaults to baseUrl/oauth2/token
-      });
-
       it('should throw error if token grant request returns non-ok status', async () => {
         mockFetch.mockResolvedValueOnce({
           ok: false,
@@ -398,10 +394,14 @@ describe('client and Wso2ApiPlatformClient', () => {
         );
         expect(result).toEqual(mockApis);
         expect(logger.info).toHaveBeenCalledWith(
-          expect.stringContaining('[WSO2-GATEWAY-DISCOVERY] Attempting to fetch APIs from gateway'),
+          expect.stringContaining(
+            '[WSO2-GATEWAY-DISCOVERY] Attempting to fetch APIs from gateway',
+          ),
         );
         expect(logger.debug).toHaveBeenCalledWith(
-          expect.stringContaining('[WSO2-GATEWAY-DISCOVERY] Found 1 APIs from gateway'),
+          expect.stringContaining(
+            '[WSO2-GATEWAY-DISCOVERY] Found 1 APIs from gateway',
+          ),
         );
         expect(logger.debug).toHaveBeenCalledWith(
           expect.stringContaining('{"id":"api-1","name":"Service A"}'),
@@ -428,10 +428,14 @@ describe('client and Wso2ApiPlatformClient', () => {
         const result = await client.getGatewayApis('https://gw.com/discovery');
         expect(result).toEqual(mockApis);
         expect(logger.info).toHaveBeenCalledWith(
-          expect.stringContaining('[WSO2-GATEWAY-DISCOVERY] Attempting to fetch APIs from gateway'),
+          expect.stringContaining(
+            '[WSO2-GATEWAY-DISCOVERY] Attempting to fetch APIs from gateway',
+          ),
         );
         expect(logger.debug).toHaveBeenCalledWith(
-          expect.stringContaining('[WSO2-GATEWAY-DISCOVERY] Found 1 APIs from gateway'),
+          expect.stringContaining(
+            '[WSO2-GATEWAY-DISCOVERY] Found 1 APIs from gateway',
+          ),
         );
       });
 
@@ -735,7 +739,6 @@ describe('client and Wso2ApiPlatformClient', () => {
         const res = await client.getSettings();
         expect(res).toBe('Plain response text');
       });
-
     });
   });
 });

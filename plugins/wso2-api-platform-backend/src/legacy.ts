@@ -26,9 +26,7 @@ import {
 import { createRouter } from './service/router';
 
 export interface LegacyIdentityApi {
-  getIdentity(options: {
-    request: express.Request;
-  }): Promise<unknown>;
+  getIdentity(options: { request: express.Request }): Promise<unknown>;
 }
 
 export interface LegacyRouterOptions {
@@ -58,7 +56,9 @@ function getUserEntityRef(identity: unknown): string {
 
 function createLegacyCredentials<
   TAllowed extends keyof BackstagePrincipalTypes = 'unknown',
->(userEntityRef: string): BackstageCredentials<BackstagePrincipalTypes[TAllowed]> {
+>(
+  userEntityRef: string,
+): BackstageCredentials<BackstagePrincipalTypes[TAllowed]> {
   return {
     $$type: '@backstage/BackstageCredentials',
     principal: {
@@ -88,7 +88,9 @@ export async function createLegacyRouter(
           credentialsOptions?.allow &&
           !credentialsOptions.allow.includes('user' as any)
         ) {
-          throw new Error('Legacy authentication only supports user credentials');
+          throw new Error(
+            'Legacy authentication only supports user credentials',
+          );
         }
 
         let userEntityRef = 'user:default/unknown';

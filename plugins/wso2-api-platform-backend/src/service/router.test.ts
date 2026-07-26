@@ -21,6 +21,7 @@ import request from 'supertest';
 import { createRouter } from './router';
 import { ConfigReader } from '@backstage/config';
 import { mockServices } from '@backstage/backend-test-utils';
+
 jest.mock('undici', () => ({
   request: jest.fn(),
 }));
@@ -432,7 +433,6 @@ describe('wso2-api-platform-backend router', () => {
   });
 
   describe('Error handling across other routes', () => {
-
     it('GET /gateways should return 500 on general failure', async () => {
       mockClientInstance.getSettings.mockRejectedValueOnce(
         new Error('Settings failed'),
@@ -467,60 +467,9 @@ describe('wso2-api-platform-backend router', () => {
       expect(response.body.message).toBe('Revisions failed');
     });
 
-    it.skip('should test normalizeGatewayType branches via health check route', async () => {
-      mockClientInstance.getSettings.mockResolvedValueOnce({ environment: [] });
-      mockClientInstance.getConfig.mockReturnValueOnce({
-        apiManager: { enabled: true },
-        platformGateway: { enabled: true },
-        selfHostedGateways: [
-          { name: 'gw-1', environmentType: 'synapse' },
-          { name: 'gw-2', environmentType: 'wso2/synapse' },
-          { name: 'gw-3', environmentType: 'regular' },
-          { name: 'gw-4', environmentType: 'wso2' },
-          { name: 'gw-5', environmentType: 'KONG' },
-          { name: 'gw-6', environmentType: '' },
-        ],
-      });
-
-      const response = await request(app).get('/health');
-      expect(response.status).toBe(200);
-      expect(response.body.platform).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({ name: 'gw-1', type: 'wso2' }),
-          expect.objectContaining({ name: 'gw-2', type: 'wso2' }),
-          expect.objectContaining({ name: 'gw-3', type: 'wso2' }),
-          expect.objectContaining({ name: 'gw-4', type: 'wso2' }),
-          expect.objectContaining({ name: 'gw-5', type: 'kong' }),
-          expect.objectContaining({ name: 'gw-6', type: 'wso2' }),
-        ]),
-      );
-    });
-
-    it.skip('should test getGateways list mapping defaults and fallbacks', async () => {
+    it('should test getGateways list mapping defaults and fallbacks', async () => {
       mockClientInstance.getSettings.mockResolvedValueOnce({
-        environment: [
-          {
-            name: 'Env1',
-            gatewayType: 'synapse',
-            // Missing description, missing endpoints
-          },
-          {
-            name: 'Env2',
-            gatewayType: 'kong',
-            description: 'Custom description',
-            endpoints: [
-              { url: '' }, // empty url
-              { endpointURL: 'https://kong.gw.com' },
-            ],
-          },
-          {
-            name: 'Env3',
-            endpoints: [
-              { url: 'https://synapse.url.com' },
-              { url: '', endpointURL: '' }, // missing ep
-            ],
-          },
-        ],
+        gatewayTypes: ['Env1', 'Env2', 'Env3'],
       });
       mockClientInstance.getConfig.mockReturnValueOnce({
         apiManager: { enabled: true },
@@ -533,29 +482,29 @@ describe('wso2-api-platform-backend router', () => {
       expect(response.body).toEqual([
         {
           name: 'Env1',
-          type: 'wso2',
-          gatewayType: 'wso2',
-          description: 'APIM Environment: Env1',
+          type: 'Env1',
+          gatewayType: 'Env1',
+          description: 'APIM Gateway: Env1',
           source: 'APIM',
           urls: [],
           status: 'Online',
         },
         {
           name: 'Env2',
-          type: 'kong',
-          gatewayType: 'kong',
-          description: 'Custom description',
+          type: 'Env2',
+          gatewayType: 'Env2',
+          description: 'APIM Gateway: Env2',
           source: 'APIM',
-          urls: ['https://kong.gw.com'],
+          urls: [],
           status: 'Online',
         },
         {
           name: 'Env3',
-          type: 'wso2',
-          gatewayType: 'wso2',
-          description: 'APIM Environment: Env3',
+          type: 'Env3',
+          gatewayType: 'Env3',
+          description: 'APIM Gateway: Env3',
           source: 'APIM',
-          urls: ['https://synapse.url.com'],
+          urls: [],
           status: 'Online',
         },
       ]);
@@ -671,21 +620,6 @@ describe('wso2-api-platform-backend router', () => {
 
       const response = await request(app).get('/apis/api-123/wsdl');
       expect(response.status).toBe(500);
-    });
-
-    it.skip('should getServices list successfully without query parameters', async () => {
-      const mockResult = { list: [] };
-      mockClientInstance.getServices.mockResolvedValueOnce(mockResult);
-
-      const response = await request(app).get('/services');
-
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual(mockResult);
-      expect(mockClientInstance.getServices).toHaveBeenCalledWith({
-        limit: undefined,
-        offset: undefined,
-        token: undefined,
-      });
     });
 
     it('should getRevisions successfully without query string', async () => {

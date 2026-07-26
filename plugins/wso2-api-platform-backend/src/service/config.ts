@@ -70,12 +70,12 @@ export function readWso2ApiPlatformConfig(
   const clientSecret = authConfig?.getString('clientSecret') ?? '';
   const tokenUrl = authConfig?.getOptionalString('tokenUrl');
   const username = apiManagerEnabled
-    ? (authConfig?.getOptionalString('username') ??
-      getOptionalString(config, 'catalog.providers.wso2ApiPlatform.username'))
+    ? authConfig?.getOptionalString('username') ??
+      getOptionalString(config, 'catalog.providers.wso2ApiPlatform.username')
     : undefined;
   const password = apiManagerEnabled
-    ? (authConfig?.getOptionalString('password') ??
-      getOptionalString(config, 'catalog.providers.wso2ApiPlatform.password'))
+    ? authConfig?.getOptionalString('password') ??
+      getOptionalString(config, 'catalog.providers.wso2ApiPlatform.password')
     : undefined;
 
   const tlsRejectUnauthorized =

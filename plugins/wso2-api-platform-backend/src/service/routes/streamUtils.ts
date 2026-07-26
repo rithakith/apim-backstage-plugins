@@ -30,7 +30,10 @@ export function pipeWebStreamToResponse(streamOptions: {
   const nodeStream = Readable.fromWeb(streamOptions.body);
 
   nodeStream.on('error', (err: Error) => {
-    streamOptions.logger.error(`${streamOptions.logMessage}: ${err.message}`, err);
+    streamOptions.logger.error(
+      `${streamOptions.logMessage}: ${err.message}`,
+      err,
+    );
     if (!streamOptions.res.headersSent) {
       streamOptions.res.status(500).send(streamOptions.errorMessage);
     }
