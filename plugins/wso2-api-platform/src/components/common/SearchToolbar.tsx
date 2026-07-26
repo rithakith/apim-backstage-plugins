@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import React from 'react';
 import Box from '@material-ui/core/Box';
 import { MTableToolbar } from '@material-table/core';
 import { tableIconsWithoutSearchClear } from './Table/tableRenderers';

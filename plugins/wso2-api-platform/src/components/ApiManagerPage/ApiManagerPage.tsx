@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAsyncRetry } from 'react-use';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -255,8 +255,8 @@ export const Wso2ApiPlatformPage = () => {
     totalCatalogResourceCount === 0;
 
   const gatewayDiscoveryWarningPanel = (
-    <GatewayDiscoveryWarningPanel 
-      offlineGateways={offlineGateways} 
+    <GatewayDiscoveryWarningPanel
+      offlineGateways={offlineGateways}
       gatewayError={gatewaysState.error}
     />
   );
@@ -270,7 +270,9 @@ export const Wso2ApiPlatformPage = () => {
 
   // Filter API Products based on selected gateway
   const filteredApiProducts = useMemo(() => {
-    let products = expandByGateways(apiProductListState.value?.apiProducts || []);
+    const products = expandByGateways(
+      apiProductListState.value?.apiProducts || [],
+    );
     return products;
   }, [apiProductListState.value?.apiProducts]);
 

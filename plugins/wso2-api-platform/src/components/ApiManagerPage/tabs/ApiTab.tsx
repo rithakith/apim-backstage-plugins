@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import React from 'react';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -135,7 +134,8 @@ export const ApiTab = ({
               No APIs Available
             </Typography>
             <Typography variant="body1" color="textSecondary">
-              We could not find any APIs in your catalog. If you just configured the plugin, please wait for the catalog synchronization to finish.
+              We could not find any APIs in your catalog. If you just configured
+              the plugin, please wait for the catalog synchronization to finish.
             </Typography>
             <Box mt={2}>
               <Button
@@ -152,31 +152,31 @@ export const ApiTab = ({
         </Box>
       )}
     {apiCount > 0 && (
-        <>
-          {apiTableToolbar}
-          {visibleApis.length > 0 ? (
-            <Table
-              options={{
-                paging: true,
-                search: false,
-                pageSize: 20,
-                pageSizeOptions: [20, 50, 100],
-                toolbar: false,
-              }}
-              icons={tableIconsWithoutSearchClear}
-              columns={columns}
-              data={visibleApis}
-            />
-          ) : (
-            (apiSearchHasNoResults || apiFiltersHaveNoResults) && (
-              <Box className={apiEmptyStateClassName}>
-                <Typography variant="body1" color="textSecondary">
-                  {apiEmptyContent}
-                </Typography>
-              </Box>
-            )
-          )}
-        </>
-      )}
+      <>
+        {apiTableToolbar}
+        {visibleApis.length > 0 ? (
+          <Table
+            options={{
+              paging: true,
+              search: false,
+              pageSize: 20,
+              pageSizeOptions: [20, 50, 100],
+              toolbar: false,
+            }}
+            icons={tableIconsWithoutSearchClear}
+            columns={columns}
+            data={visibleApis}
+          />
+        ) : (
+          (apiSearchHasNoResults || apiFiltersHaveNoResults) && (
+            <Box className={apiEmptyStateClassName}>
+              <Typography variant="body1" color="textSecondary">
+                {apiEmptyContent}
+              </Typography>
+            </Box>
+          )
+        )}
+      </>
+    )}
   </>
 );

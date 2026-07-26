@@ -17,9 +17,12 @@ export const useStyles = makeStyles(_theme => ({
       },
     },
   },
-  
+
   cardLabel: {
-    color: _theme.palette.type === 'dark' ? _theme.palette.text.secondary : '#4a5568', // Dark gray
+    color:
+      _theme.palette.type === 'dark'
+        ? _theme.palette.text.secondary
+        : '#4a5568', // Dark gray
     fontWeight: 600,
     fontSize: '0.9rem',
     marginBottom: '4px',
@@ -31,7 +34,9 @@ export const useStyles = makeStyles(_theme => ({
     padding: 0,
     backgroundColor: 'transparent',
     border: 0,
-    borderBottom: `1px solid ${_theme.palette.type === 'dark' ? _theme.palette.divider : '#e0e0e0'}`,
+    borderBottom: `1px solid ${
+      _theme.palette.type === 'dark' ? _theme.palette.divider : '#e0e0e0'
+    }`,
     boxShadow: 'none',
   },
   tabs: {
@@ -51,14 +56,23 @@ export const useStyles = makeStyles(_theme => ({
     border: '1px solid transparent',
     borderRadius: '6px 6px 0 0',
     backgroundColor: 'transparent',
-    color: _theme.palette.type === 'dark' ? _theme.palette.text.secondary : '#304271',
+    color:
+      _theme.palette.type === 'dark'
+        ? _theme.palette.text.secondary
+        : '#304271',
     fontWeight: 700,
     textTransform: 'none',
     transition:
       'background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease',
     '&:hover': {
-      backgroundColor: _theme.palette.type === 'dark' ? _theme.palette.action.hover : '#eef3fb',
-      color: _theme.palette.type === 'dark' ? _theme.palette.text.primary : undefined,
+      backgroundColor:
+        _theme.palette.type === 'dark'
+          ? _theme.palette.action.hover
+          : '#eef3fb',
+      color:
+        _theme.palette.type === 'dark'
+          ? _theme.palette.text.primary
+          : undefined,
     },
     '&.Mui-selected': {
       backgroundColor: '#304271',
@@ -70,7 +84,10 @@ export const useStyles = makeStyles(_theme => ({
 
   debugInfo: {
     fontSize: '0.75rem',
-    color: _theme.palette.type === 'dark' ? _theme.palette.text.secondary : '#718096',
+    color:
+      _theme.palette.type === 'dark'
+        ? _theme.palette.text.secondary
+        : '#718096',
     marginTop: '8px',
     fontStyle: 'italic',
   },

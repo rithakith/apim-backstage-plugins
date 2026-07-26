@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import React from 'react';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
@@ -24,7 +23,6 @@ import { Table, TableColumn, WarningPanel } from '@backstage/core-components';
 import { tableIconsWithoutSearchClear } from '../../common/Table/tableRenderers';
 
 type ServicesTabProps = {
-
   servicesListState: any;
   searchToolbar: React.ReactNode;
   visibleServices: any[];
@@ -42,29 +40,28 @@ export const ServicesTab = ({
   resultNotFoundContent,
 }: ServicesTabProps) => (
   <>
-    {servicesListState.loading &&
-      !servicesListState.value && (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          my={10}
-        >
-          <CircularProgress color="primary" size={50} thickness={4} />
-          <Box mt={2}>
-            <Typography variant="h6" color="textSecondary">
-              Fetching Services...
-            </Typography>
-          </Box>
+    {servicesListState.loading && !servicesListState.value && (
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        my={10}
+      >
+        <CircularProgress color="primary" size={50} thickness={4} />
+        <Box mt={2}>
+          <Typography variant="h6" color="textSecondary">
+            Fetching Services...
+          </Typography>
         </Box>
-      )}
+      </Box>
+    )}
     {servicesListState.error && (
-        <WarningPanel
-          title="Failed to load Services"
-          message={servicesListState.error.message}
-        />
-      )}
+      <WarningPanel
+        title="Failed to load Services"
+        message={servicesListState.error.message}
+      />
+    )}
     {!servicesListState.loading &&
       (!servicesListState.value?.list ||
         servicesListState.value.list.length === 0) && (
