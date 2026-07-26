@@ -1,0 +1,142 @@
+name: Build and Test
+
+# Runs on every PR and every push to main and release-v* branches.
+# Purpose: verify the code compiles, passes lint/format, tests, security audit, and builds correctly.
+# Publishing to npm is handled separately in release.yml (triggered by Changesets version PRs).
+
+on:
+  push:
+    branches:
+      - main
+      - 'release-v*'
+  pull_request:
+    branches:
+      - main
+      - 'release-v*'
+    paths-ignore:
+      - '**/*.md'
+      - 'LICENSE'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        node-version: [22]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: TypeScript type check
+        run: yarn tsc
+
+      - name: Lint
+        run: yarn lint:all
+
+      - name: Check formatting
+        run: yarn prettier:check
+
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        node-version: [22]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Security audit
+        run: yarn npm audit --environment production --severity high
+
+  test:
+    name: Tests
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        node-version: [22]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run tests with coverage
+        run: yarn backstage-cli repo test --verbose --coverage
+
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        node-version: [22]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      # Build each plugin individually for clearer error messages.
+      # build:all also builds packages/app and packages/backend (the dev app),
+      # which are not published and would add unnecessary time.
+      - name: Build frontend plugin
+        run: yarn workspace @wso2/backstage-plugin-wso2-api-platform build
+
+      - name: Build backend plugin
+        run: yarn workspace @wso2/backstage-plugin-wso2-api-platform-backend build
+
+      - name: Build catalog backend module
+        run: yarn workspace @wso2/backstage-plugin-catalog-backend-module-wso2-api-platform build
