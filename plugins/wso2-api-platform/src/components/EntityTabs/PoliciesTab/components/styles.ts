@@ -11,7 +11,8 @@ export const useViewerStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     borderRadius: '8px',
     border: `1px solid ${theme.palette.divider}`,
-    backgroundColor: theme.palette.type === 'dark' ? 'rgba(255,255,255,0.02)' : 'white',
+    backgroundColor:
+      theme.palette.type === 'dark' ? 'rgba(255,255,255,0.02)' : 'white',
   },
   fieldBox: {
     marginBottom: theme.spacing(1),
@@ -26,7 +27,8 @@ export const useViewerStyles = makeStyles(theme => ({
   },
   readOnlyField: {
     '& .MuiOutlinedInput-root': {
-      backgroundColor: theme.palette.type === 'dark' ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.02)',
+      backgroundColor:
+        theme.palette.type === 'dark' ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.02)',
       fontSize: '0.875rem',
       '& fieldset': {
         borderColor: theme.palette.divider,
@@ -44,14 +46,17 @@ export const useViewerStyles = makeStyles(theme => ({
     },
     '&.Mui-expanded': {
       border: `1px solid ${theme.palette.divider}`,
-    }
+    },
   },
   subAccordionSummary: {
-    backgroundColor: theme.palette.type === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+    backgroundColor:
+      theme.palette.type === 'dark'
+        ? 'rgba(255,255,255,0.05)'
+        : 'rgba(0,0,0,0.03)',
     minHeight: '48px !important',
     '& .MuiAccordionSummary-content': {
       margin: '12px 0 !important',
-    }
+    },
   },
   subAccordionTitle: {
     fontWeight: 700,
@@ -68,7 +73,7 @@ export const useViewerStyles = makeStyles(theme => ({
     overflowX: 'auto',
     margin: 0,
     lineHeight: 1.6,
-  }
+  },
 }));
 
 export const useListStyles = makeStyles(theme => ({
@@ -77,18 +82,22 @@ export const useListStyles = makeStyles(theme => ({
     boxShadow: 'none',
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: '4px !important',
-    backgroundColor: theme.palette.type === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.01)',
+    backgroundColor:
+      theme.palette.type === 'dark'
+        ? 'rgba(255,255,255,0.02)'
+        : 'rgba(0,0,0,0.01)',
     '&:before': {
       display: 'none',
     },
     '&.Mui-expanded': {
-      backgroundColor: theme.palette.type === 'dark' ? 'rgba(255,255,255,0.04)' : 'white',
-    }
+      backgroundColor:
+        theme.palette.type === 'dark' ? 'rgba(255,255,255,0.04)' : 'white',
+    },
   },
   policyTitle: {
     fontWeight: 700,
     fontSize: '1rem',
     color: theme.palette.type === 'dark' ? '#e0e0e0' : '#333333',
     letterSpacing: '0.2px',
-  }
+  },
 }));

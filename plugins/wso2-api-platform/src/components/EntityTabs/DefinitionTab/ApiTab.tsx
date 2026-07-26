@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { InfoCard, EmptyState } from '@backstage/core-components';
-import { Box, Tabs, Tab, CircularProgress, Typography, Button } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAsync } from 'react-use';
 import { useApi } from '@backstage/core-plugin-api';
@@ -31,7 +36,9 @@ export const EntityWso2ApiDefinitionTab = () => {
   const classes = useStyles();
   const { entity } = useEntity();
   const apiClient = useApi(wso2ApiPlatformApiRef);
-  const [activeTab, setActiveTab] = useState<'source' | 'wsdl' | 'resources'>('source');
+  const [activeTab, setActiveTab] = useState<'source' | 'wsdl' | 'resources'>(
+    'source',
+  );
 
   const definitionStr = entity.spec?.definition as string | undefined;
 
@@ -39,7 +46,11 @@ export const EntityWso2ApiDefinitionTab = () => {
     entity.metadata.annotations?.['wso2.com/api-id'] ||
     entity.metadata.annotations?.['wso2-gateway.com/api-id'];
 
-  const typeStr = String(entity.metadata.annotations?.['wso2.com/api-type'] || entity.spec?.type || '').toUpperCase();
+  const typeStr = String(
+    entity.metadata.annotations?.['wso2.com/api-type'] ||
+      entity.spec?.type ||
+      '',
+  ).toUpperCase();
   const isSoap = typeStr === 'SOAP';
   const isApiProduct = isApiProductEntity(entity);
   const hasTabs = isSoap || isApiProduct;
@@ -62,13 +73,17 @@ export const EntityWso2ApiDefinitionTab = () => {
       }
       return { isZip: false, text, blob };
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to dynamically load WSDL content:', err);
       return { isZip: false, text: undefined, error: err };
     }
   }, [apiId, isSoap, entity.metadata.annotations, apiClient]);
 
   if (!hasTabs) {
-    if (!definitionStr || definitionStr === 'WSO2 API Document content placeholder') {
+    if (
+      !definitionStr ||
+      definitionStr === 'WSO2 API Document content placeholder'
+    ) {
       return (
         <EmptyState
           title="No Definition"
@@ -79,7 +94,10 @@ export const EntityWso2ApiDefinitionTab = () => {
     }
     return (
       <InfoCard>
-        <ApiDefinitionViewer value={definitionStr} language={typeStr === 'GRAPHQL' ? 'graphql' : undefined} />
+        <ApiDefinitionViewer
+          value={definitionStr}
+          language={typeStr === 'GRAPHQL' ? 'graphql' : undefined}
+        />
       </InfoCard>
     );
   }
@@ -94,22 +112,45 @@ export const EntityWso2ApiDefinitionTab = () => {
           indicatorColor="primary"
           textColor="primary"
         >
-          <Tab label="API Definition" value="source" className={classes.tabRoot} />
-          {isSoap && <Tab label="WSDL" value="wsdl" className={classes.tabRoot} />}
-          {isApiProduct && <Tab label="Resources" value="resources" className={classes.tabRoot} />}
+          <Tab
+            label="API Definition"
+            value="source"
+            className={classes.tabRoot}
+          />
+          {isSoap && (
+            <Tab label="WSDL" value="wsdl" className={classes.tabRoot} />
+          )}
+          {isApiProduct && (
+            <Tab
+              label="Resources"
+              value="resources"
+              className={classes.tabRoot}
+            />
+          )}
         </Tabs>
       </Box>
 
       {activeTab === 'source' && (
         <Box p={2}>
-          {!definitionStr || definitionStr === 'WSO2 API Document content placeholder' ? (
-             <Box p={4} border={1} borderColor="divider" borderRadius={4} textAlign="center" bgcolor="background.default">
-               <Typography variant="body2" color="textSecondary">
-                 API definition is not available for this API.
-               </Typography>
-             </Box>
+          {!definitionStr ||
+          definitionStr === 'WSO2 API Document content placeholder' ? (
+            <Box
+              p={4}
+              border={1}
+              borderColor="divider"
+              borderRadius={4}
+              textAlign="center"
+              bgcolor="background.default"
+            >
+              <Typography variant="body2" color="textSecondary">
+                API definition is not available for this API.
+              </Typography>
+            </Box>
           ) : (
-             <ApiDefinitionViewer value={definitionStr} language={typeStr === 'GRAPHQL' ? 'graphql' : undefined} />
+            <ApiDefinitionViewer
+              value={definitionStr}
+              language={typeStr === 'GRAPHQL' ? 'graphql' : undefined}
+            />
           )}
         </Box>
       )}
@@ -122,47 +163,77 @@ export const EntityWso2ApiDefinitionTab = () => {
             </Box>
           )}
 
-          {!wsdlContentState.loading && wsdlContentState.value?.text && (() => {
-            const wsdlText = wsdlContentState.value.text;
-            return (
-              <Box mt={1}>
-                <Typography variant="h6" gutterBottom>WSDL Definition</Typography>
-                <ApiDefinitionViewer value={wsdlText} />
-              </Box>
-            );
-          })()}
+          {!wsdlContentState.loading &&
+            wsdlContentState.value?.text &&
+            (() => {
+              const wsdlText = wsdlContentState.value.text;
+              return (
+                <Box mt={1}>
+                  <Typography variant="h6" gutterBottom>
+                    WSDL Definition
+                  </Typography>
+                  <ApiDefinitionViewer value={wsdlText} />
+                </Box>
+              );
+            })()}
 
-          {!wsdlContentState.loading && wsdlContentState.value?.isZip && wsdlContentState.value?.blob && (
-            <Box mt={1} p={4} border={1} borderColor="divider" borderRadius={4} textAlign="center" bgcolor="background.default">
-              <Typography variant="body2" color="textSecondary" style={{ marginBottom: '16px' }}>
-                This API's WSDL definition is provided as a ZIP archive containing multiple files.
-              </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  const url = window.URL.createObjectURL(wsdlContentState.value!.blob!);
-                  const link = document.createElement('a');
-                  link.href = url;
-                  link.setAttribute('download', `${apiId}-wsdl.zip`);
-                  document.body.appendChild(link);
-                  link.click();
-                  link.parentNode?.removeChild(link);
-                  window.URL.revokeObjectURL(url);
-                }}
+          {!wsdlContentState.loading &&
+            wsdlContentState.value?.isZip &&
+            wsdlContentState.value?.blob && (
+              <Box
+                mt={1}
+                p={4}
+                border={1}
+                borderColor="divider"
+                borderRadius={4}
+                textAlign="center"
+                bgcolor="background.default"
               >
-                Download ZIP
-              </Button>
-            </Box>
-          )}
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  style={{ marginBottom: '16px' }}
+                >
+                  This API's WSDL definition is provided as a ZIP archive
+                  containing multiple files.
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    const url = window.URL.createObjectURL(
+                      wsdlContentState.value!.blob!,
+                    );
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', `${apiId}-wsdl.zip`);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.parentNode?.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                  }}
+                >
+                  Download ZIP
+                </Button>
+              </Box>
+            )}
 
-          {!wsdlContentState.loading && !wsdlContentState.value?.text && !wsdlContentState.value?.isZip && (
-            <Box p={4} border={1} borderColor="divider" borderRadius={4} textAlign="center" bgcolor="background.default">
-              <Typography variant="body2" color="textSecondary">
-                WSDL text definition is not available for this API.
-              </Typography>
-            </Box>
-          )}
+          {!wsdlContentState.loading &&
+            !wsdlContentState.value?.text &&
+            !wsdlContentState.value?.isZip && (
+              <Box
+                p={4}
+                border={1}
+                borderColor="divider"
+                borderRadius={4}
+                textAlign="center"
+                bgcolor="background.default"
+              >
+                <Typography variant="body2" color="textSecondary">
+                  WSDL text definition is not available for this API.
+                </Typography>
+              </Box>
+            )}
         </Box>
       )}
 

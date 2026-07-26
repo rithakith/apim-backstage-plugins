@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import React from 'react';
 import { Table } from '@backstage/core-components';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
@@ -64,11 +63,7 @@ export const Wso2DocumentTable = (options: {
       title: 'Type',
       field: 'type',
       render: (rowData: Wso2ApiDocument) => (
-        <Chip 
-          size="small" 
-          label={rowData.type} 
-          style={getApiTypeChipStyle()} 
-        />
+        <Chip size="small" label={rowData.type} style={getApiTypeChipStyle()} />
       ),
     },
     {

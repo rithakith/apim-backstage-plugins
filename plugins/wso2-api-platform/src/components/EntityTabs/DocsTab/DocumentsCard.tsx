@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 /* eslint-disable no-nested-ternary */
 import { useEntity } from '@backstage/plugin-catalog-react';
 import {
-    InfoCard,
-    EmptyState,
-    Progress,
-    WarningPanel,
+  InfoCard,
+  EmptyState,
+  Progress,
+  WarningPanel,
 } from '@backstage/core-components';
 import { Wso2ApiDocument } from '../../../api';
 import { useWso2Documents } from './hooks/useDocuments';
@@ -32,107 +32,121 @@ import { Wso2DocumentTable } from './components/DocumentTable';
 import { Wso2SingleDocumentView } from './components/SingleDocumentView';
 
 export interface EntityWso2DocumentsCardProps {
-    title?: string;
-    documents?: Wso2ApiDocument[];
-    loading?: boolean;
-    error?: Error;
+  title?: string;
+  documents?: Wso2ApiDocument[];
+  loading?: boolean;
+  error?: Error;
 }
 
-export const EntityWso2DocumentsCard = (props: EntityWso2DocumentsCardProps) => {
-    const { documents: propDocuments, loading: propLoading, error: propError } = props;
-    const { entity } = useEntity();
+export const EntityWso2DocumentsCard = (
+  props: EntityWso2DocumentsCardProps,
+) => {
+  const {
+    documents: propDocuments,
+    loading: propLoading,
+    error: propError,
+  } = props;
+  const { entity } = useEntity();
 
-    const {
-        documents,
-        previewDoc,
-        previewContent,
-        loadingPreview,
-        setPreviewDoc,
-        handleDownload,
-        handlePreview,
-    } = useWso2Documents({ entity, propDocuments });
+  const {
+    documents,
+    previewDoc,
+    previewContent,
+    loadingPreview,
+    setPreviewDoc,
+    handleDownload,
+    handlePreview,
+  } = useWso2Documents({ entity, propDocuments });
 
-    const isApiPlatform = !!entity.metadata.annotations?.['wso2.com/platform-gateway-endpoints'];
-    const isSelfHosted = !!entity.metadata.annotations?.['wso2-gateway.com/api-endpoints'];
-    const documentsUnsupported = isApiPlatform || isSelfHosted;
+  const isApiPlatform =
+    !!entity.metadata.annotations?.['wso2.com/platform-gateway-endpoints'];
+  const isSelfHosted =
+    !!entity.metadata.annotations?.['wso2-gateway.com/api-endpoints'];
+  const documentsUnsupported = isApiPlatform || isSelfHosted;
 
-    // Trigger preview automatically if there is only one document
-    useEffect(() => {
-        if (
-            !documentsUnsupported &&
-            documents.length === 1 &&
-            !previewDoc &&
-            !loadingPreview
-        ) {
-            const doc = documents[0];
-            if (doc.sourceType === 'MARKDOWN' || doc.sourceType === 'INLINE') {
-                handlePreview(doc);
-            }
-        }
-    }, [documents, documentsUnsupported, previewDoc, loadingPreview, handlePreview]);
-
-    if (propLoading) {
-        return (
-            <InfoCard variant="gridItem">
-                <Progress />
-            </InfoCard>
-        );
+  // Trigger preview automatically if there is only one document
+  useEffect(() => {
+    if (
+      !documentsUnsupported &&
+      documents.length === 1 &&
+      !previewDoc &&
+      !loadingPreview
+    ) {
+      const doc = documents[0];
+      if (doc.sourceType === 'MARKDOWN' || doc.sourceType === 'INLINE') {
+        handlePreview(doc);
+      }
     }
+  }, [
+    documents,
+    documentsUnsupported,
+    previewDoc,
+    loadingPreview,
+    handlePreview,
+  ]);
 
-    if (propError) {
-        return (
-            <InfoCard variant="gridItem">
-                <WarningPanel severity="error" title="Failed to load documents">
-                    {propError.message}
-                </WarningPanel>
-            </InfoCard>
-        );
-    }
-
-    const renderPreview = () => (
-        <Wso2DocumentPreview
-            previewDoc={previewDoc}
-            previewContent={previewContent}
-            loadingPreview={loadingPreview}
-            showBackButton={documents.length > 1}
-            onBack={() => setPreviewDoc(null)}
-            onDownload={handleDownload}
-        />
-    );
-
+  if (propLoading) {
     return (
-        <InfoCard variant="gridItem">
-            {documentsUnsupported ? (
-                <EmptyState
-                    title="Documents unavailable"
-                    missing="info"
-                    description="Documents are not supported for API Platform APIs discovered from self-hosted gateways. Please check the WSO2 API Platform directly for documentation."
-                />
-            ) : documents.length === 0 ? (
-                <EmptyState
-                    title="No documents"
-                    missing="info"
-                    description="This API has no documents attached in WSO2 API Manager."
-                />
-            ) : (
-                <>
-                    {previewDoc && documents.length > 1 ? (
-                        renderPreview()
-                    ) : documents.length === 1 ? (
-                        <Wso2SingleDocumentView
-                            document={documents[0]}
-                            onDownload={handleDownload}
-                            renderPreview={renderPreview}
-                        />
-                    ) : (
-                        <Wso2DocumentTable
-                            documents={documents}
-                            onPreview={handlePreview}
-                            onDownload={handleDownload}
-                        />
-                    )}
-                </>
-            )}
-        </InfoCard>
+      <InfoCard variant="gridItem">
+        <Progress />
+      </InfoCard>
     );
+  }
+
+  if (propError) {
+    return (
+      <InfoCard variant="gridItem">
+        <WarningPanel severity="error" title="Failed to load documents">
+          {propError.message}
+        </WarningPanel>
+      </InfoCard>
+    );
+  }
+
+  const renderPreview = () => (
+    <Wso2DocumentPreview
+      previewDoc={previewDoc}
+      previewContent={previewContent}
+      loadingPreview={loadingPreview}
+      showBackButton={documents.length > 1}
+      onBack={() => setPreviewDoc(null)}
+      onDownload={handleDownload}
+    />
+  );
+
+  return (
+    <InfoCard variant="gridItem">
+      {documentsUnsupported ? (
+        <EmptyState
+          title="Documents unavailable"
+          missing="info"
+          description="Documents are not supported for API Platform APIs discovered from self-hosted gateways. Please check the WSO2 API Platform directly for documentation."
+        />
+      ) : documents.length === 0 ? (
+        <EmptyState
+          title="No documents"
+          missing="info"
+          description="This API has no documents attached in WSO2 API Manager."
+        />
+      ) : (
+        <>
+          {previewDoc && documents.length > 1 ? (
+            renderPreview()
+          ) : documents.length === 1 ? (
+            <Wso2SingleDocumentView
+              document={documents[0]}
+              onDownload={handleDownload}
+              renderPreview={renderPreview}
+            />
+          ) : (
+            <Wso2DocumentTable
+              documents={documents}
+              onPreview={handlePreview}
+              onDownload={handleDownload}
+            />
+          )}
+        </>
+      )}
+    </InfoCard>
+  );
 };

@@ -74,7 +74,12 @@ export const useWso2ApiPolicies = (options: {
     }
     const val = definitionState.value as any;
     if (!val) return [];
-    return val.channels || val.operations || val.configuration?.spec?.operations || [];
+    return (
+      val.channels ||
+      val.operations ||
+      val.configuration?.spec?.operations ||
+      []
+    );
   }, [definitionState.value, details?.operations]);
 
   const gatewayApiPolicies = useMemo(() => {

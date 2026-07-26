@@ -17,10 +17,7 @@
  */
 
 import { AboutField } from '@backstage/plugin-catalog';
-import {
-  EmptyState,
-  InfoCard,
-} from '@backstage/core-components';
+import { EmptyState, InfoCard } from '@backstage/core-components';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import Grid from '@material-ui/core/Grid';
 
@@ -41,7 +38,6 @@ export const EntityWso2ServiceOverviewCard = () => {
   const { entity } = useEntity();
   const annotations = entity.metadata.annotations || {};
   const serviceId = annotations[SERVICE_ID_ANNOTATION];
-  const gridSizes = { xs: 12, sm: 6, lg: 4 };
 
   if (!serviceId) {
     return (
@@ -94,7 +90,6 @@ export const EntityWso2ServiceOverviewCard = () => {
                 key={field.label}
                 label={field.label}
                 value={field.value}
-                gridSizes={gridSizes}
               />
             ))}
           </Grid>

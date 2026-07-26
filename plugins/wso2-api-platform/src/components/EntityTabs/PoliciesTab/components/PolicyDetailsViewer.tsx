@@ -1,4 +1,3 @@
-
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -38,7 +37,10 @@ const SimpleField = ({ label, value, classes }: any) => (
 
 const SubSectionTile = ({ label, value, classes }: any) => (
   <Accordion className={classes.subAccordion} elevation={0}>
-    <AccordionSummary expandIcon={<ExpandMoreIcon />} className={classes.subAccordionSummary}>
+    <AccordionSummary
+      expandIcon={<ExpandMoreIcon />}
+      className={classes.subAccordionSummary}
+    >
       <Typography className={classes.subAccordionTitle}>
         {humanize(label)} CONFIGURATION
       </Typography>
@@ -51,7 +53,11 @@ const SubSectionTile = ({ label, value, classes }: any) => (
   </Accordion>
 );
 
-export const Wso2PolicyDetailsViewer = ({ parameters }: { parameters: any }) => {
+export const Wso2PolicyDetailsViewer = ({
+  parameters,
+}: {
+  parameters: any;
+}) => {
   const classes = useViewerStyles();
 
   if (!parameters || Object.keys(parameters).length === 0) {
@@ -65,20 +71,37 @@ export const Wso2PolicyDetailsViewer = ({ parameters }: { parameters: any }) => 
   }
 
   const entries = Object.entries(parameters);
-  const simpleFields = entries.filter(([_, v]) => typeof v !== 'object' || v === null);
-  const complexFields = entries.filter(([_, v]) => typeof v === 'object' && v !== null);
+  const simpleFields = entries.filter(
+    ([_, v]) => typeof v !== 'object' || v === null,
+  );
+  const complexFields = entries.filter(
+    ([_, v]) => typeof v === 'object' && v !== null,
+  );
 
   return (
     <Box className={classes.root}>
       {/* Simple Fields Grid */}
       {simpleFields.length > 0 && (
         <Box className={classes.simpleFieldsContainer}>
-          <Typography variant="caption" style={{ fontWeight: 800, color: '#666', display: 'block', marginBottom: '16px' }}>
+          <Typography
+            variant="caption"
+            style={{
+              fontWeight: 800,
+              color: '#666',
+              display: 'block',
+              marginBottom: '16px',
+            }}
+          >
             BASIC PARAMETERS
           </Typography>
           <Grid container spacing={2}>
             {simpleFields.map(([key, value]) => (
-              <SimpleField key={key} label={key} value={value} classes={classes} />
+              <SimpleField
+                key={key}
+                label={key}
+                value={value}
+                classes={classes}
+              />
             ))}
           </Grid>
         </Box>

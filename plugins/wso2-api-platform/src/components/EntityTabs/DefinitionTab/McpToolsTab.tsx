@@ -65,148 +65,150 @@ function getBackendOperation(tool: Wso2McpTool) {
 }
 
 export const EntityWso2McpToolsTab = () => {
-    const classes = useStyles();
-    const { entity } = useEntity();
-    const mcpToolsRaw = entity.metadata.annotations?.[MCP_TOOLS_ANNOTATION];
+  const classes = useStyles();
+  const { entity } = useEntity();
+  const mcpToolsRaw = entity.metadata.annotations?.[MCP_TOOLS_ANNOTATION];
 
-    const mcpTools = useMemo(() => {
-        if (!mcpToolsRaw) return [];
-        try {
-            return JSON.parse(mcpToolsRaw) as Wso2McpTool[];
-        } catch (e) {
-            return [];
-        }
-    }, [mcpToolsRaw]);
-
-    if (mcpTools.length === 0) {
-        return (
-            <EmptyState
-                title="No Tools"
-                missing="info"
-                description="This MCP server does not have tools available in the catalog."
-            />
-        );
+  const mcpTools = useMemo(() => {
+    if (!mcpToolsRaw) return [];
+    try {
+      return JSON.parse(mcpToolsRaw) as Wso2McpTool[];
+    } catch (e) {
+      return [];
     }
+  }, [mcpToolsRaw]);
 
+  if (mcpTools.length === 0) {
     return (
-        <Box p={3}>
-            {mcpTools.map((tool, index) => {
-                const name = tool.name || 'Unnamed tool';
-                const schema = formatSchema(getToolSchema(tool));
-                const backendOperation = getBackendOperation(tool);
-                const operationVerb = backendOperation?.verb;
-                const operationTarget = backendOperation?.target;
-
-                return (
-                    <Accordion
-                        key={`${name}-${index}`}
-                        className={classes.accordion}
-                        elevation={0}
-                    >
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            className={classes.summary}
-                        >
-                            <Box className={classes.summaryContent}>
-                                <Typography variant="body1" className={classes.summaryName}>
-                                    {name}
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                    className={classes.summaryDescription}
-                                >
-                                    {tool.description || 'No description available'}
-                                </Typography>
-                                <Box className={classes.summaryMeta}>
-                                    {operationVerb ? (
-                                        <Chip
-                                            label={operationVerb}
-                                            size="small"
-                                            className={classes.operationChip}
-                                        />
-                                    ) : (
-                                        <Chip
-                                            label="TOOL"
-                                            size="small"
-                                            className={classes.toolChip}
-                                        />
-                                    )}
-                                    {operationTarget ? (
-                                        <Typography variant="body2">{operationTarget}</Typography>
-                                    ) : (
-                                        <Typography variant="body2">{name}</Typography>
-                                    )}
-                                </Box>
-                            </Box>
-                        </AccordionSummary>
-                        <AccordionDetails className={classes.details}>
-                            <Grid container spacing={3}>
-                                <Grid item xs={12}>
-                                    <Typography variant="h6" style={{ marginBottom: 16 }}>Tool Details</Typography>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Box className={classes.fieldBox}>
-                                        <Typography className={classes.fieldLabel}>Name</Typography>
-                                        <Paper variant="outlined" className={classes.fieldValue}>
-                                            <Typography>{name}</Typography>
-                                        </Paper>
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Box className={classes.fieldBox}>
-                                        <Typography className={classes.fieldLabel}>
-                                            Description
-                                        </Typography>
-                                        <Paper variant="outlined" className={classes.fieldValue}>
-                                            <Typography>
-                                                {tool.description || 'No description available'}
-                                            </Typography>
-                                        </Paper>
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <Box className={classes.fieldBox}>
-                                        <Typography className={classes.fieldLabel}>
-                                            Operation
-                                        </Typography>
-                                        <Paper variant="outlined" className={classes.fieldValue}>
-                                            <Box className={classes.operationValue}>
-                                                {operationVerb ? (
-                                                    <Chip
-                                                        label={operationVerb}
-                                                        size="small"
-                                                        className={classes.operationChip}
-                                                    />
-                                                ) : (
-                                                    <Chip
-                                                        label="TOOL"
-                                                        size="small"
-                                                        className={classes.toolChip}
-                                                    />
-                                                )}
-                                                <Typography>{operationTarget || name}</Typography>
-                                            </Box>
-                                        </Paper>
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Typography className={classes.fieldLabel}>Schema</Typography>
-                                    {schema ? (
-                                        <pre className={classes.schemaBlock}>{schema}</pre>
-                                    ) : (
-                                        <Paper variant="outlined" className={classes.fieldValue}>
-                                            <Typography color="textSecondary">
-                                                No schema available
-                                            </Typography>
-                                        </Paper>
-                                    )}
-                                </Grid>
-                            </Grid>
-                        </AccordionDetails>
-                    </Accordion>
-                );
-            })}
-        </Box>
+      <EmptyState
+        title="No Tools"
+        missing="info"
+        description="This MCP server does not have tools available in the catalog."
+      />
     );
+  }
+
+  return (
+    <Box p={3}>
+      {mcpTools.map((tool, index) => {
+        const name = tool.name || 'Unnamed tool';
+        const schema = formatSchema(getToolSchema(tool));
+        const backendOperation = getBackendOperation(tool);
+        const operationVerb = backendOperation?.verb;
+        const operationTarget = backendOperation?.target;
+
+        return (
+          <Accordion
+            key={`${name}-${index}`}
+            className={classes.accordion}
+            elevation={0}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              className={classes.summary}
+            >
+              <Box className={classes.summaryContent}>
+                <Typography variant="body1" className={classes.summaryName}>
+                  {name}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  className={classes.summaryDescription}
+                >
+                  {tool.description || 'No description available'}
+                </Typography>
+                <Box className={classes.summaryMeta}>
+                  {operationVerb ? (
+                    <Chip
+                      label={operationVerb}
+                      size="small"
+                      className={classes.operationChip}
+                    />
+                  ) : (
+                    <Chip
+                      label="TOOL"
+                      size="small"
+                      className={classes.toolChip}
+                    />
+                  )}
+                  {operationTarget ? (
+                    <Typography variant="body2">{operationTarget}</Typography>
+                  ) : (
+                    <Typography variant="body2">{name}</Typography>
+                  )}
+                </Box>
+              </Box>
+            </AccordionSummary>
+            <AccordionDetails className={classes.details}>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Typography variant="h6" style={{ marginBottom: 16 }}>
+                    Tool Details
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Box className={classes.fieldBox}>
+                    <Typography className={classes.fieldLabel}>Name</Typography>
+                    <Paper variant="outlined" className={classes.fieldValue}>
+                      <Typography>{name}</Typography>
+                    </Paper>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Box className={classes.fieldBox}>
+                    <Typography className={classes.fieldLabel}>
+                      Description
+                    </Typography>
+                    <Paper variant="outlined" className={classes.fieldValue}>
+                      <Typography>
+                        {tool.description || 'No description available'}
+                      </Typography>
+                    </Paper>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Box className={classes.fieldBox}>
+                    <Typography className={classes.fieldLabel}>
+                      Operation
+                    </Typography>
+                    <Paper variant="outlined" className={classes.fieldValue}>
+                      <Box className={classes.operationValue}>
+                        {operationVerb ? (
+                          <Chip
+                            label={operationVerb}
+                            size="small"
+                            className={classes.operationChip}
+                          />
+                        ) : (
+                          <Chip
+                            label="TOOL"
+                            size="small"
+                            className={classes.toolChip}
+                          />
+                        )}
+                        <Typography>{operationTarget || name}</Typography>
+                      </Box>
+                    </Paper>
+                  </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography className={classes.fieldLabel}>Schema</Typography>
+                  {schema ? (
+                    <pre className={classes.schemaBlock}>{schema}</pre>
+                  ) : (
+                    <Paper variant="outlined" className={classes.fieldValue}>
+                      <Typography color="textSecondary">
+                        No schema available
+                      </Typography>
+                    </Paper>
+                  )}
+                </Grid>
+              </Grid>
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
+    </Box>
+  );
 };

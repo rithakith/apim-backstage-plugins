@@ -16,19 +16,13 @@
  * under the License.
  */
 
-import React from 'react';
+import { AboutField } from '@backstage/plugin-catalog';
 import {
-    AboutField,
-} from '@backstage/plugin-catalog';
-import {
-    InfoCard,
-    HeaderIconLinkRow,
-    IconLinkVerticalProps,
+  InfoCard,
+  HeaderIconLinkRow,
+  IconLinkVerticalProps,
 } from '@backstage/core-components';
-import {
-    useEntity,
-    entityRouteRef,
-} from '@backstage/plugin-catalog-react';
+import { useEntity, entityRouteRef } from '@backstage/plugin-catalog-react';
 import { useRouteRef } from '@backstage/core-plugin-api';
 import Grid from '@material-ui/core/Grid';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -39,112 +33,108 @@ import { EntityWso2ServiceOverviewCard } from './components/ServiceOverviewCard'
  * A custom About card for WSO2 APIs that shows WSO2 specific metadata.
  */
 const EntityWso2OverviewTabContent = () => {
-    const { entity } = useEntity();
+  const { entity } = useEntity();
 
-    const entityRoute = useRouteRef(entityRouteRef);
-    const wso2TabUrl = `${entityRoute({
-        namespace: entity.metadata.namespace || 'default',
-        kind: entity.kind.toLowerCase(),
-        name: entity.metadata.name,
-    })}/wso2`;
+  const entityRoute = useRouteRef(entityRouteRef);
+  const wso2TabUrl = `${entityRoute({
+    namespace: entity.metadata.namespace || 'default',
+    kind: entity.kind.toLowerCase(),
+    name: entity.metadata.name,
+  })}/wso2`;
 
-    const links: IconLinkVerticalProps[] = [];
+  const links: IconLinkVerticalProps[] = [];
 
-    links.push({
-        label: 'View TechDocs',
-        icon: <DescriptionIcon />,
-        href: wso2TabUrl,
-    });
+  links.push({
+    label: 'View TechDocs',
+    icon: <DescriptionIcon />,
+    href: wso2TabUrl,
+  });
 
-    const annotations = entity.metadata.annotations || {};
-    const gridSizes = { xs: 12, sm: 6, lg: 4 };
+  const annotations = entity.metadata.annotations || {};
 
-    // Helper to get annotation value with fallback prefix
-    const getAnnotation = (key: string) => annotations[`wso2.com/${key}`] || annotations[`wso2-gateway.com/${key}`];
-    const parseJsonAnnotation = (value?: string) => {
-        if (!value) return undefined;
-        try {
-            return JSON.parse(value);
-        } catch {
-            return undefined;
+  // Helper to get annotation value with fallback prefix
+  const getAnnotation = (key: string) =>
+    annotations[`wso2.com/${key}`] || annotations[`wso2-gateway.com/${key}`];
+  const parseJsonAnnotation = (value?: string) => {
+    if (!value) return undefined;
+    try {
+      return JSON.parse(value);
+    } catch {
+      return undefined;
+    }
+  };
+
+  const lifecycle = formatLifecycleStatus(
+    getAnnotation('api-lifecycle-status'),
+  );
+  const context = getAnnotation('api-context');
+  const version = getAnnotation('api-version');
+  const provider = getAnnotation('api-provider');
+  const endpointsRaw = getAnnotation('api-endpoints');
+  const gateway = getAnnotation('api-gateway')?.toUpperCase();
+  const throttlingPolicy = getAnnotation('api-throttling-policy');
+  const securityScheme = parseJsonAnnotation(
+    getAnnotation('api-security-scheme'),
+  );
+  const gatewayValue = (() => {
+    if (endpointsRaw) {
+      try {
+        const endpoints = JSON.parse(endpointsRaw);
+        if (Array.isArray(endpoints) && endpoints.length > 0) {
+          const ep = endpoints[0];
+          const url = Array.isArray(ep.urls) ? ep.urls[0] : ep.urls;
+          return `${ep.environmentName}${url ? ` (${url})` : ''}`;
         }
-    };
+      } catch (e) {
+        return 'Unknown';
+      }
+    }
+    return gateway || undefined;
+  })();
 
-    const lifecycle = formatLifecycleStatus(
-        getAnnotation('api-lifecycle-status'),
-    );
-    const context = getAnnotation('api-context');
-    const version = getAnnotation('api-version');
-    const provider = getAnnotation('api-provider');
-    const endpointsRaw = getAnnotation('api-endpoints');
-    const gateway = getAnnotation('api-gateway')?.toUpperCase();
-    const throttlingPolicy = getAnnotation('api-throttling-policy');
-    const securityScheme = parseJsonAnnotation(getAnnotation('api-security-scheme'));
-    const gatewayValue = (() => {
-        if (endpointsRaw) {
-            try {
-                const endpoints = JSON.parse(endpointsRaw);
-                if (Array.isArray(endpoints) && endpoints.length > 0) {
-                    const ep = endpoints[0];
-                    const url = Array.isArray(ep.urls) ? ep.urls[0] : ep.urls;
-                    return `${ep.environmentName}${url ? ` (${url})` : ''}`;
-                }
-            } catch (e) {
-                return 'Unknown';
+  const description = entity.metadata.description;
+
+  return (
+    <InfoCard
+      variant="gridItem"
+      subheader={<HeaderIconLinkRow links={links} />}
+    >
+      <Grid container>
+        <AboutField label="Name" value={entity.metadata.name} />
+        <AboutField
+          label="Display Name"
+          value={entity.metadata.title || entity.metadata.name}
+        />
+        {lifecycle && <AboutField label="Lifecycle" value={lifecycle} />}
+        {context && <AboutField label="Context" value={context} />}
+        {version && <AboutField label="Version" value={version} />}
+        {provider && <AboutField label="Provider" value={provider} />}
+        {gatewayValue && <AboutField label="Gateway" value={gatewayValue} />}
+        {throttlingPolicy && (
+          <AboutField label="Throttling Policy" value={throttlingPolicy} />
+        )}
+        {securityScheme && (
+          <AboutField
+            label="Security Scheme"
+            value={
+              Array.isArray(securityScheme)
+                ? securityScheme.join(', ')
+                : securityScheme
             }
-        }
-        return gateway || undefined;
-    })();
-
-    const description = entity.metadata.description;
-
-    return (
-        <InfoCard
-            variant="gridItem"
-            subheader={<HeaderIconLinkRow links={links} />}
-        >
-            <Grid container>
-                <AboutField label="Name" value={entity.metadata.name} gridSizes={gridSizes} />
-                <AboutField label="Display Name" value={entity.metadata.title || entity.metadata.name} gridSizes={gridSizes} />
-                {lifecycle && (
-                    <AboutField label="Lifecycle" value={lifecycle} gridSizes={gridSizes} />
-                )}
-                {context && (
-                    <AboutField label="Context" value={context} gridSizes={gridSizes} />
-                )}
-                {version && (
-                    <AboutField label="Version" value={version} gridSizes={gridSizes} />
-                )}
-                {provider && (
-                    <AboutField label="Provider" value={provider} gridSizes={gridSizes} />
-                )}
-                {gatewayValue && (
-                    <AboutField
-                        label="Gateway"
-                        value={gatewayValue}
-                        gridSizes={gridSizes}
-                    />
-                )}
-                {throttlingPolicy && (
-                    <AboutField label="Throttling Policy" value={throttlingPolicy} gridSizes={gridSizes} />
-                )}
-                {securityScheme && (
-                    <AboutField label="Security Scheme" value={Array.isArray(securityScheme) ? securityScheme.join(', ') : securityScheme} gridSizes={gridSizes} />
-                )}
-                {description && (
-                    <AboutField label="Description" value={description} gridSizes={gridSizes} />
-                )}
-            </Grid>
-        </InfoCard>
-    );
+          />
+        )}
+        {description && <AboutField label="Description" value={description} />}
+      </Grid>
+    </InfoCard>
+  );
 };
 
 export const EntityWso2OverviewTab = () => {
-    const { entity } = useEntity();
+  const { entity } = useEntity();
 
-    if (isServiceEntity(entity)) {
-        return <EntityWso2ServiceOverviewCard />;
-    }
+  if (isServiceEntity(entity)) {
+    return <EntityWso2ServiceOverviewCard />;
+  }
 
-    return <EntityWso2OverviewTabContent />;
+  return <EntityWso2OverviewTabContent />;
 };

@@ -68,7 +68,6 @@ export const useWso2Documents = (options: {
     }
 
     if (!docId) {
-
       return;
     }
 
@@ -136,7 +135,6 @@ export const useWso2Documents = (options: {
       const content = await response.text();
       setPreviewContent(content);
     } catch (e) {
-
       setPreviewContent('Failed to load content.');
     } finally {
       setLoadingPreview(false);

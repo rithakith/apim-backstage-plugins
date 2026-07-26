@@ -28,23 +28,33 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
-import { Wso2PolicyDetailsViewer, getPolicyFriendlyName } from './PolicyDetailsViewer';
+import {
+  Wso2PolicyDetailsViewer,
+  getPolicyFriendlyName,
+} from './PolicyDetailsViewer';
 import { CODE_FONT_FAMILY } from '../../../../styles/fonts';
 import { useListStyles } from './styles';
 
 // Shared mini pagination control
-const PolicyPagination = ({ 
-  currentPage, 
-  totalPages, 
-  onPageChange 
-}: { 
-  currentPage: number; 
-  totalPages: number; 
+const PolicyPagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: {
+  currentPage: number;
+  totalPages: number;
   onPageChange: (page: number) => void;
 }) => {
   if (totalPages <= 1) return null;
   return (
-    <Box display="flex" alignItems="center" justifyContent="center" mt={2} mb={1} style={{ gap: '12px' }}>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      mt={2}
+      mb={1}
+      style={{ gap: '12px' }}
+    >
       <Button
         size="small"
         variant="outlined"
@@ -54,7 +64,11 @@ const PolicyPagination = ({
       >
         &lt; Prev
       </Button>
-      <Typography variant="caption" color="textSecondary" style={{ fontWeight: 600 }}>
+      <Typography
+        variant="caption"
+        color="textSecondary"
+        style={{ fontWeight: 600 }}
+      >
         Page {currentPage} of {totalPages}
       </Typography>
       <Button
@@ -71,15 +85,15 @@ const PolicyPagination = ({
 };
 
 // Stateful sub-component for paginated flow-level policies
-const Wso2PolicyFlowList = ({ 
-  flowType, 
-  policies, 
+const Wso2PolicyFlowList = ({
+  flowType,
+  policies,
   classes,
-  hideLabel = false
-}: { 
-  flowType: string; 
-  policies: any[]; 
-  classes: any; 
+  hideLabel = false,
+}: {
+  flowType: string;
+  policies: any[];
+  classes: any;
   hideLabel?: boolean;
 }) => {
   const [page, setPage] = useState(1);
@@ -89,32 +103,48 @@ const Wso2PolicyFlowList = ({
   if (!policies || policies.length === 0) return null;
 
   const totalPages = Math.ceil(policies.length / itemsPerPage);
-  const paginatedPolicies = policies.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const paginatedPolicies = policies.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage,
+  );
 
   const content = (
     <Box>
       <Box>
         {paginatedPolicies.map((policy: any, idx: number) => {
-          const hasParams = (policy.parameters && Object.keys(policy.parameters).length > 0) || (policy.params && Object.keys(policy.params).length > 0);
+          const hasParams =
+            (policy.parameters && Object.keys(policy.parameters).length > 0) ||
+            (policy.params && Object.keys(policy.params).length > 0);
           const policyName = policy.policyName || policy.name || 'Unknown';
           const version = policy.policyVersion || policy.version || 'N/A';
 
           return (
-            <Accordion key={`${flowType}-${idx}`} className={classes.policyAccordion} elevation={0}>
+            <Accordion
+              key={`${flowType}-${idx}`}
+              className={classes.policyAccordion}
+              elevation={0}
+            >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Box>
                   <Typography className={classes.policyTitle}>
-                    {getPolicyFriendlyName(policyName)} 
-                    <span style={{ fontWeight: 400, opacity: 0.5, fontSize: '0.75rem', marginLeft: '8px' }}>
-                       ({version})
-                     </span>
+                    {getPolicyFriendlyName(policyName)}
+                    <span
+                      style={{
+                        fontWeight: 400,
+                        opacity: 0.5,
+                        fontSize: '0.75rem',
+                        marginLeft: '8px',
+                      }}
+                    >
+                      ({version})
+                    </span>
                   </Typography>
                 </Box>
               </AccordionSummary>
               <AccordionDetails style={{ display: 'block', padding: 0 }}>
                 {hasParams ? (
-                  <Wso2PolicyDetailsViewer 
-                    parameters={policy.parameters || policy.params} 
+                  <Wso2PolicyDetailsViewer
+                    parameters={policy.parameters || policy.params}
                   />
                 ) : (
                   <Box p={2}>
@@ -128,27 +158,46 @@ const Wso2PolicyFlowList = ({
           );
         })}
       </Box>
-      <PolicyPagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+      <PolicyPagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
     </Box>
   );
 
   if (hideLabel) {
-    return <Box mb={2} width="100%">{content}</Box>;
+    return (
+      <Box mb={2} width="100%">
+        {content}
+      </Box>
+    );
   }
 
   return (
-    <Accordion 
-      elevation={0} 
-      style={{ 
-        marginBottom: '12px', 
-        border: `1px solid ${theme.palette.divider}`, 
+    <Accordion
+      elevation={0}
+      style={{
+        marginBottom: '12px',
+        border: `1px solid ${theme.palette.divider}`,
         borderRadius: '4px',
-        backgroundColor: theme.palette.type === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)'
+        backgroundColor:
+          theme.palette.type === 'dark'
+            ? 'rgba(255,255,255,0.02)'
+            : 'rgba(0,0,0,0.02)',
       }}
     >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="subtitle2" style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-          {flowType} FLOW <span style={{ opacity: 0.6, marginLeft: '8px', fontWeight: 'normal' }}>({policies.length} {policies.length === 1 ? 'policy' : 'policies'})</span>
+        <Typography
+          variant="subtitle2"
+          style={{ fontWeight: 'bold', textTransform: 'uppercase' }}
+        >
+          {flowType} FLOW{' '}
+          <span
+            style={{ opacity: 0.6, marginLeft: '8px', fontWeight: 'normal' }}
+          >
+            ({policies.length} {policies.length === 1 ? 'policy' : 'policies'})
+          </span>
         </Typography>
       </AccordionSummary>
       <AccordionDetails style={{ display: 'block', padding: theme.spacing(2) }}>
@@ -158,16 +207,16 @@ const Wso2PolicyFlowList = ({
   );
 };
 
-export const Wso2PublisherPoliciesList = ({ 
+export const Wso2PublisherPoliciesList = ({
   details,
   gatewayOperations = [],
   gatewayApiPolicies = {},
-  apiType
-}: { 
-  details?: any,
-  gatewayOperations?: any[],
-  gatewayApiPolicies?: any,
-  apiType?: string
+  apiType,
+}: {
+  details?: any;
+  gatewayOperations?: any[];
+  gatewayApiPolicies?: any;
+  apiType?: string;
 }) => {
   const theme = useTheme();
   const classes = useListStyles();
@@ -177,11 +226,16 @@ export const Wso2PublisherPoliciesList = ({
 
   const getMethodColors = (method: string) => {
     const m = (method || '').toUpperCase();
-    if (m === 'GET') return { main: '#61affe', light: 'rgba(97, 175, 254, 0.1)' };
-    if (m === 'POST') return { main: '#49cc90', light: 'rgba(73, 204, 144, 0.1)' };
-    if (m === 'PUT') return { main: '#fca130', light: 'rgba(252, 161, 48, 0.1)' };
-    if (m === 'DELETE') return { main: '#f93e3e', light: 'rgba(249, 62, 62, 0.1)' };
-    if (m === 'PATCH') return { main: '#50e3c2', light: 'rgba(80, 227, 194, 0.1)' };
+    if (m === 'GET')
+      return { main: '#61affe', light: 'rgba(97, 175, 254, 0.1)' };
+    if (m === 'POST')
+      return { main: '#49cc90', light: 'rgba(73, 204, 144, 0.1)' };
+    if (m === 'PUT')
+      return { main: '#fca130', light: 'rgba(252, 161, 48, 0.1)' };
+    if (m === 'DELETE')
+      return { main: '#f93e3e', light: 'rgba(249, 62, 62, 0.1)' };
+    if (m === 'PATCH')
+      return { main: '#50e3c2', light: 'rgba(80, 227, 194, 0.1)' };
     return { main: '#9012fe', light: 'rgba(144, 18, 254, 0.1)' };
   };
 
@@ -193,7 +247,7 @@ export const Wso2PublisherPoliciesList = ({
         : details?.apiPolicies || {},
     [details?.apiPolicies, gatewayApiPolicies],
   );
-    
+
   const isFlatApiPolicies = Array.isArray(rawApiPolicies);
 
   const apiPolicies = useMemo(() => {
@@ -207,61 +261,104 @@ export const Wso2PublisherPoliciesList = ({
     };
   }, [rawApiPolicies, isFlatApiPolicies]);
 
-  const operations = gatewayOperations && gatewayOperations.length > 0 
-    ? gatewayOperations 
-    : (details?.operations || []);
+  const operations =
+    gatewayOperations && gatewayOperations.length > 0
+      ? gatewayOperations
+      : details?.operations || [];
 
-  const hasApiPolicies = (apiPolicies.request?.length > 0) || (apiPolicies.response?.length > 0) || (apiPolicies.fault?.length > 0);
+  const hasApiPolicies =
+    apiPolicies.request?.length > 0 ||
+    apiPolicies.response?.length > 0 ||
+    apiPolicies.fault?.length > 0;
 
   const totalOpPages = Math.ceil(operations.length / opsPerPage);
-  const paginatedOperations = operations.slice((opPage - 1) * opsPerPage, opPage * opsPerPage);
+  const paginatedOperations = operations.slice(
+    (opPage - 1) * opsPerPage,
+    opPage * opsPerPage,
+  );
 
   const resolvedApiType = (apiType || details?.type || '').toUpperCase();
 
-  console.log('--- DEBUG POLICIES TAB ---', { resolvedApiType, detailsType: details?.type, details });
-
   return (
     <Box p={2}>
-    
-        <Box mb={4}>
-          <Box display="flex" alignItems="center" mb={1}>
-            <Typography
-              variant="subtitle1"
-              style={{ fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}
-            >
-              Global API Policies
-            </Typography>
-            <Tooltip title="Policies applied globally across all resources of this API." arrow>
-              <InfoIcon style={{ fontSize: '1rem', marginLeft: '8px', cursor: 'pointer', opacity: 0.6 }} />
-            </Tooltip>
-          </Box>
-          {hasApiPolicies && (
-          <Box p={0.5}>
-            <Wso2PolicyFlowList flowType="Request" policies={apiPolicies.request} classes={classes} hideLabel={isFlatApiPolicies} />
-            <Wso2PolicyFlowList flowType="Response" policies={apiPolicies.response} classes={classes} />
-            <Wso2PolicyFlowList flowType="Fault" policies={apiPolicies.fault} classes={classes} />
-          </Box>
-          )}
-          { !hasApiPolicies && (
-            <Typography variant="body2" color="textSecondary" align="center"> 
-              No Global API policies found.
-            </Typography>
-          )}
-         
+      <Box mb={4}>
+        <Box display="flex" alignItems="center" mb={1}>
+          <Typography
+            variant="subtitle1"
+            style={{
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+            }}
+          >
+            Global API Policies
+          </Typography>
+          <Tooltip
+            title="Policies applied globally across all resources of this API."
+            arrow
+          >
+            <InfoIcon
+              style={{
+                fontSize: '1rem',
+                marginLeft: '8px',
+                cursor: 'pointer',
+                opacity: 0.6,
+              }}
+            />
+          </Tooltip>
         </Box>
-    
+        {hasApiPolicies && (
+          <Box p={0.5}>
+            <Wso2PolicyFlowList
+              flowType="Request"
+              policies={apiPolicies.request}
+              classes={classes}
+              hideLabel={isFlatApiPolicies}
+            />
+            <Wso2PolicyFlowList
+              flowType="Response"
+              policies={apiPolicies.response}
+              classes={classes}
+            />
+            <Wso2PolicyFlowList
+              flowType="Fault"
+              policies={apiPolicies.fault}
+              classes={classes}
+            />
+          </Box>
+        )}
+        {!hasApiPolicies && (
+          <Typography variant="body2" color="textSecondary" align="center">
+            No Global API policies found.
+          </Typography>
+        )}
+      </Box>
 
       {operations && operations.length > 0 && (
         <>
           <Box display="flex" alignItems="center" mb={1}>
             <Typography
               variant="subtitle1"
-              style={{ fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}
+              style={{
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '1px',
+              }}
             >
               Operation Level Policies
             </Typography>
-            <Tooltip title="Policies applied specifically to specific resources of this API." arrow>
-              <InfoIcon style={{ fontSize: '1rem', marginLeft: '8px', cursor: 'pointer', opacity: 0.6 }} />
+            <Tooltip
+              title="Policies applied specifically to specific resources of this API."
+              arrow
+            >
+              <InfoIcon
+                style={{
+                  fontSize: '1rem',
+                  marginLeft: '8px',
+                  cursor: 'pointer',
+                  opacity: 0.6,
+                }}
+              />
             </Tooltip>
           </Box>
 
@@ -275,28 +372,32 @@ export const Wso2PublisherPoliciesList = ({
             <>
               <Box>
                 {paginatedOperations.map((op: any, idx: number) => {
-                  const rawOpPolicies = op.operationPolicies || op.policies || {};
+                  const rawOpPolicies =
+                    op.operationPolicies || op.policies || {};
                   const isFlatOpPolicies = Array.isArray(rawOpPolicies);
-                  const opPolicies = isFlatOpPolicies 
+                  const opPolicies = isFlatOpPolicies
                     ? { request: rawOpPolicies, response: [], fault: [] }
                     : {
                         request: rawOpPolicies.request || [],
                         response: rawOpPolicies.response || [],
                         fault: rawOpPolicies.fault || [],
                       };
-                  
-                  const hasOpPolicies = (opPolicies.request?.length > 0) || (opPolicies.response?.length > 0) || (opPolicies.fault?.length > 0);
+
+                  const hasOpPolicies =
+                    opPolicies.request?.length > 0 ||
+                    opPolicies.response?.length > 0 ||
+                    opPolicies.fault?.length > 0;
                   const colors = getMethodColors(op.verb || op.method);
-                  
+
                   return (
-                    <Accordion 
-                      key={idx} 
-                      elevation={0} 
-                      style={{ 
-                        marginBottom: '8px', 
-                        border: `1px solid ${colors.main}`, 
+                    <Accordion
+                      key={idx}
+                      elevation={0}
+                      style={{
+                        marginBottom: '8px',
+                        border: `1px solid ${colors.main}`,
                         borderRadius: '4px',
-                        backgroundColor: colors.light
+                        backgroundColor: colors.light,
                       }}
                     >
                       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -328,33 +429,52 @@ export const Wso2PublisherPoliciesList = ({
                             {op.target || op.path}
                           </Typography>
                           {!hasOpPolicies && (
-                            <Typography variant="caption" style={{ marginLeft: '16px', opacity: 0.5 }}>
+                            <Typography
+                              variant="caption"
+                              style={{ marginLeft: '16px', opacity: 0.5 }}
+                            >
                               (0 policies)
                             </Typography>
                           )}
                         </Box>
                       </AccordionSummary>
-                      <AccordionDetails style={{ display: 'block', padding: theme.spacing(2) }}>
+                      <AccordionDetails
+                        style={{ display: 'block', padding: theme.spacing(2) }}
+                      >
                         <Box width="100%">
                           {hasOpPolicies ? (
                             <>
-                              <Wso2PolicyFlowList flowType="Request" policies={opPolicies.request} classes={classes} hideLabel={isFlatOpPolicies} />
+                              <Wso2PolicyFlowList
+                                flowType="Request"
+                                policies={opPolicies.request}
+                                classes={classes}
+                                hideLabel={isFlatOpPolicies}
+                              />
                               {opPolicies.response?.length > 0 && (
                                 <>
                                   <Divider style={{ margin: '16px 0' }} />
-                                  <Wso2PolicyFlowList flowType="Response" policies={opPolicies.response} classes={classes} />
+                                  <Wso2PolicyFlowList
+                                    flowType="Response"
+                                    policies={opPolicies.response}
+                                    classes={classes}
+                                  />
                                 </>
                               )}
                               {opPolicies.fault?.length > 0 && (
                                 <>
                                   <Divider style={{ margin: '16px 0' }} />
-                                  <Wso2PolicyFlowList flowType="Fault" policies={opPolicies.fault} classes={classes} />
+                                  <Wso2PolicyFlowList
+                                    flowType="Fault"
+                                    policies={opPolicies.fault}
+                                    classes={classes}
+                                  />
                                 </>
                               )}
                             </>
                           ) : (
                             <Typography variant="body2" color="textSecondary">
-                              No operation-level policies configured for this resource.
+                              No operation-level policies configured for this
+                              resource.
                             </Typography>
                           )}
                         </Box>
@@ -363,7 +483,11 @@ export const Wso2PublisherPoliciesList = ({
                   );
                 })}
               </Box>
-              <PolicyPagination currentPage={opPage} totalPages={totalOpPages} onPageChange={setOpPage} />
+              <PolicyPagination
+                currentPage={opPage}
+                totalPages={totalOpPages}
+                onPageChange={setOpPage}
+              />
             </>
           )}
         </>

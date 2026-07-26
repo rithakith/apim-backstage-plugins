@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import React from 'react';
 import { InfoCard, EmptyState } from '@backstage/core-components';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import Box from '@material-ui/core/Box';
@@ -35,10 +34,6 @@ const WSO2_GATEWAY_API_ID_ANNOTATION = 'wso2-gateway.com/api-id';
 export const EntityWso2ApiPoliciesTab = (): React.JSX.Element | null => {
   const { entity } = useEntity();
 
-  if (isServiceEntity(entity)) {
-    return <EntityWso2ServiceDefinitionCard />;
-  }
-
   const apiId =
     entity.metadata.annotations?.[WSO2_API_ID_ANNOTATION] ||
     entity.metadata.annotations?.[WSO2_GATEWAY_API_ID_ANNOTATION];
@@ -52,7 +47,11 @@ export const EntityWso2ApiPoliciesTab = (): React.JSX.Element | null => {
     entity.metadata.annotations?.['wso2.com/is-discovered'] === 'true';
   const isMcp = isMcpEntity(entity);
 
-  const apiType = String(entity.metadata.annotations?.['wso2.com/api-type'] || entity.spec?.type || '').toUpperCase();
+  const apiType = String(
+    entity.metadata.annotations?.['wso2.com/api-type'] ||
+      entity.spec?.type ||
+      '',
+  ).toUpperCase();
 
   const skipKeyGeneration = isApiPlatform || isSelfHostedGateway || isMcp;
 
@@ -70,24 +69,30 @@ export const EntityWso2ApiPoliciesTab = (): React.JSX.Element | null => {
     isApiPlatform: skipKeyGeneration,
   });
 
+  if (isServiceEntity(entity)) {
+    return <EntityWso2ServiceDefinitionCard />;
+  }
+
+  if (!apiId) {
+    return null;
+  }
+
   const isPublisherApi = !skipKeyGeneration;
   const hasPolicyDetails = Boolean(details?.apiPolicies);
   const hasOperationPolicies = Boolean(
     (details?.operations && details.operations.length > 0) ||
-    (gatewayOperations && gatewayOperations.length > 0),
+      (gatewayOperations && gatewayOperations.length > 0),
   );
   const hasGatewayApiPolicies = Boolean(
     gatewayApiPolicies &&
-    ((gatewayApiPolicies as any).request?.length > 0 ||
-      (gatewayApiPolicies as any).response?.length > 0 ||
-      (gatewayApiPolicies as any).fault?.length > 0),
+      ((gatewayApiPolicies as any).request?.length > 0 ||
+        (gatewayApiPolicies as any).response?.length > 0 ||
+        (gatewayApiPolicies as any).fault?.length > 0),
   );
   const showPublisherPoliciesTab =
     !isMcp &&
     (isPublisherApi || skipKeyGeneration) &&
-    (hasPolicyDetails ||
-      hasOperationPolicies ||
-      hasGatewayApiPolicies);
+    (hasPolicyDetails || hasOperationPolicies || hasGatewayApiPolicies);
 
   const isLoading = isDefinitionLoading;
 
@@ -121,7 +126,13 @@ export const EntityWso2ApiPoliciesTab = (): React.JSX.Element | null => {
 
       {/* Progressive loading bar for background API requests */}
       {!isLoading && !isPlaceholder && isRevisionsLoading && (
-        <Box style={{ position: 'relative', marginTop: '-8px', marginBottom: '8px' }}>
+        <Box
+          style={{
+            position: 'relative',
+            marginTop: '-8px',
+            marginBottom: '8px',
+          }}
+        >
           <LinearProgress style={{ height: 2 }} color="primary" />
         </Box>
       )}
