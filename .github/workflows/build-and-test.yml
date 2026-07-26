@@ -129,6 +129,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Type check (generate type declarations)
+        run: yarn tsc
+
       # Build each plugin individually for clearer error messages.
       # build:all also builds packages/app and packages/backend (the dev app),
       # which are not published and would add unnecessary time.

@@ -76,6 +76,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Type check (generate type declarations)
+        run: yarn tsc
+
       # ── 5. Create Version PR OR publish ───────────────────────────────────
       #    The Changesets action does two different things depending on state:
       #
