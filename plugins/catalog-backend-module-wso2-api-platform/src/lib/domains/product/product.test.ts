@@ -133,9 +133,7 @@ describe('product domain', () => {
             'wso2.com/api-authorization-header': 'Authorization',
             'wso2.com/api-key-header': 'ApiKey',
             'wso2.com/api-max-tps': '100',
-            'wso2.com/policies': JSON.stringify([
-              'DefaultSubscriptionless',
-            ]),
+            'wso2.com/policies': JSON.stringify(['DefaultSubscriptionless']),
             'wso2.com/api-level-policies': JSON.stringify({
               request: [{ policyName: 'addHeader', policyVersion: 'v1' }],
             }),
@@ -186,12 +184,7 @@ Spec owner: "${entity.spec.owner}" (from technicalOwner)
         provider: 'p',
         businessInformation: { businessOwner: 'Alice Business' },
       };
-      const ent1 = mapWso2ProductToEntity(
-        prod1,
-        'default',
-        'prov',
-        undefined,
-      );
+      const ent1 = mapWso2ProductToEntity(prod1, 'default', 'prov', undefined);
       expect(ent1.spec.owner).toBe('wso2');
       expect(ent1.spec.lifecycle).toBe('production');
 
@@ -203,12 +196,7 @@ Spec owner: "${entity.spec.owner}" (from technicalOwner)
         context: 'c',
         provider: 'p-team',
       };
-      const ent2 = mapWso2ProductToEntity(
-        prod2,
-        'default',
-        'prov',
-        undefined,
-      );
+      const ent2 = mapWso2ProductToEntity(prod2, 'default', 'prov', undefined);
       expect(ent2.spec.owner).toBe('wso2');
 
       // 3. Fallback -> wso2
@@ -218,12 +206,7 @@ Spec owner: "${entity.spec.owner}" (from technicalOwner)
         version: '1',
         context: 'c',
       } as unknown as Wso2ApiProduct;
-      const ent3 = mapWso2ProductToEntity(
-        prod3,
-        'default',
-        'prov',
-        undefined,
-      );
+      const ent3 = mapWso2ProductToEntity(prod3, 'default', 'prov', undefined);
       expect(ent3.spec.owner).toBe('wso2');
 
       console.log(
@@ -286,9 +269,16 @@ Fallback 3: owner="${ent3.spec.owner}" (unknown)
       const mockSwagger = 'swagger-def';
       mockClient.getApiProductDefinition.mockResolvedValueOnce(mockSwagger);
 
-      const result = await fetchApiProductDefinition(mockClient, 'prod-1', 'MyProduct');
+      const result = await fetchApiProductDefinition(
+        mockClient,
+        'prod-1',
+        'MyProduct',
+      );
       expect(result).toBe(mockSwagger);
-      expect(mockClient.getApiProductDefinition).toHaveBeenCalledWith('prod-1', 'MyProduct');
+      expect(mockClient.getApiProductDefinition).toHaveBeenCalledWith(
+        'prod-1',
+        'MyProduct',
+      );
     });
   });
 
@@ -314,24 +304,34 @@ Fallback 3: owner="${ent3.spec.owner}" (unknown)
       };
 
       mockClient.getApiProductList.mockResolvedValueOnce(mockList);
-      mockClient.getApiProductDetail.mockImplementation(async (summary: any) => ({
-        ...summary,
-        enriched: true,
-      }));
+      mockClient.getApiProductDetail.mockImplementation(
+        async (summary: any) => ({
+          ...summary,
+          enriched: true,
+        }),
+      );
 
       const result = await fetchApiProductList(mockClient);
 
       expect(result).toHaveLength(2);
-      expect(result[0]).toEqual(expect.objectContaining({ id: 'prod-1', enriched: true }));
-      expect(result[1]).toEqual(expect.objectContaining({ id: 'prod-2', enriched: true }));
+      expect(result[0]).toEqual(
+        expect.objectContaining({ id: 'prod-1', enriched: true }),
+      );
+      expect(result[1]).toEqual(
+        expect.objectContaining({ id: 'prod-2', enriched: true }),
+      );
       expect(mockClient.getApiProductList).toHaveBeenCalled();
       expect(mockClient.getApiProductDetail).toHaveBeenCalledTimes(2);
     });
 
     it('should log error and throw on outer list fetch error', async () => {
-      mockClient.getApiProductList.mockRejectedValueOnce(new Error('List failure'));
+      mockClient.getApiProductList.mockRejectedValueOnce(
+        new Error('List failure'),
+      );
 
-      await expect(fetchApiProductList(mockClient)).rejects.toThrow('List failure');
+      await expect(fetchApiProductList(mockClient)).rejects.toThrow(
+        'List failure',
+      );
     });
   });
 });

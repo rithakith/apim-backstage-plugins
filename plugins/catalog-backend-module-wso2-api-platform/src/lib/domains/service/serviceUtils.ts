@@ -35,7 +35,10 @@ export async function fetchServiceList(
   let hasMore = false;
 
   do {
-    const data = await client.getServiceList({ limit: SERVICE_LIST_PAGE_SIZE, offset });
+    const data = await client.getServiceList({
+      limit: SERVICE_LIST_PAGE_SIZE,
+      offset,
+    });
     const page = data.list || [];
     serviceList.push(...page);
     total =

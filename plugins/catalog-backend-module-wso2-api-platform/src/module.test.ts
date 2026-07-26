@@ -82,7 +82,9 @@ describe('catalogModuleWso2ApiPlatform', () => {
       },
     });
 
-    const [registration] = (catalogModuleWso2ApiPlatform as any).getRegistrations();
+    const [registration] = (
+      catalogModuleWso2ApiPlatform as any
+    ).getRegistrations();
     await registration.init.func({
       catalog: { addEntityProvider },
       config,

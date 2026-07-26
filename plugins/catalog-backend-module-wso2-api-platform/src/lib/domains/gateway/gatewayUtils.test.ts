@@ -41,7 +41,11 @@ describe('gateway/gatewayUtils', () => {
 
   it('should skip discovery if no gateway has discoveryUrl configured', async () => {
     const gateways: PlatformGateway[] = [
-      { environmentName: 'gw-1', environmentType: 'PROD', urls: ['https://gw1.com'] },
+      {
+        environmentName: 'gw-1',
+        environmentType: 'PROD',
+        urls: ['https://gw1.com'],
+      },
     ];
 
     const result = await discoverWSO2PlatformGatewayApis(gateways, mockClient);
@@ -95,21 +99,27 @@ describe('gateway/gatewayUtils', () => {
     const result = await discoverWSO2PlatformGatewayApis(gateways, mockClient);
 
     expect(result).toHaveLength(2);
-    expect(result[0]).toEqual(expect.objectContaining({
-      id: 'api-1',
-      description: 'Details 1',
-      environmentType: 'PRODUCTION',
-      initiatedFromGateway: true,
-      isDirectDiscovery: true,
-      environmentName: 'MySelfHostedGate',
-      gatewayUrls: ['https://gateway.com'],
-      fullConfig: mockApiDetail1.api.configuration,
-      fetchedSwagger: JSON.stringify(mockApiDetail1.api.configuration.spec, null, 2),
-    }));
+    expect(result[0]).toEqual(
+      expect.objectContaining({
+        id: 'api-1',
+        description: 'Details 1',
+        environmentType: 'PRODUCTION',
+        initiatedFromGateway: true,
+        isDirectDiscovery: true,
+        environmentName: 'MySelfHostedGate',
+        gatewayUrls: ['https://gateway.com'],
+        fullConfig: mockApiDetail1.api.configuration,
+        fetchedSwagger: JSON.stringify(
+          mockApiDetail1.api.configuration.spec,
+          null,
+          2,
+        ),
+      }),
+    );
 
     expect(mockGetGatewayApis).toHaveBeenCalledWith(
       'https://discovery-service.com/apis',
-      'Basic abc-auth'
+      'Basic abc-auth',
     );
   });
 
@@ -125,7 +135,9 @@ describe('gateway/gatewayUtils', () => {
     ];
 
     mockGetGatewayApis.mockResolvedValueOnce({ apis: [{ id: 'api-1' }] });
-    mockGetGatewayApiDetail.mockRejectedValueOnce(new Error('Connection abort'));
+    mockGetGatewayApiDetail.mockRejectedValueOnce(
+      new Error('Connection abort'),
+    );
 
     const result = await discoverWSO2PlatformGatewayApis(gateways, mockClient);
     expect(result).toEqual([]);
@@ -141,7 +153,9 @@ describe('gateway/gatewayUtils', () => {
       },
     ];
 
-    mockGetGatewayApis.mockRejectedValueOnce(new Error('Discovery service offline'));
+    mockGetGatewayApis.mockRejectedValueOnce(
+      new Error('Discovery service offline'),
+    );
 
     const result = await discoverWSO2PlatformGatewayApis(gateways, mockClient);
     expect(result).toEqual([]);

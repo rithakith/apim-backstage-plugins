@@ -89,8 +89,7 @@ Static Factory fromConfig built successfully.
   });
 
   describe('run', () => {
-    it.skip('should start an initial sync after the provider connects', async () => {
-      jest.useFakeTimers();
+    it('should start an initial sync after the provider connects', async () => {
       const config = new ConfigReader({
         catalog: {
           providers: {
@@ -120,8 +119,7 @@ Static Factory fromConfig built successfully.
       mockDiscoverAll.mockResolvedValueOnce(mockEntities);
 
       await provider.connect(mockConnection);
-      jest.runOnlyPendingTimers();
-      await Promise.resolve();
+      await provider.run();
 
       expect(mockDiscoverAll).toHaveBeenCalledTimes(1);
       expect(mockConnection.applyMutation).toHaveBeenCalledWith({

@@ -55,9 +55,7 @@ export function mapWso2ServiceToEntity(
         'wso2.com/api-type': 'SERVICE',
         'wso2.com/api-lifecycle-status': lifecycleStatus,
         'wso2.com/api-gateway': '',
-        'wso2.com/service-usage-list': JSON.stringify(
-          service.usageList || [],
-        ),
+        'wso2.com/service-usage-list': JSON.stringify(service.usageList || []),
         'backstage.io/managed-by-location': `wso2-apim:${providerId}`,
         'backstage.io/managed-by-origin-location': `wso2-apim:${providerId}`,
       },

@@ -19,10 +19,7 @@
 import { ApiEntity } from '@backstage/catalog-model';
 import { Wso2ApiProduct } from './types';
 import { GlobalSettings } from '../settings/types';
-import {
-  normalizeEntityName,
-  reconstructGatewayEndpoints,
-} from '../api';
+import { normalizeEntityName, reconstructGatewayEndpoints } from '../api';
 
 /**
  * Maps a WSO2 API Product to a Backstage ApiEntity.
@@ -33,7 +30,9 @@ export function mapWso2ProductToEntity(
   providerId: string,
   globalSettings: GlobalSettings | undefined,
 ): ApiEntity {
-  const nameWithVersion = product.version ? `${product.name}-${product.version}` : product.name;
+  const nameWithVersion = product.version
+    ? `${product.name}-${product.version}`
+    : product.name;
   const normalizedName = normalizeEntityName(nameWithVersion);
   const productOperations = getProductOperations(product.apis);
   const productLifecycle = getProductLifecycle(product);

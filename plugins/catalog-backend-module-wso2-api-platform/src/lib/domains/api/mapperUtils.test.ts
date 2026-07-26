@@ -248,7 +248,6 @@ ${JSON.stringify(parsed[0].urls, null, 2)}
         visibility: 'PUBLIC',
       };
 
-     
       const entity = mapWso2ApiToEntity(
         api,
         'my-namespace',

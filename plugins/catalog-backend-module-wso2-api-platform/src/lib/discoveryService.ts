@@ -61,12 +61,8 @@ export class Wso2DiscoveryService {
       services?: number;
     }) => void;
   }): Promise<Entity[]> {
-    const {
-      namespace,
-      providerId,
-      platformGateways,
-      apiManagerEnabled,
-    } = options;
+    const { namespace, providerId, platformGateways, apiManagerEnabled } =
+      options;
 
     this.logger.info(
       `[Wso2DiscoveryService] Starting discovery for provider ${providerId}`,
@@ -124,23 +120,24 @@ export class Wso2DiscoveryService {
     }
 
     // 2. Map WSO2 objects to Backstage entities
-    const apiEntities = (globalSettings && apiList.length > 0) ? apiList.map(api =>
-      mapWso2ApiToEntity(
-        api,
-        namespace,
-        providerId,
-        globalSettings!,
-      ),
-    ) : [];
+    const apiEntities =
+      globalSettings && apiList.length > 0
+        ? apiList.map(api =>
+            mapWso2ApiToEntity(api, namespace, providerId, globalSettings!),
+          )
+        : [];
 
-    const productEntities = (globalSettings && productList.length > 0) ? productList.map(product =>
-      mapWso2ProductToEntity(
-        product,
-        namespace,
-        providerId,
-        globalSettings!,
-      ),
-    ) : [];
+    const productEntities =
+      globalSettings && productList.length > 0
+        ? productList.map(product =>
+            mapWso2ProductToEntity(
+              product,
+              namespace,
+              providerId,
+              globalSettings!,
+            ),
+          )
+        : [];
 
     const mcpEntities = mcpList.map(mcp =>
       mapWso2McpToEntity(mcp, namespace, providerId),
@@ -157,14 +154,19 @@ export class Wso2DiscoveryService {
 
       if (discoveredEntitiesMap.has(name)) {
         const existing = discoveredEntitiesMap.get(name)!;
-        
+
         // Merge endpoints
-        const existingEndpointsStr = existing.metadata.annotations?.['wso2-gateway.com/api-endpoints'] || '[]';
-        const newEndpointsStr = entity.metadata.annotations?.['wso2-gateway.com/api-endpoints'] || '[]';
+        const existingEndpointsStr =
+          existing.metadata.annotations?.['wso2-gateway.com/api-endpoints'] ||
+          '[]';
+        const newEndpointsStr =
+          entity.metadata.annotations?.['wso2-gateway.com/api-endpoints'] ||
+          '[]';
         try {
           const existingEndpoints = JSON.parse(existingEndpointsStr);
           const newEndpoints = JSON.parse(newEndpointsStr);
-          existing.metadata.annotations!['wso2-gateway.com/api-endpoints'] = JSON.stringify([...existingEndpoints, ...newEndpoints]);
+          existing.metadata.annotations!['wso2-gateway.com/api-endpoints'] =
+            JSON.stringify([...existingEndpoints, ...newEndpoints]);
         } catch (e) {
           // ignore
         }
@@ -172,7 +174,9 @@ export class Wso2DiscoveryService {
         // Merge tags
         const existingTags = existing.metadata.tags || [];
         const newTags = entity.metadata.tags || [];
-        existing.metadata.tags = Array.from(new Set([...existingTags, ...newTags]));
+        existing.metadata.tags = Array.from(
+          new Set([...existingTags, ...newTags]),
+        );
       } else {
         discoveredEntitiesMap.set(name, entity);
       }
@@ -191,11 +195,7 @@ export class Wso2DiscoveryService {
       `[Wso2DiscoveryService] Discovery complete. Found ${allEntities.length} entities.`,
     );
     this.logger.info(
-      `[WSO2 Catalog Summary] APIs=${apiEntities.length}, Products=${
-        productEntities.length
-      }, MCP=${mcpEntities.length}, Services=${
-        serviceEntities.length
-      }, Gateway APIs=${discoveredEntities.length}.`,
+      `[WSO2 Catalog Summary] APIs=${apiEntities.length}, Products=${productEntities.length}, MCP=${mcpEntities.length}, Services=${serviceEntities.length}, Gateway APIs=${discoveredEntities.length}.`,
     );
     this.logger.debug(
       `[WSO2 Catalog Summary] Total catalog entities=${allEntities.length}.`,

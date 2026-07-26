@@ -7,15 +7,21 @@ export interface Config {
          */
         namespace?: string;
         schedule: {
-          frequency: {
-            minutes?: number;
-          } | string;
-          timeout: {
-            minutes?: number;
-          } | string;
-          initialDelay?: {
-            seconds?: number;
-          } | string;
+          frequency:
+            | {
+                minutes?: number;
+              }
+            | string;
+          timeout:
+            | {
+                minutes?: number;
+              }
+            | string;
+          initialDelay?:
+            | {
+                seconds?: number;
+              }
+            | string;
         };
       };
     };

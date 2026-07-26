@@ -77,7 +77,10 @@ describe('api/apiUtils', () => {
   describe('fetchApiDetail', () => {
     it('should delegate to client.getApiDetail', async () => {
       const summary = { id: 'api-123', name: 'MyAPI', type: 'HTTP' };
-      mockClient.getApiDetail.mockResolvedValueOnce({ ...summary, detail: true });
+      mockClient.getApiDetail.mockResolvedValueOnce({
+        ...summary,
+        detail: true,
+      });
       const result = await fetchApiDetail(mockClient, summary);
       expect(result).toEqual({ ...summary, detail: true });
       expect(mockClient.getApiDetail).toHaveBeenCalledWith(summary);
@@ -115,7 +118,10 @@ describe('api/apiUtils', () => {
         }),
       );
 
-      expect(mockClient.getApiList).toHaveBeenCalledWith({ limit: 1000, offset: 0 });
+      expect(mockClient.getApiList).toHaveBeenCalledWith({
+        limit: 1000,
+        offset: 0,
+      });
     });
 
     it('should page through APIs beyond the first 1000 results', async () => {
@@ -149,23 +155,25 @@ describe('api/apiUtils', () => {
           enriched: true,
         }),
       );
-      expect(mockClient.getApiList).toHaveBeenNthCalledWith(
-        1,
-        { limit: 1000, offset: 0 },
-      );
-      expect(mockClient.getApiList).toHaveBeenNthCalledWith(
-        2,
-        { limit: 1000, offset: 1000 },
-      );
+      expect(mockClient.getApiList).toHaveBeenNthCalledWith(1, {
+        limit: 1000,
+        offset: 0,
+      });
+      expect(mockClient.getApiList).toHaveBeenNthCalledWith(2, {
+        limit: 1000,
+        offset: 1000,
+      });
     });
 
     it('should report list fetch failures through progress callback', async () => {
       const onProgress = jest.fn();
-      mockClient.getApiList.mockRejectedValueOnce(new Error('Publisher timeout'));
+      mockClient.getApiList.mockRejectedValueOnce(
+        new Error('Publisher timeout'),
+      );
 
-      await expect(
-        fetchApiList(mockClient, { onProgress }),
-      ).rejects.toThrow('Publisher timeout');
+      await expect(fetchApiList(mockClient, { onProgress })).rejects.toThrow(
+        'Publisher timeout',
+      );
 
       expect(onProgress).toHaveBeenLastCalledWith({
         loaded: 0,

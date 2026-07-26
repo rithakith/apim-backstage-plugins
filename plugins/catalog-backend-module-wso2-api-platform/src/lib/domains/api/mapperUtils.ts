@@ -187,7 +187,9 @@ export function mapWso2ApiToEntity(
         'wso2.com/api-level-policies': apiDetails.apiPolicies
           ? JSON.stringify(apiDetails.apiPolicies)
           : '{}',
-        'wso2.com/operation-level-policies': Array.isArray(apiDetails.operations)
+        'wso2.com/operation-level-policies': Array.isArray(
+          apiDetails.operations,
+        )
           ? JSON.stringify(apiDetails.operations)
           : '[]',
       },
@@ -226,11 +228,10 @@ export function reconstructGatewayEndpoints(
 
   const enrichedEndpoints = matchedEnvs
     .map(env => {
-
       const vhost = env.vhosts?.[0];
       if (!vhost) return undefined;
 
-      let host = vhost.host;
+      const host = vhost.host;
 
       let context = api.context || '';
       if (!context.startsWith('/')) context = `/${context}`;
