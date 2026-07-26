@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -37,19 +37,20 @@ const useStyles = makeStyles((theme: any) => ({
   '@global': {
     ...(theme.palette.type === 'dark'
       ? {
-          'body .graphiql-container, body .CodeMirror-info, body .CodeMirror-lint-tooltip, body reach-portal': {
-            '--color-primary': '338, 100%, 67%',
-            '--color-secondary': '243, 100%, 77%',
-            '--color-tertiary': '188, 100%, 44%',
-            '--color-info': '208, 100%, 72%',
-            '--color-success': '158, 100%, 42%',
-            '--color-warning': '30, 100%, 80%',
-            '--color-error': '13, 100%, 58%',
-            '--color-neutral': '219, 29%, 78%',
-            '--color-base': '219, 29%, 18%',
-            '--popover-box-shadow': 'none',
-            '--popover-border': '1px solid hsl(var(--color-neutral))',
-          },
+          'body .graphiql-container, body .CodeMirror-info, body .CodeMirror-lint-tooltip, body reach-portal':
+            {
+              '--color-primary': '338, 100%, 67%',
+              '--color-secondary': '243, 100%, 77%',
+              '--color-tertiary': '188, 100%, 44%',
+              '--color-info': '208, 100%, 72%',
+              '--color-success': '158, 100%, 42%',
+              '--color-warning': '30, 100%, 80%',
+              '--color-error': '13, 100%, 58%',
+              '--color-neutral': '219, 29%, 78%',
+              '--color-base': '219, 29%, 18%',
+              '--popover-box-shadow': 'none',
+              '--popover-border': '1px solid hsl(var(--color-neutral))',
+            },
         }
       : {}),
   },
@@ -57,7 +58,12 @@ const useStyles = makeStyles((theme: any) => ({
 
 interface GraphQLConsoleProps {
   definition: string;
-  gatewayUrls: Array<{ environmentName: string; url: string; environmentType?: string; description?: string }>;
+  gatewayUrls: Array<{
+    environmentName: string;
+    url: string;
+    environmentType?: string;
+    description?: string;
+  }>;
   apiKeyRef: React.MutableRefObject<string | null>;
   externalApiKey: string;
   apiKeyAuthPolicy: any;
@@ -113,7 +119,13 @@ export const GraphQLConsole = ({
       });
       return response.json();
     };
-  }, [activeUrl, apiKeyRef, externalApiKey, apiKeyAuthPolicy, details?.apiKeyHeader]);
+  }, [
+    activeUrl,
+    apiKeyRef,
+    externalApiKey,
+    apiKeyAuthPolicy,
+    details?.apiKeyHeader,
+  ]);
 
   const schema = useMemo(() => {
     try {
@@ -131,14 +143,20 @@ export const GraphQLConsole = ({
       <Typography variant="h5" style={{ fontWeight: 600, marginBottom: '8px' }}>
         GraphQL Console
       </Typography>
-      <Typography variant="body2" color="textSecondary" style={{ marginBottom: '24px' }}>
-        Author your GraphQL commands and test them dynamically against your current gateway environments.
+      <Typography
+        variant="body2"
+        color="textSecondary"
+        style={{ marginBottom: '24px' }}
+      >
+        Author your GraphQL commands and test them dynamically against your
+        current gateway environments.
       </Typography>
 
       {!isDeployed && (
         <Box mb={3}>
           <Alert severity="info">
-            <strong>Not Deployed:</strong> This API is not deployed to any gateway. Try out functionality is disabled.
+            <strong>Not Deployed:</strong> This API is not deployed to any
+            gateway. Try out functionality is disabled.
           </Alert>
         </Box>
       )}
@@ -147,24 +165,33 @@ export const GraphQLConsole = ({
         <>
           <Card style={{ marginBottom: '16px' }}>
             <CardContent>
-              <Typography variant="subtitle2" style={{ fontWeight: 600, marginBottom: '12px' }}>
+              <Typography
+                variant="subtitle2"
+                style={{ fontWeight: 600, marginBottom: '12px' }}
+              >
                 Gateway Endpoint
               </Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <FormControl variant="outlined" fullWidth size="small">
-                    <InputLabel id="graphql-endpoint-label">Select Gateway Environment</InputLabel>
+                    <InputLabel id="graphql-endpoint-label">
+                      Select Gateway Environment
+                    </InputLabel>
                     <Select
                       labelId="graphql-endpoint-label"
                       value={selectedUrl}
                       onChange={e => setSelectedUrl(e.target.value as string)}
                       label="Select Gateway Environment"
                     >
-                      {gatewayUrls && gatewayUrls.map(urlObj => (
-                        <MenuItem key={urlObj.url} value={urlObj.url}>
-                          {urlObj.description || urlObj.environmentName || urlObj.url} ({urlObj.url})
-                        </MenuItem>
-                      ))}
+                      {gatewayUrls &&
+                        gatewayUrls.map(urlObj => (
+                          <MenuItem key={urlObj.url} value={urlObj.url}>
+                            {urlObj.description ||
+                              urlObj.environmentName ||
+                              urlObj.url}{' '}
+                            ({urlObj.url})
+                          </MenuItem>
+                        ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -174,13 +201,11 @@ export const GraphQLConsole = ({
 
           {fetcher && (
             <Card>
-              <CardContent style={{ padding: 0, height: '600px', display: 'flex' }}>
+              <CardContent
+                style={{ padding: 0, height: '600px', display: 'flex' }}
+              >
                 <Box style={{ flex: 1, minHeight: '600px' }}>
-                  <GraphiQL 
-                    fetcher={fetcher} 
-                    schema={schema}
-                    defaultQuery=""
-                  />
+                  <GraphiQL fetcher={fetcher} schema={schema} defaultQuery="" />
                 </Box>
               </CardContent>
             </Card>

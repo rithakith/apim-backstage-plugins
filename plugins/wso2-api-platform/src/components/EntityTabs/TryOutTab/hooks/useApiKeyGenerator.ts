@@ -35,9 +35,9 @@ export const useApiKeyGenerator = (options: {
   const apiKeyRef = useRef<string | null>(null);
 
   const [customKeyName, setCustomKeyName] = useState('');
-  
+
   const [shouldGenerate, setShouldGenerate] = useState(false);
-  
+
   const generateKeyState = useAsyncRetry(async () => {
     if (!apiId || isApiPlatform || !shouldGenerate) {
       return undefined;
@@ -45,7 +45,6 @@ export const useApiKeyGenerator = (options: {
     try {
       return await apiClient.generateApiKey(apiId, { keyName: customKeyName });
     } catch (e: any) {
-
       return null;
     }
   }, [apiClient, apiId, isApiPlatform, shouldGenerate]);

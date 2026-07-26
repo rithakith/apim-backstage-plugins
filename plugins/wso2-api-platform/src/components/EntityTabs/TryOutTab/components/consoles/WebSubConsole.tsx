@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 /* eslint-disable no-nested-ternary */
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -80,7 +80,9 @@ export const WebSubConsole = ({
   const itemsPerPage = 5;
 
   // Form states per topic path
-  const [modes, setModes] = useState<Record<string, 'subscribe' | 'unsubscribe'>>({});
+  const [modes, setModes] = useState<
+    Record<string, 'subscribe' | 'unsubscribe'>
+  >({});
   const [callbackUrls, setCallbackUrls] = useState<Record<string, string>>({});
   const [secrets, setSecrets] = useState<Record<string, string>>({});
   const [leaseSeconds, setLeaseSeconds] = useState<Record<string, string>>({});
@@ -130,14 +132,20 @@ export const WebSubConsole = ({
       <Typography variant="h5" style={{ fontWeight: 600, marginBottom: '8px' }}>
         WebSub Console
       </Typography>
-      <Typography variant="body2" color="textSecondary" style={{ marginBottom: '24px' }}>
-        Generate WebSub subscription/unsubscription requests using target server environments and authorization credentials.
+      <Typography
+        variant="body2"
+        color="textSecondary"
+        style={{ marginBottom: '24px' }}
+      >
+        Generate WebSub subscription/unsubscription requests using target server
+        environments and authorization credentials.
       </Typography>
 
       {!isDeployed && (
         <Box mb={3}>
           <Alert severity="info">
-            <strong>Not Deployed:</strong> This API is not deployed to any gateway. Try out functionality is disabled.
+            <strong>Not Deployed:</strong> This API is not deployed to any
+            gateway. Try out functionality is disabled.
           </Alert>
         </Box>
       )}
@@ -145,7 +153,8 @@ export const WebSubConsole = ({
       {isDeployed && !isApiKeyEnabled && (
         <Box mb={3}>
           <Alert severity="warning">
-            <strong>API Key Disabled:</strong> Invocation is only supported when API Key authentication is enabled.
+            <strong>API Key Disabled:</strong> Invocation is only supported when
+            API Key authentication is enabled.
           </Alert>
         </Box>
       )}
@@ -154,13 +163,18 @@ export const WebSubConsole = ({
       {isDeployed && isApiKeyEnabled && (
         <Card style={{ marginBottom: '24px' }}>
           <CardContent>
-            <Typography variant="subtitle2" style={{ fontWeight: 600, marginBottom: '12px' }}>
+            <Typography
+              variant="subtitle2"
+              style={{ fontWeight: 600, marginBottom: '12px' }}
+            >
               Server
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={selectedUrl === 'custom' ? 6 : 12}>
                 <FormControl variant="outlined" fullWidth size="small">
-                  <InputLabel id="websub-endpoint-label">Select Gateway Environment</InputLabel>
+                  <InputLabel id="websub-endpoint-label">
+                    Select Gateway Environment
+                  </InputLabel>
                   <Select
                     labelId="websub-endpoint-label"
                     value={selectedUrl}
@@ -169,13 +183,15 @@ export const WebSubConsole = ({
                   >
                     {gatewayUrls.map(urlObj => (
                       <MenuItem key={urlObj.url} value={urlObj.url}>
-                        {urlObj.description || urlObj.environmentName || urlObj.url} ({urlObj.url})
+                        {urlObj.description ||
+                          urlObj.environmentName ||
+                          urlObj.url}{' '}
+                        ({urlObj.url})
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
               </Grid>
-            
             </Grid>
           </CardContent>
         </Card>
@@ -237,14 +253,26 @@ export const WebSubConsole = ({
                   </Typography>
                 </Box>
               </AccordionSummary>
-              <AccordionDetails style={{ display: 'block', padding: '16px 24px' }}>
+              <AccordionDetails
+                style={{ display: 'block', padding: '16px 24px' }}
+              >
                 {!isDeployed ? (
-                  <Typography variant="body2" color="textSecondary" style={{ fontStyle: 'italic' }}>
-                    Connect functionality is disabled because the API is not deployed.
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    style={{ fontStyle: 'italic' }}
+                  >
+                    Connect functionality is disabled because the API is not
+                    deployed.
                   </Typography>
                 ) : !isApiKeyEnabled ? (
-                  <Typography variant="body2" color="textSecondary" style={{ fontStyle: 'italic' }}>
-                    Invocation is disabled because API Key authentication is not enabled for this API.
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    style={{ fontStyle: 'italic' }}
+                  >
+                    Invocation is disabled because API Key authentication is not
+                    enabled for this API.
                   </Typography>
                 ) : (
                   <Grid container spacing={2}>
@@ -253,12 +281,22 @@ export const WebSubConsole = ({
                         row
                         value={mode}
                         onChange={e => {
-                          const val = e.target.value as 'subscribe' | 'unsubscribe';
+                          const val = e.target.value as
+                            | 'subscribe'
+                            | 'unsubscribe';
                           setModes(prev => ({ ...prev, [path]: val }));
                         }}
                       >
-                        <FormControlLabel value="subscribe" control={<Radio color="primary" />} label="Subscribe" />
-                        <FormControlLabel value="unsubscribe" control={<Radio color="primary" />} label="Unsubscribe" />
+                        <FormControlLabel
+                          value="subscribe"
+                          control={<Radio color="primary" />}
+                          label="Subscribe"
+                        />
+                        <FormControlLabel
+                          value="unsubscribe"
+                          control={<Radio color="primary" />}
+                          label="Unsubscribe"
+                        />
                       </RadioGroup>
                     </Grid>
 
@@ -311,7 +349,15 @@ export const WebSubConsole = ({
                     </Grid>
 
                     <Grid item xs={12} style={{ marginTop: '16px' }}>
-                      <Typography variant="caption" color="textSecondary" style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
+                      <Typography
+                        variant="caption"
+                        color="textSecondary"
+                        style={{
+                          fontWeight: 'bold',
+                          display: 'block',
+                          marginBottom: '8px',
+                        }}
+                      >
                         curl
                       </Typography>
                       <Box
@@ -330,17 +376,29 @@ export const WebSubConsole = ({
                       >
                         {getCurlCommand(path)}
                       </Box>
-                      <Box display="flex" justifyContent="flex-end" style={{ gap: '16px', marginTop: '8px' }}>
+                      <Box
+                        display="flex"
+                        justifyContent="flex-end"
+                        style={{ gap: '16px', marginTop: '8px' }}
+                      >
                         <Button
                           color="primary"
-                          style={{ fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.5px' }}
+                          style={{
+                            fontWeight: 700,
+                            fontSize: '0.75rem',
+                            letterSpacing: '0.5px',
+                          }}
                           onClick={() => setRefreshToken(prev => prev + 1)}
                         >
                           GENERATE CURL
                         </Button>
                         <Button
                           color="primary"
-                          style={{ fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.5px' }}
+                          style={{
+                            fontWeight: 700,
+                            fontSize: '0.75rem',
+                            letterSpacing: '0.5px',
+                          }}
                           onClick={() => handleCopy(path, globalIdx)}
                         >
                           {copiedIndex === globalIdx ? 'COPIED' : 'COPY CURL'}
@@ -357,7 +415,13 @@ export const WebSubConsole = ({
 
       {/* Stateful Inline Paginator */}
       {totalPages > 1 && (
-        <Box display="flex" justifyContent="center" alignItems="center" mt={3} style={{ gap: '16px' }}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          mt={3}
+          style={{ gap: '16px' }}
+        >
           <Button
             variant="outlined"
             size="small"
@@ -373,7 +437,9 @@ export const WebSubConsole = ({
           <Button
             variant="outlined"
             size="small"
-            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            onClick={() =>
+              setCurrentPage(prev => Math.min(totalPages, prev + 1))
+            }
             disabled={currentPage === totalPages}
             style={{ textTransform: 'none' }}
           >
