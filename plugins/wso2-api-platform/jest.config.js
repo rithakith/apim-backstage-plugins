@@ -1,23 +1,33 @@
+const baseConfig = require('@backstage/cli/config/jest.js');
+
 module.exports = {
+  ...baseConfig,
+  rootDir: __dirname,
+  coverageProvider: 'v8',
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx,ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/**/*.test.{js,jsx,ts,tsx}',
+    '!src/setupTests.ts',
+    '!src/index.ts',
+    '!src/**/*.esm.js',
+    '!src/**/*.cjs.js',
+    '!src/**/*.chunk.js',
+    '!**/jest.config.js',
+  ],
   testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.tsx?$': [
+    '^.+\\.(js|jsx|ts|tsx|mjs)$': [
       require.resolve('@backstage/cli/config/jestSwcTransform.js'),
       {
+        module: { type: 'commonjs' },
         jsc: {
-          parser: {
-            syntax: 'typescript',
-            tsx: true,
-          },
-          transform: {
-            react: {
-              runtime: 'automatic',
-            },
-          },
+          parser: { syntax: 'typescript', tsx: true },
+          transform: { react: { runtime: 'automatic' } },
         },
       },
     ],
   },
-  transformIgnorePatterns: ['/node_modules/'],
-  testMatch: ['**/*.test.ts', '**/*.test.tsx', '**/*.test.js', '**/*.test.jsx']
+  transformIgnorePatterns: ['node_modules/(?!.*@backstage)'],
+  testPathIgnorePatterns: ['/node_modules/', '<rootDir>/e2e-tests/'],
 };

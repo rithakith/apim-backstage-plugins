@@ -3,6 +3,19 @@ const baseConfig = require('@backstage/cli/config/jest.js');
 module.exports = {
   ...baseConfig,
   rootDir: __dirname,
+  transform: {
+    ...baseConfig.transform,
+    '^.+\\.(js|jsx|ts|tsx|mjs)$': [
+      require.resolve('@backstage/cli/config/jestSwcTransform.js'),
+      {
+        module: { type: 'commonjs' },
+        jsc: {
+          parser: { syntax: 'typescript', tsx: true },
+          transform: { react: { runtime: 'automatic' } },
+        },
+      },
+    ],
+  },
   coverageProvider: 'v8',
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
@@ -15,18 +28,6 @@ module.exports = {
     '!src/**/*.chunk.js',
     '!**/jest.config.js',
   ],
-  testEnvironment: 'node',
-  transform: {
-    '^.+\\.tsx?$': [
-      require.resolve('@backstage/cli/config/jestSwcTransform.js'),
-      {
-        module: { type: 'commonjs' },
-        jsc: {
-          parser: { syntax: 'typescript', tsx: true },
-        },
-      },
-    ],
-  },
   transformIgnorePatterns: ['node_modules/(?!.*@backstage)'],
   testPathIgnorePatterns: ['/node_modules/', '<rootDir>/e2e-tests/'],
 };
