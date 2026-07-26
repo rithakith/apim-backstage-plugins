@@ -21,7 +21,7 @@ import {
   Wso2ApiRevisionsResponse,
   Wso2ApiPlatformApi,
   Wso2ApiPlatformRuntimeConfig,
-  Wso2GenerateApiKeyOptions
+  Wso2GenerateApiKeyOptions,
 } from './types';
 
 /**
@@ -131,7 +131,9 @@ export class Wso2ApiPlatformClient implements Wso2ApiPlatformApi {
     return Array.isArray(result) ? result : [];
   }
 
-  async getRuntimeConfig(token?: string): Promise<Wso2ApiPlatformRuntimeConfig> {
+  async getRuntimeConfig(
+    token?: string,
+  ): Promise<Wso2ApiPlatformRuntimeConfig> {
     return this.request<Wso2ApiPlatformRuntimeConfig>('/config', { token });
   }
 

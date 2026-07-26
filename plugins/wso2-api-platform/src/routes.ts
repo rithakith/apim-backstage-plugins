@@ -1,4 +1,7 @@
-import { createRouteRef, createExternalRouteRef } from '@backstage/core-plugin-api';
+import {
+  createRouteRef,
+  createExternalRouteRef,
+} from '@backstage/core-plugin-api';
 
 export const rootRouteRef = createRouteRef({
   id: 'wso2-api-platform',

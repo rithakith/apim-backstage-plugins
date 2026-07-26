@@ -45,7 +45,6 @@ describe('wso2-api-platform utils', () => {
       };
       const res = isWso2Api(entity);
       expect(res).toBe(true);
-
     });
 
     it('should return false if wso2.com/api-id annotation is missing', () => {
@@ -91,7 +90,6 @@ describe('wso2-api-platform utils', () => {
       };
       const res = isMcpEntity(entity);
       expect(res).toBe(true);
-
     });
 
     it('should return false if wso2.com/is-mcp-server is "false"', () => {
@@ -208,7 +206,9 @@ describe('wso2-api-platform utils', () => {
     it('should normalize lifecycle status text for display', () => {
       expect(formatLifecycleStatus('PUBLISHED')).toBe('PUBLISHED');
       expect(formatLifecycleStatus('created')).toBe('CREATED');
-      expect(formatLifecycleStatus('PENDING_APPROVAL')).toBe('PENDING APPROVAL');
+      expect(formatLifecycleStatus('PENDING_APPROVAL')).toBe(
+        'PENDING APPROVAL',
+      );
       expect(formatLifecycleStatus('BLOCKED-STATE')).toBe('BLOCKED STATE');
       expect(formatLifecycleStatus(undefined)).toBeUndefined();
     });
@@ -272,7 +272,6 @@ describe('wso2-api-platform utils', () => {
       };
       const res = hasMultipleComponentRelations(entity);
       expect(res).toBe(true);
-
     });
   });
 
@@ -326,7 +325,6 @@ describe('wso2-api-platform utils', () => {
       expect(isAsyncType('SSE')).toBe(true);
       expect(isAsyncType('WEBHOOK')).toBe(true);
       expect(isAsyncType('WEBSUB')).toBe(true);
-
     });
 
     it('should return false for HTTP/REST and undefined/null type', () => {

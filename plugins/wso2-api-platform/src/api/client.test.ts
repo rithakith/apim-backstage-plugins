@@ -226,7 +226,6 @@ describe('Wso2ApiPlatformClient', () => {
   });
 
   describe('getApiWsdl operations', () => {
-
     it('should getApiWsdl successfully', async () => {
       const mockBlob = {};
       mockFetchApi.fetch.mockResolvedValueOnce({
