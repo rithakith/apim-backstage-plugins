@@ -193,6 +193,11 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Configure Yarn npm auth for GitHub Packages
+        run: |
+          yarn config set npmScopes.rithakith.npmRegistryServer "https://npm.pkg.github.com"
+          yarn config set npmScopes.rithakith.npmAuthToken "${GH_TOKEN}"
+
       - name: Type check (generate type declarations)
         run: yarn tsc
 
@@ -203,7 +208,7 @@ jobs:
         run: |
           yarn release:version
 
-      - name: Publish to npm / GitHub Packages
+      - name: Publish to GitHub Packages
         run: |
           TAG=latest
           if [ "${IS_PRERELEASE}" = "true" ]; then
