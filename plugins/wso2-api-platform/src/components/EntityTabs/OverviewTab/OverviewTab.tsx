@@ -99,31 +99,63 @@ const EntityWso2OverviewTabContent = () => {
       variant="gridItem"
       subheader={<HeaderIconLinkRow links={links} />}
     >
-      <Grid container>
-        <AboutField label="Name" value={entity.metadata.name} />
-        <AboutField
-          label="Display Name"
-          value={entity.metadata.title || entity.metadata.name}
-        />
-        {lifecycle && <AboutField label="Lifecycle" value={lifecycle} />}
-        {context && <AboutField label="Context" value={context} />}
-        {version && <AboutField label="Version" value={version} />}
-        {provider && <AboutField label="Provider" value={provider} />}
-        {gatewayValue && <AboutField label="Gateway" value={gatewayValue} />}
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6} md={4}>
+          <AboutField label="Name" value={entity.metadata.name} />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <AboutField
+            label="Display Name"
+            value={entity.metadata.title || entity.metadata.name}
+          />
+        </Grid>
+        {lifecycle && (
+          <Grid item xs={12} sm={6} md={4}>
+            <AboutField label="Lifecycle" value={lifecycle} />
+          </Grid>
+        )}
+        {context && (
+          <Grid item xs={12} sm={6} md={4}>
+            <AboutField label="Context" value={context} />
+          </Grid>
+        )}
+        {version && (
+          <Grid item xs={12} sm={6} md={4}>
+            <AboutField label="Version" value={version} />
+          </Grid>
+        )}
+        {provider && (
+          <Grid item xs={12} sm={6} md={4}>
+            <AboutField label="Provider" value={provider} />
+          </Grid>
+        )}
+        {gatewayValue && (
+          <Grid item xs={12} sm={6} md={4}>
+            <AboutField label="Gateway" value={gatewayValue} />
+          </Grid>
+        )}
         {throttlingPolicy && (
-          <AboutField label="Throttling Policy" value={throttlingPolicy} />
+          <Grid item xs={12} sm={6} md={4}>
+            <AboutField label="Throttling Policy" value={throttlingPolicy} />
+          </Grid>
         )}
         {securityScheme && (
-          <AboutField
-            label="Security Scheme"
-            value={
-              Array.isArray(securityScheme)
-                ? securityScheme.join(', ')
-                : securityScheme
-            }
-          />
+          <Grid item xs={12} sm={6} md={4}>
+            <AboutField
+              label="Security Scheme"
+              value={
+                Array.isArray(securityScheme)
+                  ? securityScheme.join(', ')
+                  : securityScheme
+              }
+            />
+          </Grid>
         )}
-        {description && <AboutField label="Description" value={description} />}
+        {description && (
+          <Grid item xs={12}>
+            <AboutField label="Description" value={description} />
+          </Grid>
+        )}
       </Grid>
     </InfoCard>
   );
