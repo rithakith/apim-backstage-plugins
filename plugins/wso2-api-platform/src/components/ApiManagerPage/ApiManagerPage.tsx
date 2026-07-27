@@ -438,6 +438,11 @@ export const Wso2ApiPlatformPage = () => {
 
         {tabValue === 1 && (
           <ApiProductsTab
+            gatewayDiscoveryWarningPanel={gatewayDiscoveryWarningPanel}
+            isGatewayDiscoveryFailureEmptyState={
+              isGatewayDiscoveryFailureEmptyState
+            }
+            gatewayDiscoveryFailureContent={gatewayDiscoveryFailureContent}
             apiProductListState={apiProductListState}
             searchToolbar={
               <Box className={classes.apiTableToolbar}>
@@ -459,6 +464,11 @@ export const Wso2ApiPlatformPage = () => {
 
         {tabValue === 2 && (
           <McpServersTab
+            gatewayDiscoveryWarningPanel={gatewayDiscoveryWarningPanel}
+            isGatewayDiscoveryFailureEmptyState={
+              isGatewayDiscoveryFailureEmptyState
+            }
+            gatewayDiscoveryFailureContent={gatewayDiscoveryFailureContent}
             mcpListState={mcpListState}
             searchToolbar={
               <Box className={classes.apiTableToolbar}>
@@ -480,6 +490,11 @@ export const Wso2ApiPlatformPage = () => {
 
         {tabValue === 3 && (
           <ServicesTab
+            gatewayDiscoveryWarningPanel={gatewayDiscoveryWarningPanel}
+            isGatewayDiscoveryFailureEmptyState={
+              isGatewayDiscoveryFailureEmptyState
+            }
+            gatewayDiscoveryFailureContent={gatewayDiscoveryFailureContent}
             servicesListState={servicesListState}
             searchToolbar={
               <Box className={classes.apiTableToolbar}>

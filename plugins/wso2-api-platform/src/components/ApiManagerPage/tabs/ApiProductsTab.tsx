@@ -24,6 +24,9 @@ import { Wso2ApiProductSummary } from '../../../api';
 import { tableIconsWithoutSearchClear } from '../../common/Table/tableRenderers';
 
 type ApiProductsTabProps = {
+  gatewayDiscoveryWarningPanel?: React.ReactNode;
+  isGatewayDiscoveryFailureEmptyState?: boolean;
+  gatewayDiscoveryFailureContent?: React.ReactNode;
   apiProductListState: any;
   searchToolbar: React.ReactNode;
   visibleApiProducts: Wso2ApiProductSummary[];
@@ -33,6 +36,9 @@ type ApiProductsTabProps = {
 };
 
 export const ApiProductsTab = ({
+  gatewayDiscoveryWarningPanel,
+  isGatewayDiscoveryFailureEmptyState,
+  gatewayDiscoveryFailureContent,
   apiProductListState,
   searchToolbar,
   visibleApiProducts,
@@ -41,29 +47,35 @@ export const ApiProductsTab = ({
   resultNotFoundContent,
 }: ApiProductsTabProps) => (
   <>
-    {apiProductListState.loading && (
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        my={10}
-      >
-        <CircularProgress color="primary" size={50} thickness={4} />
-        <Box mt={2}>
-          <Typography variant="h6" color="textSecondary">
-            Fetching API Products...
-          </Typography>
+    {!isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryWarningPanel}
+    {apiProductListState.loading &&
+      !isGatewayDiscoveryFailureEmptyState &&
+      (!apiProductListState.value?.apiProducts ||
+        apiProductListState.value.apiProducts.length === 0) && (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          my={10}
+        >
+          <CircularProgress color="primary" size={50} thickness={4} />
+          <Box mt={2}>
+            <Typography variant="h6" color="textSecondary">
+              Fetching API Products...
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-    )}
+      )}
     {apiProductListState.error && (
       <WarningPanel
         title="Failed to load API Products"
         message={apiProductListState.error.message}
       />
     )}
+    {isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryFailureContent}
     {!apiProductListState.loading &&
+      !isGatewayDiscoveryFailureEmptyState &&
       (!apiProductListState.value?.apiProducts ||
         apiProductListState.value.apiProducts.length === 0) && (
         <Box

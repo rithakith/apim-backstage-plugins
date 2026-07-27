@@ -24,6 +24,9 @@ import { Wso2McpSummary } from '../../../api';
 import { tableIconsWithoutSearchClear } from '../../common/Table/tableRenderers';
 
 type McpServersTabProps = {
+  gatewayDiscoveryWarningPanel?: React.ReactNode;
+  isGatewayDiscoveryFailureEmptyState?: boolean;
+  gatewayDiscoveryFailureContent?: React.ReactNode;
   mcpListState: any;
   searchToolbar: React.ReactNode;
   visibleMcpServers: Wso2McpSummary[];
@@ -33,6 +36,9 @@ type McpServersTabProps = {
 };
 
 export const McpServersTab = ({
+  gatewayDiscoveryWarningPanel,
+  isGatewayDiscoveryFailureEmptyState,
+  gatewayDiscoveryFailureContent,
   mcpListState,
   searchToolbar,
   visibleMcpServers,
@@ -41,29 +47,35 @@ export const McpServersTab = ({
   resultNotFoundContent,
 }: McpServersTabProps) => (
   <>
-    {mcpListState.loading && (
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        my={10}
-      >
-        <CircularProgress color="primary" size={50} thickness={4} />
-        <Box mt={2}>
-          <Typography variant="h6" color="textSecondary">
-            Fetching MCP Servers...
-          </Typography>
+    {!isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryWarningPanel}
+    {mcpListState.loading &&
+      !isGatewayDiscoveryFailureEmptyState &&
+      (!mcpListState.value?.mcpServers ||
+        mcpListState.value.mcpServers.length === 0) && (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          my={10}
+        >
+          <CircularProgress color="primary" size={50} thickness={4} />
+          <Box mt={2}>
+            <Typography variant="h6" color="textSecondary">
+              Fetching MCP Servers...
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-    )}
+      )}
     {mcpListState.error && (
       <WarningPanel
         title="Failed to load MCP Servers"
         message={mcpListState.error.message}
       />
     )}
+    {isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryFailureContent}
     {!mcpListState.loading &&
+      !isGatewayDiscoveryFailureEmptyState &&
       (!mcpListState.value?.mcpServers ||
         mcpListState.value.mcpServers.length === 0) && (
         <Box

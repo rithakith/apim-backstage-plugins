@@ -23,6 +23,9 @@ import { Table, TableColumn, WarningPanel } from '@backstage/core-components';
 import { tableIconsWithoutSearchClear } from '../../common/Table/tableRenderers';
 
 type ServicesTabProps = {
+  gatewayDiscoveryWarningPanel?: React.ReactNode;
+  isGatewayDiscoveryFailureEmptyState?: boolean;
+  gatewayDiscoveryFailureContent?: React.ReactNode;
   servicesListState: any;
   searchToolbar: React.ReactNode;
   visibleServices: any[];
@@ -32,6 +35,9 @@ type ServicesTabProps = {
 };
 
 export const ServicesTab = ({
+  gatewayDiscoveryWarningPanel,
+  isGatewayDiscoveryFailureEmptyState,
+  gatewayDiscoveryFailureContent,
   servicesListState,
   searchToolbar,
   visibleServices,
@@ -40,29 +46,34 @@ export const ServicesTab = ({
   resultNotFoundContent,
 }: ServicesTabProps) => (
   <>
-    {servicesListState.loading && !servicesListState.value && (
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        my={10}
-      >
-        <CircularProgress color="primary" size={50} thickness={4} />
-        <Box mt={2}>
-          <Typography variant="h6" color="textSecondary">
-            Fetching Services...
-          </Typography>
+    {!isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryWarningPanel}
+    {servicesListState.loading &&
+      !isGatewayDiscoveryFailureEmptyState &&
+      !servicesListState.value && (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          my={10}
+        >
+          <CircularProgress color="primary" size={50} thickness={4} />
+          <Box mt={2}>
+            <Typography variant="h6" color="textSecondary">
+              Fetching Services...
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-    )}
+      )}
     {servicesListState.error && (
       <WarningPanel
         title="Failed to load Services"
         message={servicesListState.error.message}
       />
     )}
+    {isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryFailureContent}
     {!servicesListState.loading &&
+      !isGatewayDiscoveryFailureEmptyState &&
       (!servicesListState.value?.list ||
         servicesListState.value.list.length === 0) && (
         <Box

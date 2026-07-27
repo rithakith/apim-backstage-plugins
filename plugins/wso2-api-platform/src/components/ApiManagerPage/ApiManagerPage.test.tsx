@@ -783,15 +783,15 @@ describe('Wso2ApiPlatformPage', () => {
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'API Products' }));
-    expect(screen.getByText('No API Products Available')).toBeInTheDocument();
-    expect(
-      screen.queryByText('Gateway Discovery Warning'),
-    ).not.toBeInTheDocument();
+    expect(screen.getByText('Gateway Discovery Warning')).toBeInTheDocument();
+    expect(screen.getByText('Refresh Now')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'MCP Servers' }));
-    expect(screen.getByText('No MCP Servers Available')).toBeInTheDocument();
-    expect(
-      screen.queryByText('Gateway Discovery Warning'),
-    ).not.toBeInTheDocument();
+    expect(screen.getByText('Gateway Discovery Warning')).toBeInTheDocument();
+    expect(screen.getByText('Refresh Now')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Services' }));
+    expect(screen.getByText('Gateway Discovery Warning')).toBeInTheDocument();
+    expect(screen.getByText('Refresh Now')).toBeInTheDocument();
   });
 });
