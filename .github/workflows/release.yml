@@ -199,6 +199,20 @@ jobs:
         run: |
           yarn release:version
 
+      - name: Commit version bump
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: version bump to v${VERSION}"
+            git push origin HEAD:${GITHUB_REF}
+            echo "COMMIT_TO_TAG=$(git rev-parse HEAD)" >> $GITHUB_ENV
+          else
+            echo "COMMIT_TO_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
+          fi
+
       - name: Publish to GitHub Packages
         run: |
           TAG=latest
@@ -213,9 +227,11 @@ jobs:
       - name: Create git tag
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
-          git config user.name "rithakith"
-          git config user.email "rithakith@users.noreply.github.com"
-          git tag "${RELEASE_TAG}" "${GITHUB_SHA}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Use the new commit if we bumped versions, else the original SHA
+          TARGET_SHA="${COMMIT_TO_TAG:-$GITHUB_SHA}"
+          git tag "${RELEASE_TAG}" "${TARGET_SHA}"
           git push origin "${RELEASE_TAG}"
 
       - name: Create GitHub Release
