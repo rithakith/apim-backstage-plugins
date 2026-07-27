@@ -205,6 +205,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
+          # Unstage .yarnrc.yml so we don't commit the auth token
+          git reset .yarnrc.yml || true
           if ! git diff --staged --quiet; then
             git commit -m "chore: version bump to v${VERSION}"
             git push origin HEAD:${GITHUB_REF}
