@@ -46,6 +46,7 @@ export const EntityWso2ApiPoliciesTab = (): React.JSX.Element | null => {
   const isDiscovered =
     entity.metadata.annotations?.['wso2.com/is-discovered'] === 'true';
   const isMcp = isMcpEntity(entity);
+  const isService = isServiceEntity(entity);
 
   const apiType = String(
     entity.metadata.annotations?.['wso2.com/api-type'] ||
@@ -67,9 +68,10 @@ export const EntityWso2ApiPoliciesTab = (): React.JSX.Element | null => {
     entity,
     apiId,
     isApiPlatform: skipKeyGeneration,
+    skip: isService,
   });
 
-  if (isServiceEntity(entity)) {
+  if (isService) {
     return <EntityWso2ServiceDefinitionCard />;
   }
 
