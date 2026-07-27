@@ -49,9 +49,8 @@ export function registerGatewayRoutes(
           });
         } catch (e: any) {
           logger.warn(
-            `Failed to fetch APIM settings for gateways: ${e.message}`,
+            `Failed to fetch APIM settings for gateways: ${e.message}. Check APIM configuration or client credentials.`,
           );
-          throw e; // Allow error to bubble up so that the router.test.ts GET /gateways 500 error test passes
         }
       }
 

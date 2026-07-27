@@ -24,7 +24,6 @@ import { Wso2ApiProductSummary } from '../../../api';
 import { tableIconsWithoutSearchClear } from '../../common/Table/tableRenderers';
 
 type ApiProductsTabProps = {
-  gatewayDiscoveryWarningPanel?: React.ReactNode;
   isGatewayDiscoveryFailureEmptyState?: boolean;
   gatewayDiscoveryFailureContent?: React.ReactNode;
   apiProductListState: any;
@@ -36,7 +35,6 @@ type ApiProductsTabProps = {
 };
 
 export const ApiProductsTab = ({
-  gatewayDiscoveryWarningPanel,
   isGatewayDiscoveryFailureEmptyState,
   gatewayDiscoveryFailureContent,
   apiProductListState,
@@ -47,7 +45,6 @@ export const ApiProductsTab = ({
   resultNotFoundContent,
 }: ApiProductsTabProps) => (
   <>
-    {!isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryWarningPanel}
     {apiProductListState.loading &&
       !isGatewayDiscoveryFailureEmptyState &&
       (!apiProductListState.value?.apiProducts ||

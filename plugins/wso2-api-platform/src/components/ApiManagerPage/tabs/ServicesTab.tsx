@@ -23,7 +23,6 @@ import { Table, TableColumn, WarningPanel } from '@backstage/core-components';
 import { tableIconsWithoutSearchClear } from '../../common/Table/tableRenderers';
 
 type ServicesTabProps = {
-  gatewayDiscoveryWarningPanel?: React.ReactNode;
   isGatewayDiscoveryFailureEmptyState?: boolean;
   gatewayDiscoveryFailureContent?: React.ReactNode;
   servicesListState: any;
@@ -35,7 +34,6 @@ type ServicesTabProps = {
 };
 
 export const ServicesTab = ({
-  gatewayDiscoveryWarningPanel,
   isGatewayDiscoveryFailureEmptyState,
   gatewayDiscoveryFailureContent,
   servicesListState,
@@ -46,7 +44,6 @@ export const ServicesTab = ({
   resultNotFoundContent,
 }: ServicesTabProps) => (
   <>
-    {!isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryWarningPanel}
     {servicesListState.loading &&
       !isGatewayDiscoveryFailureEmptyState &&
       !servicesListState.value && (

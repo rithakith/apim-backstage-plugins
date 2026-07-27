@@ -26,12 +26,10 @@ import { Wso2ApiSummary } from '../../../api';
 import { tableIconsWithoutSearchClear } from '../../common/Table/tableRenderers';
 
 type ApiTabProps = {
-  gatewayDiscoveryWarningPanel: React.ReactNode;
   isGatewayDiscoveryFailureEmptyState: boolean;
   gatewayDiscoveryFailureContent: React.ReactNode;
   apiListState: any;
   apiCount: number;
-  offlineGatewayCount: number;
   apiTableToolbar: React.ReactNode;
   visibleApis: Wso2ApiSummary[];
   columns: TableColumn<Wso2ApiSummary>[];
@@ -42,12 +40,10 @@ type ApiTabProps = {
 };
 
 export const ApiTab = ({
-  gatewayDiscoveryWarningPanel,
   isGatewayDiscoveryFailureEmptyState,
   gatewayDiscoveryFailureContent,
   apiListState,
   apiCount,
-  offlineGatewayCount,
   apiTableToolbar,
   visibleApis,
   columns,
@@ -57,7 +53,6 @@ export const ApiTab = ({
   apiEmptyStateClassName,
 }: ApiTabProps) => (
   <>
-    {!isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryWarningPanel}
     {apiListState.loading &&
       !isGatewayDiscoveryFailureEmptyState &&
       (!apiListState.value?.apis || apiListState.value.apis.length === 0) && (
@@ -85,41 +80,6 @@ export const ApiTab = ({
     {isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryFailureContent}
     {!apiListState.loading &&
       !isGatewayDiscoveryFailureEmptyState &&
-      offlineGatewayCount > 0 &&
-      apiCount === 0 && (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          my={10}
-          textAlign="center"
-        >
-          <Box mt={3} maxWidth={600}>
-            <Typography variant="h5" gutterBottom style={{ fontWeight: 500 }}>
-              No APIs Available
-            </Typography>
-            <Typography variant="body1" color="textSecondary">
-              We could not find any APIs in your catalog, and gateway discovery
-              failed. Please check your backend logs or gateway configuration.
-            </Typography>
-            <Box mt={2}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => apiListState.retry()}
-                startIcon={<RefreshIcon />}
-                disabled={apiListState.loading}
-              >
-                Refresh Now
-              </Button>
-            </Box>
-          </Box>
-        </Box>
-      )}
-    {!apiListState.loading &&
-      !isGatewayDiscoveryFailureEmptyState &&
-      offlineGatewayCount === 0 &&
       apiCount === 0 && (
         <Box
           display="flex"

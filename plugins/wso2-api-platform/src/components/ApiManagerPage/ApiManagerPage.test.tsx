@@ -466,7 +466,7 @@ describe('Wso2ApiPlatformPage', () => {
     expect(await screen.findByText('No APIs Available')).toBeInTheDocument();
   });
 
-  it('shows offline gateway warnings while keeping catalog APIs visible', async () => {
+  it('shows catalog APIs even when a gateway is offline', async () => {
     setupMocks({
       gateways: [
         {
@@ -480,11 +480,12 @@ describe('Wso2ApiPlatformPage', () => {
 
     render(<Wso2ApiPlatformPage />);
 
+    // No gateway warning shown — this is a discovery portal, infra issues go to admin logs
     expect(
-      await screen.findByText('Gateway Discovery Warning'),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Offline Gateway/)).toBeInTheDocument();
-    expect(screen.getByText('Customer API')).toBeInTheDocument();
+      screen.queryByText('Gateway Discovery Warning'),
+    ).not.toBeInTheDocument();
+    // Catalog APIs are still visible
+    expect(await screen.findByText('Customer API')).toBeInTheDocument();
   });
 
   it('renders API Products, MCP Servers, and Services from their tabs', async () => {
@@ -757,7 +758,7 @@ describe('Wso2ApiPlatformPage', () => {
     expect(mockCatalogApi.getEntities).toHaveBeenCalledTimes(2);
   });
 
-  it('shows gateway discovery failure across tabs when catalog is empty', async () => {
+  it('shows Refresh Now across tabs when catalog is empty and gateway is offline', async () => {
     setupMocks({
       entities: [],
       services: [],
@@ -779,19 +780,19 @@ describe('Wso2ApiPlatformPage', () => {
     render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('Refresh Now')).toBeInTheDocument();
-    expect(screen.getByText('Gateway Discovery Warning')).toBeInTheDocument();
+    // No gateway warning — infra issues are for admins, not portal users
+    expect(
+      screen.queryByText('Gateway Discovery Warning'),
+    ).not.toBeInTheDocument();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'API Products' }));
-    expect(screen.getByText('Gateway Discovery Warning')).toBeInTheDocument();
     expect(screen.getByText('Refresh Now')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'MCP Servers' }));
-    expect(screen.getByText('Gateway Discovery Warning')).toBeInTheDocument();
     expect(screen.getByText('Refresh Now')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'Services' }));
-    expect(screen.getByText('Gateway Discovery Warning')).toBeInTheDocument();
     expect(screen.getByText('Refresh Now')).toBeInTheDocument();
   });
 });

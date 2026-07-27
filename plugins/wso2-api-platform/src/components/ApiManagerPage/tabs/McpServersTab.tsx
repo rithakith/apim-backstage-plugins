@@ -24,7 +24,6 @@ import { Wso2McpSummary } from '../../../api';
 import { tableIconsWithoutSearchClear } from '../../common/Table/tableRenderers';
 
 type McpServersTabProps = {
-  gatewayDiscoveryWarningPanel?: React.ReactNode;
   isGatewayDiscoveryFailureEmptyState?: boolean;
   gatewayDiscoveryFailureContent?: React.ReactNode;
   mcpListState: any;
@@ -36,7 +35,6 @@ type McpServersTabProps = {
 };
 
 export const McpServersTab = ({
-  gatewayDiscoveryWarningPanel,
   isGatewayDiscoveryFailureEmptyState,
   gatewayDiscoveryFailureContent,
   mcpListState,
@@ -47,7 +45,6 @@ export const McpServersTab = ({
   resultNotFoundContent,
 }: McpServersTabProps) => (
   <>
-    {!isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryWarningPanel}
     {mcpListState.loading &&
       !isGatewayDiscoveryFailureEmptyState &&
       (!mcpListState.value?.mcpServers ||
