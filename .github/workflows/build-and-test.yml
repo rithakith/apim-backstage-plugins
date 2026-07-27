@@ -136,10 +136,10 @@ jobs:
       # build:all also builds packages/app and packages/backend (the dev app),
       # which are not published and would add unnecessary time.
       - name: Build frontend plugin
-        run: yarn workspace @wso2/backstage-plugin-wso2-api-platform build
+        run: yarn workspace @rithakith/backstage-plugin-wso2-api-platform build
 
       - name: Build backend plugin
-        run: yarn workspace @wso2/backstage-plugin-wso2-api-platform-backend build
+        run: yarn workspace @rithakith/backstage-plugin-wso2-api-platform-backend build
 
       - name: Build catalog backend module
-        run: yarn workspace @wso2/backstage-plugin-catalog-backend-module-wso2-api-platform build
+        run: yarn workspace @rithakith/backstage-plugin-catalog-backend-module-wso2-api-platform build

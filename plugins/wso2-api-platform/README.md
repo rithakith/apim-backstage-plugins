@@ -1,4 +1,4 @@
-# WSO2 API Manager Frontend Plugin (`@wso2/backstage-plugin-wso2-api-platform`)
+# WSO2 API Manager Frontend Plugin (`@rithakith/backstage-plugin-wso2-api-platform`)
 
 This plugin provides the frontend React UI integration for **WSO2 API Manager** in Backstage. It includes a comprehensive discovery dashboard for browsing APIs, API Products, and MCP Servers, as well as specialized Catalog Entity Cards for detailed exploration and interactive API testing.
 
