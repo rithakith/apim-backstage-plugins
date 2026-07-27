@@ -38,39 +38,45 @@ export const Wso2SingleDocumentView = (options: {
 
   return (
     <Box
-      p={2}
-      textAlign="center"
+      p={3}
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
       border={1}
       borderColor="divider"
       borderRadius={4}
     >
-      <Typography variant="h5" gutterBottom>
-        {doc.name}
-      </Typography>
-      <Box mb={2}>
-        <Chip
-          label={doc.type}
-          color="primary"
-          variant="outlined"
-          style={{ marginRight: 8 }}
-        />
-        <Chip label={doc.sourceType} variant="outlined" />
+      <Box pr={2}>
+        <Box display="flex" alignItems="center" mb={1} flexWrap="wrap">
+          <Typography variant="h5" style={{ marginRight: 16 }}>
+            {doc.name}
+          </Typography>
+          <Chip
+            label={doc.type}
+            color="primary"
+            variant="outlined"
+            size="small"
+            style={{ marginRight: 8 }}
+          />
+          <Chip label={doc.sourceType} variant="outlined" size="small" />
+        </Box>
+        <Typography variant="body1" color="textSecondary">
+          {doc.summary}
+        </Typography>
       </Box>
-      <Typography variant="body1" color="textSecondary" paragraph>
-        {doc.summary}
-      </Typography>
-      <Box mt={2}>
-        {doc.sourceType !== 'INLINE' && doc.sourceType !== 'MARKDOWN' && (
+
+      {doc.sourceType !== 'INLINE' && doc.sourceType !== 'MARKDOWN' && (
+        <Box flexShrink={0}>
           <Button
             variant="contained"
             color="primary"
             startIcon={<GetAppIcon />}
             onClick={() => onDownload(doc)}
           >
-            Download Document
+            Download
           </Button>
-        )}
-      </Box>
+        </Box>
+      )}
     </Box>
   );
 };
