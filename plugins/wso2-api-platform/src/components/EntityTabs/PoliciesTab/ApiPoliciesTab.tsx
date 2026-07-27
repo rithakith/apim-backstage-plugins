@@ -98,8 +98,6 @@ export const EntityWso2ApiPoliciesTab = (): React.JSX.Element | null => {
 
   const isLoading = isDefinitionLoading;
 
-  if (!apiId) return null;
-
   return (
     <InfoCard>
       {isDiscovered && (
