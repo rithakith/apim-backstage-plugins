@@ -18,9 +18,9 @@ This integration suite consists of three interconnected packages. You can find s
 
 | Package                                                       | Description                                                                                                                                                  | README                                                                  |
 | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| `@wso2/backstage-plugin-wso2-api-platform`                    | **Frontend Plugin:** Provides the main WSO2 API Platform page, Entity Pages, API Try-Out consoles, and UI components.                                        | [View README](./plugins/wso2-api-platform/README.md)                    |
-| `@wso2/backstage-plugin-wso2-api-platform-backend`            | **Backend Plugin:** Handles secure API proxying, credentials generation, and runtime operations.                                                             | [View README](./plugins/wso2-api-platform-backend/README.md)            |
-| `@wso2/backstage-plugin-catalog-backend-module-wso2-platform` | **Catalog Module:** Responsible for the automatic discovery and ingestion of WSO2 APIs, API Products, MCP Servers, and Services into your Backstage Catalog. | [View README](./plugins/catalog-backend-module-wso2-platform/README.md) |
+| `@rithakith/backstage-plugin-wso2-api-platform`                    | **Frontend Plugin:** Provides the main WSO2 API Platform page, Entity Pages, API Try-Out consoles, and UI components.                                        | [View README](./plugins/wso2-api-platform/README.md)                    |
+| `@rithakith/backstage-plugin-wso2-api-platform-backend`            | **Backend Plugin:** Handles secure API proxying, credentials generation, and runtime operations.                                                             | [View README](./plugins/wso2-api-platform-backend/README.md)            |
+| `@rithakith/backstage-plugin-catalog-backend-module-wso2-api-platform` | **Catalog Module:** Responsible for the automatic discovery and ingestion of WSO2 APIs, API Products, MCP Servers, and Services into your Backstage Catalog. | [View README](./plugins/catalog-backend-module-wso2-api-platform/README.md) |
 
 ## Architecture
 

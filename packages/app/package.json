@@ -40,7 +40,7 @@
     "@backstage/ui": "^0.15.0",
     "@material-ui/core": "^4.12.2",
     "@material-ui/icons": "^4.9.1",
-    "@wso2/backstage-plugin-wso2-api-platform": "workspace:^",
+    "@rithakith/backstage-plugin-wso2-api-platform": "workspace:^",
     "react": "^18.0.2",
     "react-dom": "^18.0.2",
     "react-router": "^6.30.2",
