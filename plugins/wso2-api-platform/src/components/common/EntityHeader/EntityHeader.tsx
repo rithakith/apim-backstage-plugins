@@ -106,20 +106,27 @@ export const EntityHeader = (): JSX.Element => {
               whiteSpace="nowrap"
               overflow="hidden"
             >
-              {entity ? (
-                `${displayName} : ${version}`
-              ) : (
-                fallbackTitle
-              )}
+              {entity ? `${displayName} : ${version}` : fallbackTitle}
             </Box>
             {entity && <FavoriteEntity entity={entity} />}
           </Box>
         }
-        type={<Wso2EntityTypeText label={headerType} /> as unknown as string}
+        type={(<Wso2EntityTypeText label={headerType} />) as unknown as string}
       />
-      <Box px={3} pt={2} pb={1} bgcolor={theme.palette.type === 'dark' ? 'transparent' : '#ffffff'} borderBottom={`0.1px solid ${theme.palette.type === 'dark' ? theme.palette.divider : '#e0e0e0'}`}>
+      <Box
+        px={3}
+        pt={2}
+        pb={1}
+        bgcolor={theme.palette.type === 'dark' ? 'transparent' : '#ffffff'}
+        borderBottom={`0.1px solid ${
+          theme.palette.type === 'dark' ? theme.palette.divider : '#e0e0e0'
+        }`}
+      >
         <Breadcrumbs aria-label="breadcrumb">
-          <Link to={platformRoute()} style={{ display: 'flex', alignItems: 'center' }}>
+          <Link
+            to={platformRoute()}
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
             <HomeIcon style={{ marginRight: '4px', fontSize: '1.2rem' }} />
           </Link>
           <Typography color="textPrimary" style={{ fontWeight: 500 }}>

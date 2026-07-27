@@ -2,8 +2,7 @@
 
 This is the catalog backend module for the **WSO2 API Manager** integration. It provides a Backstage `EntityProvider` that automatically discovers and ingests APIs, API Products, Services, and MCP Servers from WSO2 directly into the Backstage Software Catalog.
 
-> [!IMPORTANT]
-> **This package is part of the WSO2 suite.**
+> [!IMPORTANT] > **This package is part of the WSO2 suite.**
 > Please see the [Main Plugin Page](https://npmjs.com/package/@wso2/backstage-plugin-wso2-api-platform) for full installation and configuration instructions.
 
 ## Polling and Scheduling
@@ -20,28 +19,28 @@ The ingestion process runs on a customizable schedule, ensuring your Backstage C
 
 During an ingestion sweep, this module connects to multiple WSO2 APIs to discover and build the Backstage entities. The following tables outline the specific endpoints accessed:
 
-*Note: `{publisherBasePath}` typically resolves to `/api/am/publisher/v4`, and `{serviceCatalogBasePath}` resolves to `/api/am/service-catalog/v1`.*
+_Note: `{publisherBasePath}` typically resolves to `/api/am/publisher/v4`, and `{serviceCatalogBasePath}` resolves to `/api/am/service-catalog/v1`._
 
-| Domain | HTTP Method | Endpoint Pattern | Purpose |
-| ------ | ----------- | ---------------- | ------- |
-| **Settings** | GET | `{publisherBasePath}/settings` | Fetches global APIM environment settings. |
-| **APIs** | GET | `{publisherBasePath}/apis?limit=1000&offset={offset}` | Retrieves the paginated list of all APIs. |
-| **APIs** | GET | `{publisherBasePath}/apis/{apiId}` | Fetches detailed metadata for a specific API. |
-| **APIs** | GET | `{publisherBasePath}/apis/{apiId}/documents` | Discovers documents attached to the API. |
-| **APIs** | GET | `{publisherBasePath}/apis/{apiId}/swagger` | Retrieves the OpenAPI definition payload. |
-| **APIs** | GET | `{publisherBasePath}/apis/{apiId}/asyncapi` | Retrieves the AsyncAPI definition payload. |
-| **APIs** | GET | `{publisherBasePath}/apis/{apiId}/wsdl` | Retrieves the SOAP WSDL payload. |
-| **API Products** | GET | `{publisherBasePath}/api-products` | Retrieves the list of API Products. |
-| **API Products** | GET | `{publisherBasePath}/api-products/{productId}` | Fetches detailed metadata for a product. |
-| **API Products** | GET | `{publisherBasePath}/api-products/{productId}/swagger` | Retrieves the Product's OpenAPI definition. |
-| **MCP Servers** | GET | `{publisherBasePath}/mcp-servers` | Retrieves the list of MCP Servers. |
-| **MCP Servers** | GET | `{publisherBasePath}/mcp-servers/{mcpId}` | Fetches detailed metadata for an MCP Server. |
-| **MCP Servers** | GET | `{publisherBasePath}/mcp-servers/{mcpId}/documents` | Discovers documents attached to the MCP Server. |
-| **Service Catalog** | GET | `{serviceCatalogBasePath}/services?limit=1000&offset={offset}` | Retrieves the paginated list of backend Services. |
-| **Service Catalog** | GET | `{serviceCatalogBasePath}/services/{serviceId}/usage` | Determines which APIs use a specific Service. |
-| **Service Catalog** | GET | `{serviceCatalogBasePath}/services/{serviceId}/definition` | Retrieves the OpenAPI definition of the backend service. |
-| **Platform Gateways**| GET | `{discoveryUrl}` | Discovers gateway-level APIs deployed on self-hosted gateways. |
-| **Platform Gateways**| GET | `{discoveryUrl}/{gatewayApiId}` | Fetches details for a discovered gateway API. |
+| Domain                | HTTP Method | Endpoint Pattern                                               | Purpose                                                        |
+| --------------------- | ----------- | -------------------------------------------------------------- | -------------------------------------------------------------- |
+| **Settings**          | GET         | `{publisherBasePath}/settings`                                 | Fetches global APIM environment settings.                      |
+| **APIs**              | GET         | `{publisherBasePath}/apis?limit=1000&offset={offset}`          | Retrieves the paginated list of all APIs.                      |
+| **APIs**              | GET         | `{publisherBasePath}/apis/{apiId}`                             | Fetches detailed metadata for a specific API.                  |
+| **APIs**              | GET         | `{publisherBasePath}/apis/{apiId}/documents`                   | Discovers documents attached to the API.                       |
+| **APIs**              | GET         | `{publisherBasePath}/apis/{apiId}/swagger`                     | Retrieves the OpenAPI definition payload.                      |
+| **APIs**              | GET         | `{publisherBasePath}/apis/{apiId}/asyncapi`                    | Retrieves the AsyncAPI definition payload.                     |
+| **APIs**              | GET         | `{publisherBasePath}/apis/{apiId}/wsdl`                        | Retrieves the SOAP WSDL payload.                               |
+| **API Products**      | GET         | `{publisherBasePath}/api-products`                             | Retrieves the list of API Products.                            |
+| **API Products**      | GET         | `{publisherBasePath}/api-products/{productId}`                 | Fetches detailed metadata for a product.                       |
+| **API Products**      | GET         | `{publisherBasePath}/api-products/{productId}/swagger`         | Retrieves the Product's OpenAPI definition.                    |
+| **MCP Servers**       | GET         | `{publisherBasePath}/mcp-servers`                              | Retrieves the list of MCP Servers.                             |
+| **MCP Servers**       | GET         | `{publisherBasePath}/mcp-servers/{mcpId}`                      | Fetches detailed metadata for an MCP Server.                   |
+| **MCP Servers**       | GET         | `{publisherBasePath}/mcp-servers/{mcpId}/documents`            | Discovers documents attached to the MCP Server.                |
+| **Service Catalog**   | GET         | `{serviceCatalogBasePath}/services?limit=1000&offset={offset}` | Retrieves the paginated list of backend Services.              |
+| **Service Catalog**   | GET         | `{serviceCatalogBasePath}/services/{serviceId}/usage`          | Determines which APIs use a specific Service.                  |
+| **Service Catalog**   | GET         | `{serviceCatalogBasePath}/services/{serviceId}/definition`     | Retrieves the OpenAPI definition of the backend service.       |
+| **Platform Gateways** | GET         | `{discoveryUrl}`                                               | Discovers gateway-level APIs deployed on self-hosted gateways. |
+| **Platform Gateways** | GET         | `{discoveryUrl}/{gatewayApiId}`                                | Fetches details for a discovered gateway API.                  |
 
 ## 📜 License
 

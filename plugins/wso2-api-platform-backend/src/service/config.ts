@@ -70,21 +70,21 @@ export function readWso2ApiPlatformConfig(
   const clientSecret = authConfig?.getString('clientSecret') ?? '';
   const tokenUrl = authConfig?.getOptionalString('tokenUrl');
   const username = apiManagerEnabled
-    ? (authConfig?.getOptionalString('username') ??
-      getOptionalString(config, 'catalog.providers.wso2ApiPlatform.username'))
+    ? authConfig?.getOptionalString('username') ??
+      getOptionalString(config, 'catalog.providers.wso2ApiPlatform.username')
     : undefined;
   const password = apiManagerEnabled
-    ? (authConfig?.getOptionalString('password') ??
-      getOptionalString(config, 'catalog.providers.wso2ApiPlatform.password'))
+    ? authConfig?.getOptionalString('password') ??
+      getOptionalString(config, 'catalog.providers.wso2ApiPlatform.password')
     : undefined;
 
   const tlsRejectUnauthorized =
     wso2Config?.getOptionalBoolean('tls.rejectUnauthorized') ?? true;
 
   const platformGatewayConfigs =
-    getOptionalConfigArray(config, 'wso2PlatformGateway.gateways') ?? [];
+    getOptionalConfigArray(config, 'wso2ApiPlatformGateway.gateways') ?? [];
   const platformGatewayEnabled =
-    getOptionalBoolean(config, 'wso2PlatformGateway.enabled') ?? false;
+    getOptionalBoolean(config, 'wso2ApiPlatformGateway.enabled') ?? false;
 
   const selfHostedGateways = platformGatewayEnabled
     ? platformGatewayConfigs.map(gw => {

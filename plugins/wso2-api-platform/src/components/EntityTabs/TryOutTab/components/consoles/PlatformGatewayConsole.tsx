@@ -25,7 +25,10 @@ import { CODE_FONT_FAMILY } from '../../../../../styles/fonts';
 const useStyles = makeStyles(theme => ({
   swaggerContainer: {
     padding: theme.spacing(2),
-    backgroundColor: theme.palette.type === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.01)',
+    backgroundColor:
+      theme.palette.type === 'dark'
+        ? 'rgba(255,255,255,0.03)'
+        : 'rgba(0,0,0,0.01)',
   },
   curlBox: {
     backgroundColor: '#1e1e1e',
@@ -39,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     border: '1px solid #333',
     overflowX: 'auto',
     whiteSpace: 'pre-wrap',
-    wordBreak: 'break-all'
+    wordBreak: 'break-all',
   },
   headerRow: {
     display: 'flex',
@@ -53,9 +56,12 @@ const useStyles = makeStyles(theme => ({
     gap: theme.spacing(2),
     marginBottom: theme.spacing(2),
     padding: theme.spacing(1.5),
-    backgroundColor: theme.palette.type === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+    backgroundColor:
+      theme.palette.type === 'dark'
+        ? 'rgba(255,255,255,0.05)'
+        : 'rgba(0,0,0,0.03)',
     borderRadius: '4px',
-  }
+  },
 }));
 
 const PlatformGatewayOperationConsole = ({
@@ -63,13 +69,13 @@ const PlatformGatewayOperationConsole = ({
   externalApiKey,
   apiKeyAuthPolicy,
   classes,
-  serverUrl
+  serverUrl,
 }: any) => {
   const theme = useTheme();
   const method = (op.verb || op.method || 'GET').toUpperCase();
   const hasBody = ['POST', 'PUT', 'PATCH'].includes(method);
   const path = op.target || op.path || '';
-  
+
   // Detect path parameters
   const detectedPathParams = useMemo(() => {
     const matches = path.match(/\{([^}]+)\}/g);
@@ -77,21 +83,25 @@ const PlatformGatewayOperationConsole = ({
   }, [path]);
 
   // States
-  const [pathParamValues, setPathParamValues] = useState<Record<string, string>>({});
+  const [pathParamValues, setPathParamValues] = useState<
+    Record<string, string>
+  >({});
   const [requestBody, setRequestBody] = useState('');
   const [bodyFormat, setBodyFormat] = useState('Raw'); // Raw, form-data, x-www-form-urlencoded
   const [contentType, setContentType] = useState('JSON'); // JSON, XML, Text
-  const [formDataParams, setFormDataParams] = useState<Array<{ name: string; value: string }>>([]);
-  
+  const [formDataParams, setFormDataParams] = useState<
+    Array<{ name: string; value: string }>
+  >([]);
+
   // Initialize with common headers if applicable
   const initialHeaders = useMemo(() => {
-    const list: {name: string, value: string}[] = [];
+    const list: { name: string; value: string }[] = [];
     if (externalApiKey && apiKeyAuthPolicy) {
-       const { in: location, key: name } = apiKeyAuthPolicy.params || {};
-       if (location === 'header') {
-         list.push({ name: name || 'x-api-key', value: externalApiKey });
-       }
-     }
+      const { in: location, key: name } = apiKeyAuthPolicy.params || {};
+      if (location === 'header') {
+        list.push({ name: name || 'x-api-key', value: externalApiKey });
+      }
+    }
     return list;
   }, [externalApiKey, apiKeyAuthPolicy]);
 
@@ -101,10 +111,13 @@ const PlatformGatewayOperationConsole = ({
   useEffect(() => {
     setManualHeaders(prev => {
       // Filter out existing external keys to avoid duplicates
-      const filtered = prev.filter(h => 
-        (!apiKeyAuthPolicy || h.name.toLowerCase() !== (apiKeyAuthPolicy.params?.key || 'x-api-key').toLowerCase())
+      const filtered = prev.filter(
+        h =>
+          !apiKeyAuthPolicy ||
+          h.name.toLowerCase() !==
+            (apiKeyAuthPolicy.params?.key || 'x-api-key').toLowerCase(),
       );
-      
+
       const next = [...filtered];
       if (externalApiKey && apiKeyAuthPolicy) {
         const { in: location, key: name } = apiKeyAuthPolicy.params || {};
@@ -121,7 +134,9 @@ const PlatformGatewayOperationConsole = ({
     if (!hasBody) return;
     setManualHeaders(prev => {
       const newList = [...prev];
-      const ctIdx = newList.findIndex(h => h.name.toLowerCase() === 'content-type');
+      const ctIdx = newList.findIndex(
+        h => h.name.toLowerCase() === 'content-type',
+      );
 
       let targetValue = '';
       if (bodyFormat === 'Raw') {
@@ -176,7 +191,11 @@ const PlatformGatewayOperationConsole = ({
     setFormDataParams(newList);
   };
 
-  const updateFormDataParam = (idx: number, field: 'name' | 'value', val: string) => {
+  const updateFormDataParam = (
+    idx: number,
+    field: 'name' | 'value',
+    val: string,
+  ) => {
     const newList = [...formDataParams];
     newList[idx][field] = val;
     setFormDataParams(newList);
@@ -195,7 +214,9 @@ const PlatformGatewayOperationConsole = ({
   const fullEndpointUrl = useMemo(() => {
     if (!serverUrl) return substitutedPath;
     const base = serverUrl.endsWith('/') ? serverUrl.slice(0, -1) : serverUrl;
-    const resource = substitutedPath.startsWith('/') ? substitutedPath : `/${substitutedPath}`;
+    const resource = substitutedPath.startsWith('/')
+      ? substitutedPath
+      : `/${substitutedPath}`;
     return `${base}${resource}`;
   }, [substitutedPath, serverUrl]);
 
@@ -209,7 +230,7 @@ const PlatformGatewayOperationConsole = ({
 
   const curlCommand = useMemo(() => {
     let url = fullEndpointUrl;
-    
+
     // Handle external API key in query if applicable
     if (externalApiKey && apiKeyAuthPolicy) {
       const { in: location, key: name } = apiKeyAuthPolicy.params || {};
@@ -230,7 +251,13 @@ const PlatformGatewayOperationConsole = ({
         if (formDataParams.length > 0) {
           bodyString = formDataParams
             .filter(p => p.name.trim())
-            .map(p => ` \\\n  -F '${p.name.replace(/'/g, "'\\''")}=${p.value.replace(/'/g, "'\\''")}'`)
+            .map(
+              p =>
+                ` \\\n  -F '${p.name.replace(/'/g, "'\\''")}=${p.value.replace(
+                  /'/g,
+                  "'\\''",
+                )}'`,
+            )
             .join('');
         } else {
           bodyString = ` \\\n  -F 'key=value'`;
@@ -239,7 +266,10 @@ const PlatformGatewayOperationConsole = ({
         if (formDataParams.length > 0) {
           const joined = formDataParams
             .filter(p => p.name.trim())
-            .map(p => `${encodeURIComponent(p.name)}=${encodeURIComponent(p.value)}`)
+            .map(
+              p =>
+                `${encodeURIComponent(p.name)}=${encodeURIComponent(p.value)}`,
+            )
             .join('&');
           bodyString = ` \\\n  -d '${joined.replace(/'/g, "'\\''")}'`;
         } else {
@@ -247,7 +277,9 @@ const PlatformGatewayOperationConsole = ({
         }
       } else {
         const defaultVal = bodyFormat === 'Raw' ? '{}' : 'key=value';
-        const content = requestBody.trim() ? requestBody.replace(/'/g, "'\\''") : defaultVal;
+        const content = requestBody.trim()
+          ? requestBody.replace(/'/g, "'\\''")
+          : defaultVal;
         if (content) {
           bodyString = ` \\\n  -d '${content}'`;
         }
@@ -256,7 +288,17 @@ const PlatformGatewayOperationConsole = ({
 
     const headerSegment = headerStrings ? ` \\\n  ${headerStrings}` : '';
     return `curl -X ${method} "${url}"${headerSegment}${bodyString} -k`;
-  }, [method, hasBody, fullEndpointUrl, manualHeaders, requestBody, bodyFormat, formDataParams, externalApiKey, apiKeyAuthPolicy]);
+  }, [
+    method,
+    hasBody,
+    fullEndpointUrl,
+    manualHeaders,
+    requestBody,
+    bodyFormat,
+    formDataParams,
+    externalApiKey,
+    apiKeyAuthPolicy,
+  ]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(curlCommand);
@@ -264,20 +306,24 @@ const PlatformGatewayOperationConsole = ({
 
   return (
     <Box className={classes.swaggerContainer}>
-      <Typography variant="subtitle2" gutterBottom style={{ fontWeight: 'bold', marginTop: '8px' }}>
+      <Typography
+        variant="subtitle2"
+        gutterBottom
+        style={{ fontWeight: 'bold', marginTop: '8px' }}
+      >
         Request Configuration
       </Typography>
-      
+
       <Box mt={2} mb={3}>
-        <Typography 
-          variant="caption" 
-          style={{ 
-            fontWeight: 'bold', 
-            textTransform: 'uppercase', 
+        <Typography
+          variant="caption"
+          style={{
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
             letterSpacing: '0.5px',
             color: '#718096',
             display: 'block',
-            marginBottom: '8px'
+            marginBottom: '8px',
           }}
         >
           Endpoint URL
@@ -304,13 +350,17 @@ const PlatformGatewayOperationConsole = ({
             {fullEndpointUrl}
           </Typography>
           <Box ml={1}>
-            <Tooltip title={opCopied ? "Copied!" : "Copy Endpoint URL"}>
-              <IconButton 
-                size="small" 
+            <Tooltip title={opCopied ? 'Copied!' : 'Copy Endpoint URL'}>
+              <IconButton
+                size="small"
                 onClick={handleCopyEndpoint}
                 style={{ color: opCopied ? '#49cc90' : 'inherit' }}
               >
-                {opCopied ? <CheckIcon fontSize="small" /> : <FileCopyIcon fontSize="small" />}
+                {opCopied ? (
+                  <CheckIcon fontSize="small" />
+                ) : (
+                  <FileCopyIcon fontSize="small" />
+                )}
               </IconButton>
             </Tooltip>
           </Box>
@@ -320,22 +370,39 @@ const PlatformGatewayOperationConsole = ({
       {/* Path Parameters Section */}
       {detectedPathParams.length > 0 && (
         <Box mb={3}>
-          <Typography variant="caption" style={{ fontWeight: 'bold', opacity: 0.7, display: 'block', marginBottom: '8px' }}>
+          <Typography
+            variant="caption"
+            style={{
+              fontWeight: 'bold',
+              opacity: 0.7,
+              display: 'block',
+              marginBottom: '8px',
+            }}
+          >
             Path Parameters
           </Typography>
           {detectedPathParams.map((param: string) => (
             <Box key={param} className={classes.paramRow}>
-              <Typography variant="body2" style={{ minWidth: '80px', fontWeight: 'bold' }}>
-                {param} <span style={{ color: theme.palette.error.main }}>*</span>
+              <Typography
+                variant="body2"
+                style={{ minWidth: '80px', fontWeight: 'bold' }}
+              >
+                {param}{' '}
+                <span style={{ color: theme.palette.error.main }}>*</span>
               </Typography>
               <TextField
                 placeholder={`Enter ${param}`}
                 value={pathParamValues[param] || ''}
-                onChange={(e) => setPathParamValues((prev: any) => ({ ...prev, [param]: e.target.value }))}
+                onChange={e =>
+                  setPathParamValues((prev: any) => ({
+                    ...prev,
+                    [param]: e.target.value,
+                  }))
+                }
                 variant="outlined"
                 size="small"
                 fullWidth
-                inputProps={{ style: { fontSize: '0.8125rem' }}}
+                inputProps={{ style: { fontSize: '0.8125rem' } }}
               />
             </Box>
           ))}
@@ -345,64 +412,101 @@ const PlatformGatewayOperationConsole = ({
       {/* Request Body Section */}
       {hasBody && (
         <Box mb={3}>
-          <Typography variant="caption" style={{ fontWeight: 'bold', opacity: 0.7, display: 'block', marginBottom: '8px' }}>
+          <Typography
+            variant="caption"
+            style={{
+              fontWeight: 'bold',
+              opacity: 0.7,
+              display: 'block',
+              marginBottom: '8px',
+            }}
+          >
             Request Body
           </Typography>
           <Box display="flex" mb={1} style={{ gap: '8px' }}>
-             <FormControl variant="outlined" size="small">
-                <Select value={bodyFormat} onChange={(e) => setBodyFormat(e.target.value as string)} style={{ fontSize: '0.75rem' }}>
-                   <MenuItem value="Raw">Raw</MenuItem>
-                   <MenuItem value="form-data">form-data</MenuItem>
-                   <MenuItem value="x-www-form-urlencoded">x-www-form-urlencoded</MenuItem>
+            <FormControl variant="outlined" size="small">
+              <Select
+                value={bodyFormat}
+                onChange={e => setBodyFormat(e.target.value as string)}
+                style={{ fontSize: '0.75rem' }}
+              >
+                <MenuItem value="Raw">Raw</MenuItem>
+                <MenuItem value="form-data">form-data</MenuItem>
+                <MenuItem value="x-www-form-urlencoded">
+                  x-www-form-urlencoded
+                </MenuItem>
+              </Select>
+            </FormControl>
+            {bodyFormat === 'Raw' && (
+              <FormControl variant="outlined" size="small">
+                <Select
+                  value={contentType}
+                  onChange={e => setContentType(e.target.value as string)}
+                  style={{ fontSize: '0.75rem' }}
+                >
+                  <MenuItem value="JSON">JSON</MenuItem>
+                  <MenuItem value="XML">XML</MenuItem>
+                  <MenuItem value="Text">Text</MenuItem>
                 </Select>
-             </FormControl>
-             {bodyFormat === 'Raw' && (
-                <FormControl variant="outlined" size="small">
-                    <Select value={contentType} onChange={(e) => setContentType(e.target.value as string)} style={{ fontSize: '0.75rem' }}>
-                    <MenuItem value="JSON">JSON</MenuItem>
-                    <MenuItem value="XML">XML</MenuItem>
-                    <MenuItem value="Text">Text</MenuItem>
-                    </Select>
-                </FormControl>
-             )}
+              </FormControl>
+            )}
           </Box>
-          {bodyFormat === 'form-data' || bodyFormat === 'x-www-form-urlencoded' ? (
+          {bodyFormat === 'form-data' ||
+          bodyFormat === 'x-www-form-urlencoded' ? (
             <Box mt={1}>
-              <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                <Typography variant="caption" style={{ fontWeight: 'bold', opacity: 0.7 }}>
-                  {bodyFormat === 'form-data' ? 'Form Data Entries' : 'URL Encoded Entries'}
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                mb={1}
+              >
+                <Typography
+                  variant="caption"
+                  style={{ fontWeight: 'bold', opacity: 0.7 }}
+                >
+                  {bodyFormat === 'form-data'
+                    ? 'Form Data Entries'
+                    : 'URL Encoded Entries'}
                 </Typography>
-                <Button 
-                  size="small" 
-                  startIcon={<AddIcon />} 
+                <Button
+                  size="small"
+                  startIcon={<AddIcon />}
                   onClick={addFormDataParam}
                   style={{ textTransform: 'none', fontSize: '0.75rem' }}
                 >
                   Add Entry
                 </Button>
               </Box>
-              
+
               {formDataParams.map((param, idx) => (
                 <Box key={idx} className={classes.headerRow}>
                   <TextField
                     placeholder="Key"
                     value={param.name}
-                    onChange={(e) => updateFormDataParam(idx, 'name', e.target.value)}
+                    onChange={e =>
+                      updateFormDataParam(idx, 'name', e.target.value)
+                    }
                     variant="outlined"
                     size="small"
                     style={{ flex: 1 }}
-                    inputProps={{ style: { fontSize: '0.8125rem' }}}
+                    inputProps={{ style: { fontSize: '0.8125rem' } }}
                   />
                   <TextField
                     placeholder="Value"
                     value={param.value}
-                    onChange={(e) => updateFormDataParam(idx, 'value', e.target.value)}
+                    onChange={e =>
+                      updateFormDataParam(idx, 'value', e.target.value)
+                    }
                     variant="outlined"
                     size="small"
                     style={{ flex: 2 }}
-                    inputProps={{ style: { fontSize: '0.8125rem' }}}
+                    inputProps={{ style: { fontSize: '0.8125rem' } }}
                   />
-                  <IconButton size="small" onClick={() => removeFormDataParam(idx)} color="secondary">
+                  <IconButton
+                    size="small"
+                    onClick={() => removeFormDataParam(idx)}
+                    color="secondary"
+                  >
                     <DeleteIcon fontSize="small" />
                   </IconButton>
                 </Box>
@@ -410,15 +514,17 @@ const PlatformGatewayOperationConsole = ({
             </Box>
           ) : (
             <TextField
-              placeholder={bodyFormat === 'Raw' ? '{"key": "value"}' : 'key=value'}
+              placeholder={
+                bodyFormat === 'Raw' ? '{"key": "value"}' : 'key=value'
+              }
               value={requestBody}
-              onChange={(e) => setRequestBody(e.target.value)}
+              onChange={e => setRequestBody(e.target.value)}
               variant="outlined"
               fullWidth
               multiline
               rows={4}
               InputProps={{
-                style: { fontFamily: CODE_FONT_FAMILY, fontSize: '0.8125rem' }
+                style: { fontFamily: CODE_FONT_FAMILY, fontSize: '0.8125rem' },
               }}
             />
           )}
@@ -426,41 +532,53 @@ const PlatformGatewayOperationConsole = ({
       )}
 
       <Box mb={2}>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-          <Typography variant="caption" style={{ fontWeight: 'bold', opacity: 0.7 }}>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={1}
+        >
+          <Typography
+            variant="caption"
+            style={{ fontWeight: 'bold', opacity: 0.7 }}
+          >
             Headers
           </Typography>
-          <Button 
-            size="small" 
-            startIcon={<AddIcon />} 
+          <Button
+            size="small"
+            startIcon={<AddIcon />}
             onClick={addHeader}
             style={{ textTransform: 'none', fontSize: '0.75rem' }}
           >
             Add Header
           </Button>
         </Box>
-        
+
         {manualHeaders.map((header, idx) => (
           <Box key={idx} className={classes.headerRow}>
             <TextField
               placeholder="Header name"
               value={header.name}
-              onChange={(e) => updateHeader(idx, 'name', e.target.value)}
+              onChange={e => updateHeader(idx, 'name', e.target.value)}
               variant="outlined"
               size="small"
               style={{ flex: 1 }}
-              inputProps={{ style: { fontSize: '0.8125rem' }}}
+              inputProps={{ style: { fontSize: '0.8125rem' } }}
             />
             <TextField
               placeholder="Header value"
               value={header.value}
-              onChange={(e) => updateHeader(idx, 'value', e.target.value)}
+              onChange={e => updateHeader(idx, 'value', e.target.value)}
               variant="outlined"
               size="small"
               style={{ flex: 2 }}
-              inputProps={{ style: { fontSize: '0.8125rem' }}}
+              inputProps={{ style: { fontSize: '0.8125rem' } }}
             />
-            <IconButton size="small" onClick={() => removeHeader(idx)} color="secondary">
+            <IconButton
+              size="small"
+              onClick={() => removeHeader(idx)}
+              color="secondary"
+            >
               <DeleteIcon fontSize="small" />
             </IconButton>
           </Box>
@@ -471,33 +589,38 @@ const PlatformGatewayOperationConsole = ({
 
       <Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="caption" style={{ fontWeight: 'bold', opacity: 0.7 }}>
+          <Typography
+            variant="caption"
+            style={{ fontWeight: 'bold', opacity: 0.7 }}
+          >
             Generated cURL Command
           </Typography>
-          <IconButton size="small" onClick={copyToClipboard} title="Copy to clipboard">
+          <IconButton
+            size="small"
+            onClick={copyToClipboard}
+            title="Copy to clipboard"
+          >
             <AssignmentIcon fontSize="small" />
           </IconButton>
         </Box>
-        <Box className={classes.curlBox}>
-          {curlCommand}
-        </Box>
+        <Box className={classes.curlBox}>{curlCommand}</Box>
       </Box>
     </Box>
   );
 };
 
-export const PlatformGatewayConsole = ({ 
-  operations, 
+export const PlatformGatewayConsole = ({
+  operations,
   apiKey,
   externalApiKey,
   apiKeyAuthPolicy,
-  gatewayUrls
+  gatewayUrls,
 }: any) => {
   const theme = useTheme();
   const classes = useStyles();
 
   const [selectedServerUrl, setSelectedServerUrl] = useState<string>(
-    gatewayUrls?.[0]?.url || ''
+    gatewayUrls?.[0]?.url || '',
   );
   const [serverCopied, setServerCopied] = useState(false);
   const [expandedOperations, setExpandedOperations] = useState<
@@ -513,18 +636,25 @@ export const PlatformGatewayConsole = ({
   if (!operations || operations.length === 0) {
     return (
       <Box p={3} textAlign="center">
-        <Typography color="textSecondary">No operations available for this API.</Typography>
+        <Typography color="textSecondary">
+          No operations available for this API.
+        </Typography>
       </Box>
     );
   }
 
   const getMethodColors = (method: string) => {
     const m = (method || '').toUpperCase();
-    if (m === 'GET') return { main: '#61affe', light: 'rgba(97, 175, 254, 0.1)' };
-    if (m === 'POST') return { main: '#49cc90', light: 'rgba(73, 204, 144, 0.1)' };
-    if (m === 'PUT') return { main: '#fca130', light: 'rgba(252, 161, 48, 0.1)' };
-    if (m === 'DELETE') return { main: '#f93e3e', light: 'rgba(249, 62, 62, 0.1)' };
-    if (m === 'PATCH') return { main: '#50e3c2', light: 'rgba(80, 227, 194, 0.1)' };
+    if (m === 'GET')
+      return { main: '#61affe', light: 'rgba(97, 175, 254, 0.1)' };
+    if (m === 'POST')
+      return { main: '#49cc90', light: 'rgba(73, 204, 144, 0.1)' };
+    if (m === 'PUT')
+      return { main: '#fca130', light: 'rgba(252, 161, 48, 0.1)' };
+    if (m === 'DELETE')
+      return { main: '#f93e3e', light: 'rgba(249, 62, 62, 0.1)' };
+    if (m === 'PATCH')
+      return { main: '#50e3c2', light: 'rgba(80, 227, 194, 0.1)' };
     return { main: '#9012fe', light: 'rgba(144, 18, 254, 0.1)' };
   };
 
@@ -547,15 +677,15 @@ export const PlatformGatewayConsole = ({
               borderRadius={4}
               bgcolor="background.paper"
             >
-              <Typography 
-                variant="caption" 
-                style={{ 
-                  fontWeight: 'bold', 
-                  textTransform: 'uppercase', 
+              <Typography
+                variant="caption"
+                style={{
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase',
                   letterSpacing: '0.5px',
                   color: '#718096',
                   display: 'block',
-                  marginBottom: '8px'
+                  marginBottom: '8px',
                 }}
               >
                 Server URL
@@ -571,11 +701,20 @@ export const PlatformGatewayConsole = ({
                 }}
               >
                 {gatewayUrls.length > 1 ? (
-                  <FormControl variant="outlined" size="small" style={{ flexGrow: 1, marginRight: '8px' }}>
-                    <Select 
-                      value={selectedServerUrl} 
-                      onChange={(e) => setSelectedServerUrl(e.target.value as string)}
-                      style={{ fontSize: '0.85rem', fontFamily: CODE_FONT_FAMILY }}
+                  <FormControl
+                    variant="outlined"
+                    size="small"
+                    style={{ flexGrow: 1, marginRight: '8px' }}
+                  >
+                    <Select
+                      value={selectedServerUrl}
+                      onChange={e =>
+                        setSelectedServerUrl(e.target.value as string)
+                      }
+                      style={{
+                        fontSize: '0.85rem',
+                        fontFamily: CODE_FONT_FAMILY,
+                      }}
                     >
                       {gatewayUrls.map((gw: any, idx: number) => (
                         <MenuItem key={idx} value={gw.url}>
@@ -598,13 +737,17 @@ export const PlatformGatewayConsole = ({
                   </Typography>
                 )}
                 <Box ml={1}>
-                  <Tooltip title={serverCopied ? "Copied!" : "Copy Server URL"}>
-                    <IconButton 
-                      size="small" 
+                  <Tooltip title={serverCopied ? 'Copied!' : 'Copy Server URL'}>
+                    <IconButton
+                      size="small"
                       onClick={handleCopyServer}
                       style={{ color: serverCopied ? '#49cc90' : 'inherit' }}
                     >
-                      {serverCopied ? <CheckIcon fontSize="small" /> : <FileCopyIcon fontSize="small" />}
+                      {serverCopied ? (
+                        <CheckIcon fontSize="small" />
+                      ) : (
+                        <FileCopyIcon fontSize="small" />
+                      )}
                     </IconButton>
                   </Tooltip>
                 </Box>
@@ -615,7 +758,12 @@ export const PlatformGatewayConsole = ({
           <Typography
             variant="subtitle1"
             gutterBottom
-            style={{ fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}
+            style={{
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              marginBottom: '16px',
+            }}
           >
             Operations
           </Typography>
@@ -624,11 +772,11 @@ export const PlatformGatewayConsole = ({
             {operations.map((op: any, idx: number) => {
               const colors = getMethodColors(op.verb || op.method);
               const isExpanded = expandedOperations[idx] ?? idx === 0;
-              
+
               return (
-                <Accordion 
-                  key={idx} 
-                  elevation={0} 
+                <Accordion
+                  key={idx}
+                  elevation={0}
                   expanded={isExpanded}
                   onChange={() =>
                     setExpandedOperations(prev => ({
@@ -636,11 +784,11 @@ export const PlatformGatewayConsole = ({
                       [idx]: !isExpanded,
                     }))
                   }
-                  style={{ 
-                    marginBottom: '8px', 
-                    border: `1px solid ${colors.main}`, 
+                  style={{
+                    marginBottom: '8px',
+                    border: `1px solid ${colors.main}`,
                     borderRadius: '4px',
-                    backgroundColor: colors.light
+                    backgroundColor: colors.light,
                   }}
                 >
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -675,14 +823,14 @@ export const PlatformGatewayConsole = ({
                   </AccordionSummary>
                   <AccordionDetails style={{ padding: 0, display: 'block' }}>
                     {isExpanded && (
-                        <PlatformGatewayOperationConsole
-                          op={op}
-                          apiKey={apiKey}
-                          externalApiKey={externalApiKey}
-                          apiKeyAuthPolicy={apiKeyAuthPolicy}
-                          classes={classes}
-                          serverUrl={selectedServerUrl}
-                        />
+                      <PlatformGatewayOperationConsole
+                        op={op}
+                        apiKey={apiKey}
+                        externalApiKey={externalApiKey}
+                        apiKeyAuthPolicy={apiKeyAuthPolicy}
+                        classes={classes}
+                        serverUrl={selectedServerUrl}
+                      />
                     )}
                   </AccordionDetails>
                 </Accordion>

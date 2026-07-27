@@ -38,8 +38,9 @@ export const useWso2ApiPolicies = (options: {
   entity: Entity;
   apiId?: string;
   isApiPlatform: boolean;
+  skip?: boolean;
 }) => {
-  const { entity, apiId, isApiPlatform } = options;
+  const { entity, apiId, isApiPlatform, skip = false } = options;
   const apiClient = useApi(wso2ApiPlatformApiRef);
 
   const details = useMemo(() => {
@@ -74,7 +75,12 @@ export const useWso2ApiPolicies = (options: {
     }
     const val = definitionState.value as any;
     if (!val) return [];
-    return val.channels || val.operations || val.configuration?.spec?.operations || [];
+    return (
+      val.channels ||
+      val.operations ||
+      val.configuration?.spec?.operations ||
+      []
+    );
   }, [definitionState.value, details?.operations]);
 
   const gatewayApiPolicies = useMemo(() => {
@@ -85,7 +91,7 @@ export const useWso2ApiPolicies = (options: {
   }, [definitionState.value, details?.apiPolicies]);
 
   const revisionsState = useAsync(async () => {
-    if (!apiId || isApiPlatform) return undefined;
+    if (!apiId || isApiPlatform || skip) return undefined;
     try {
       return await apiClient.getRevisions(apiId, {
         query: 'deployed:true',
@@ -93,7 +99,7 @@ export const useWso2ApiPolicies = (options: {
     } catch (e: any) {
       return null;
     }
-  }, [apiClient, apiId, isApiPlatform]);
+  }, [apiClient, apiId, isApiPlatform, skip]);
 
   const isPlaceholder = useMemo(() => {
     const val = definitionState.value;

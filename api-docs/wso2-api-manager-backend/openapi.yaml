@@ -185,16 +185,16 @@ paths:
                     securityType: NONE
                     mutualSSLEnabled: false
                     usage: 2
-                    createdTime: "2026-06-04 06:10:55.497"
-                    lastUpdatedTime: "2026-06-04 06:10:55.497"
+                    createdTime: '2026-06-04 06:10:55.497'
+                    lastUpdatedTime: '2026-06-04 06:10:55.497'
                     md5: '{"hash":"b80fcd8e06b9c977bc7d11799df206de19a851b86e23340a8edc3cb37e2f1672","algorithm":"SHA-256"}'
                     definitionUrl: null
                 pagination:
                   offset: 0
                   limit: 1000
                   total: 1
-                  next: ""
-                  previous: ""
+                  next: ''
+                  previous: ''
         '500':
           $ref: '#/components/responses/JsonError'
   /services/{serviceId}/usage:

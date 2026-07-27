@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import React from 'react';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -27,12 +26,10 @@ import { Wso2ApiSummary } from '../../../api';
 import { tableIconsWithoutSearchClear } from '../../common/Table/tableRenderers';
 
 type ApiTabProps = {
-  gatewayDiscoveryWarningPanel: React.ReactNode;
   isGatewayDiscoveryFailureEmptyState: boolean;
   gatewayDiscoveryFailureContent: React.ReactNode;
   apiListState: any;
   apiCount: number;
-  offlineGatewayCount: number;
   apiTableToolbar: React.ReactNode;
   visibleApis: Wso2ApiSummary[];
   columns: TableColumn<Wso2ApiSummary>[];
@@ -43,12 +40,10 @@ type ApiTabProps = {
 };
 
 export const ApiTab = ({
-  gatewayDiscoveryWarningPanel,
   isGatewayDiscoveryFailureEmptyState,
   gatewayDiscoveryFailureContent,
   apiListState,
   apiCount,
-  offlineGatewayCount,
   apiTableToolbar,
   visibleApis,
   columns,
@@ -58,7 +53,6 @@ export const ApiTab = ({
   apiEmptyStateClassName,
 }: ApiTabProps) => (
   <>
-    {!isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryWarningPanel}
     {apiListState.loading &&
       !isGatewayDiscoveryFailureEmptyState &&
       (!apiListState.value?.apis || apiListState.value.apis.length === 0) && (
@@ -86,7 +80,6 @@ export const ApiTab = ({
     {isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryFailureContent}
     {!apiListState.loading &&
       !isGatewayDiscoveryFailureEmptyState &&
-      offlineGatewayCount > 0 &&
       apiCount === 0 && (
         <Box
           display="flex"
@@ -101,41 +94,8 @@ export const ApiTab = ({
               No APIs Available
             </Typography>
             <Typography variant="body1" color="textSecondary">
-              We could not find any APIs in your catalog, and gateway discovery
-              failed. Please check your backend logs or gateway configuration.
-            </Typography>
-            <Box mt={2}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => apiListState.retry()}
-                startIcon={<RefreshIcon />}
-                disabled={apiListState.loading}
-              >
-                Refresh Now
-              </Button>
-            </Box>
-          </Box>
-        </Box>
-      )}
-    {!apiListState.loading &&
-      !isGatewayDiscoveryFailureEmptyState &&
-      offlineGatewayCount === 0 &&
-      apiCount === 0 && (
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          my={10}
-          textAlign="center"
-        >
-          <Box mt={3} maxWidth={600}>
-            <Typography variant="h5" gutterBottom style={{ fontWeight: 500 }}>
-              No APIs Available
-            </Typography>
-            <Typography variant="body1" color="textSecondary">
-              We could not find any APIs in your catalog. If you just configured the plugin, please wait for the catalog synchronization to finish.
+              We could not find any APIs in your catalog. If you just configured
+              the plugin, please wait for the catalog synchronization to finish.
             </Typography>
             <Box mt={2}>
               <Button
@@ -152,31 +112,31 @@ export const ApiTab = ({
         </Box>
       )}
     {apiCount > 0 && (
-        <>
-          {apiTableToolbar}
-          {visibleApis.length > 0 ? (
-            <Table
-              options={{
-                paging: true,
-                search: false,
-                pageSize: 20,
-                pageSizeOptions: [20, 50, 100],
-                toolbar: false,
-              }}
-              icons={tableIconsWithoutSearchClear}
-              columns={columns}
-              data={visibleApis}
-            />
-          ) : (
-            (apiSearchHasNoResults || apiFiltersHaveNoResults) && (
-              <Box className={apiEmptyStateClassName}>
-                <Typography variant="body1" color="textSecondary">
-                  {apiEmptyContent}
-                </Typography>
-              </Box>
-            )
-          )}
-        </>
-      )}
+      <>
+        {apiTableToolbar}
+        {visibleApis.length > 0 ? (
+          <Table
+            options={{
+              paging: true,
+              search: false,
+              pageSize: 20,
+              pageSizeOptions: [20, 50, 100],
+              toolbar: false,
+            }}
+            icons={tableIconsWithoutSearchClear}
+            columns={columns}
+            data={visibleApis}
+          />
+        ) : (
+          (apiSearchHasNoResults || apiFiltersHaveNoResults) && (
+            <Box className={apiEmptyStateClassName}>
+              <Typography variant="body1" color="textSecondary">
+                {apiEmptyContent}
+              </Typography>
+            </Box>
+          )
+        )}
+      </>
+    )}
   </>
 );

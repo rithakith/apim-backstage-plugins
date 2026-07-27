@@ -37,10 +37,7 @@ export const Wso2ApiPlatformPage = wso2ApiPlatformPlugin.provide(
   createRoutableExtension({
     name: 'Wso2ApiPlatformPage',
     component: () =>
-      import('./components/ApiManagerPage').then(
-        m => m.Wso2ApiPlatformPage,
-      ),
+      import('./components/ApiManagerPage').then(m => m.Wso2ApiPlatformPage),
     mountPoint: rootRouteRef,
   }),
 );
-

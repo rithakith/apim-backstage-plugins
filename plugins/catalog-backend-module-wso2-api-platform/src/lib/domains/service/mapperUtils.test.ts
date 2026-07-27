@@ -55,23 +55,20 @@ describe('mapWso2ServiceToEntity', () => {
             'wso2.com/service-name': 'Inventory Service',
             'wso2.com/service-version': '1.0.0',
             'wso2.com/service-key': 'Inventory-Service-1.0.0',
-            'wso2.com/service-url':
-              'https://services.example.com/inventory',
+            'wso2.com/service-url': 'https://services.example.com/inventory',
             'wso2.com/service-definition-type': 'OAS',
             'wso2.com/service-security-type': 'NONE',
             'wso2.com/service-mutual-ssl-enabled': 'false',
             'wso2.com/service-usage-count': '2',
             'wso2.com/service-created-time': '2026-06-04 06:10:55.497',
-            'wso2.com/service-last-updated-time':
-              '2026-06-04 06:10:55.497',
+            'wso2.com/service-last-updated-time': '2026-06-04 06:10:55.497',
             'wso2.com/service-md5': '{"hash":"abc","algorithm":"SHA-256"}',
             'wso2.com/service-definition-url':
               'https://services.example.com/inventory/openapi.yaml',
             'wso2.com/api-id': 'svc-1',
             'wso2.com/api-name': 'Inventory Service',
             'wso2.com/api-version': '1.0.0',
-            'wso2.com/api-context':
-              'https://services.example.com/inventory',
+            'wso2.com/api-context': 'https://services.example.com/inventory',
             'wso2.com/api-type': 'SERVICE',
             'wso2.com/api-lifecycle-status': '',
             'backstage.io/managed-by-location': 'wso2-apim:default',
@@ -81,7 +78,7 @@ describe('mapWso2ServiceToEntity', () => {
         spec: expect.objectContaining({
           type: 'service',
           lifecycle: 'production',
-          owner: 'unknown',
+          owner: 'wso2',
           definition: 'Inventory service definition',
         }),
       }),

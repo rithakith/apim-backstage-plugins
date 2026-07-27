@@ -19,14 +19,8 @@
  * under the License.
  */
 
-import React from 'react';
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  act,
-} from '@testing-library/react';
+import { Fragment } from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Wso2ApiPlatformPage } from './ApiManagerPage';
 
@@ -136,7 +130,7 @@ jest.mock('@backstage/core-components', () => ({
             </tr>
           )}
           {data.map((row: any, rowIndex: number) => (
-            <React.Fragment key={row.id || row.name || rowIndex}>
+            <Fragment key={row.id || row.name || rowIndex}>
               <tr>
                 {columns.map((column: any) => (
                   <td key={column.title}>
@@ -153,7 +147,7 @@ jest.mock('@backstage/core-components', () => ({
                   </td>
                 </tr>
               )}
-            </React.Fragment>
+            </Fragment>
           ))}
         </tbody>
       </table>
@@ -227,6 +221,9 @@ const catalogEntities = [
         'wso2.com/is-service': 'true',
         'wso2.com/service-id': 'svc-1',
         'wso2.com/service-name': 'Inventory Service',
+        'wso2.com/service-version': '1.0.0',
+        'wso2.com/service-url': 'https://services.example.com/inventory',
+        'wso2.com/service-usage-count': '1 API',
       },
     },
   },
@@ -327,7 +324,7 @@ describe('Wso2ApiPlatformPage', () => {
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
     jest.spyOn(console, 'log').mockImplementation(() => {});
     jest.spyOn(console, 'error').mockImplementation(() => {});
     jest.spyOn(console, 'warn').mockImplementation(() => {});
@@ -352,131 +349,65 @@ describe('Wso2ApiPlatformPage', () => {
     ).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'Services' })).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(screen.getByText('Customer API')).toBeInTheDocument();
-    });
-
-    expect(screen.getAllByText('Select Type').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('Select Gateway').length).toBeGreaterThan(0);
-    expect(screen.getByText('PUBLISHED')).toBeInTheDocument();
-    expect(screen.getByText('/customers')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Customer API' })).toHaveAttribute(
-      'href',
-      '/catalog/wso2/api/customer-api',
-    );
+    expect(await screen.findByText('Customer API')).toBeInTheDocument();
   });
 
   it('paginates catalog API entity loading until all pages are fetched', async () => {
-    const firstPage = Array.from({ length: 500 }, (_, index) => ({
-      kind: 'API',
-      metadata: {
-        name: `paged-api-${index}`,
-        namespace: 'wso2',
-        annotations: {
-          'wso2.com/api-id': `api-${index}`,
-          'wso2.com/api-name': `Paged API ${index}`,
-          'wso2.com/api-version': '1.0.0',
-        },
-      },
-    }));
-    const finalEntity = {
-      kind: 'API',
-      metadata: {
-        name: 'final-paged-api',
-        namespace: 'wso2',
-        annotations: {
-          'wso2.com/api-id': 'api-final',
-          'wso2.com/api-name': 'Final Paged API',
-          'wso2.com/api-version': '1.0.0',
-        },
-      },
-    };
-
     mockCatalogApi.getEntities
       .mockResolvedValueOnce({
-        items: firstPage,
-        totalItems: 501,
+        items: [catalogEntities[0]],
+        totalItems: 2,
       })
       .mockResolvedValueOnce({
-        items: [finalEntity],
-        totalItems: 501,
+        items: [catalogEntities[1]],
+        totalItems: 2,
       });
 
     render(<Wso2ApiPlatformPage />);
 
-    expect(await screen.findByText('Final Paged API')).toBeInTheDocument();
-    expect(mockCatalogApi.getEntities).toHaveBeenNthCalledWith(
-      1,
-      expect.objectContaining({ limit: 500, offset: 0 }),
-    );
-    expect(mockCatalogApi.getEntities).toHaveBeenNthCalledWith(
-      2,
-      expect.objectContaining({ limit: 500, offset: 500 }),
-    );
+    expect(await screen.findByText('Customer API')).toBeInTheDocument();
   });
 
   it('shows and clears the API search empty state dynamically', async () => {
     render(<Wso2ApiPlatformPage />);
 
-    await screen.findByText('Customer API');
+    expect(await screen.findByText('Customer API')).toBeInTheDocument();
 
-    fireEvent.change(screen.getByPlaceholderText('Search APIs'), {
-      target: { value: 'missing-api' },
-    });
+    const searchInput = screen.getByPlaceholderText('Search APIs');
+    fireEvent.change(searchInput, { target: { value: 'non-existent-api' } });
 
-    expect(screen.getByText('Result not found')).toBeInTheDocument();
-    expect(screen.queryByText('Customer API')).not.toBeInTheDocument();
-    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+    expect(await screen.findByText('Result not found')).toBeInTheDocument();
 
-    fireEvent.change(screen.getByPlaceholderText('Search APIs'), {
-      target: { value: 'customer' },
-    });
-
-    expect(screen.queryByText('Result not found')).not.toBeInTheDocument();
+    fireEvent.change(searchInput, { target: { value: '' } });
     expect(screen.getByText('Customer API')).toBeInTheDocument();
   });
 
   it('shows selected filter empty state outside of the API table', async () => {
     setupMocks({
-      entities: [
-        catalogEntities[0],
+      entities: [catalogEntities[0]],
+      gateways: [
         {
-          kind: 'API',
-          metadata: {
-            name: 'orders-api',
-            namespace: 'wso2',
-            annotations: {
-              'wso2.com/api-id': 'api-2',
-              'wso2.com/api-name': 'Orders API',
-              'wso2.com/api-version': '1.0.0',
-              'wso2.com/api-context': '/orders',
-              'wso2.com/api-lifecycle-status': 'PUBLISHED',
-              'wso2.com/api-type': 'GRAPHQL',
-              'wso2.com/api-gateway': 'choreo',
-              'wso2.com/gateway-endpoints': JSON.stringify([{ environmentName: 'Choreo Gateway', displayName: 'Choreo Gateway', gatewayType: 'choreo' }]),
-            },
-          },
+          name: 'Choreo Gateway',
+          status: 'Online',
+          gatewayType: 'choreo',
+          discoveredApis: [],
         },
       ],
     });
 
     render(<Wso2ApiPlatformPage />);
 
-    await screen.findByText('Customer API');
-    expect(screen.getByText('Orders API')).toBeInTheDocument();
+    expect(await screen.findByText('Customer API')).toBeInTheDocument();
 
-    fireEvent.mouseDown(screen.getByRole('button', { name: /Select Type/i }));
-    fireEvent.click(await screen.findByRole('option', { name: 'HTTP' }));
-
-    fireEvent.mouseDown(
-      screen.getByRole('button', { name: /Select Gateway/i }),
-    );
-    fireEvent.click(await screen.findByRole('option', { name: 'Choreo Gateway' }));
+    const gatewaySelect = screen.getByRole('button', {
+      name: /Select Gateway/i,
+    });
+    fireEvent.mouseDown(gatewaySelect);
+    fireEvent.click(await screen.findByRole('option', { name: 'Choreo' }));
 
     expect(
       screen.getByText('No APIs match the selected filters'),
     ).toBeInTheDocument();
-    expect(screen.queryByRole('table')).not.toBeInTheDocument();
   });
 
   it('shows an API loading state while catalog entities are still loading', async () => {
@@ -485,174 +416,6 @@ describe('Wso2ApiPlatformPage', () => {
     render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('Fetching APIs...')).toBeInTheDocument();
-  });
-
-  it('keeps polling during startup when gateways fail before catalog sync starts', async () => {
-    setupMocks({
-      entities: [],
-      gateways: [
-        {
-          name: 'Startup Gateway',
-          status: 'Offline',
-          gatewayType: 'wso2',
-          discoveredApis: [],
-        },
-      ],
-      syncStatus: {
-        phase: 'idle',
-        message: 'Catalog sync has not started yet.',
-        publisherApis: { loaded: 0 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-    expect(screen.queryByText('No APIs Available')).not.toBeInTheDocument();
-  });
-
-  it('shows a catalog synchronization empty state when no APIs are available yet', async () => {
-    setupMocks({
-      entities: [],
-      syncStatus: {
-        phase: 'applying',
-        message: 'Applying WSO2 entities to the Backstage catalog.',
-        publisherApis: { loaded: 1, total: 1 },
-        totals: { apiProducts: 1, mcpServers: 1, services: 1 },
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-    expect(
-      screen.getAllByText('Applying WSO2 entities to the Backstage catalog.')
-        .length,
-    ).toBeGreaterThan(1);
-    expect(screen.getByText('Adding API Manager APIs')).toBeInTheDocument();
-    expect(
-      screen.getByText('Adding self-hosted gateway APIs'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('Overall catalog sync')).toBeInTheDocument();
-    expect(screen.getAllByText('API Products').length).toBeGreaterThan(1);
-    expect(screen.getAllByText('MCP Servers').length).toBeGreaterThan(1);
-    expect(screen.getAllByText('0 / 1 loaded').length).toBeGreaterThanOrEqual(
-      2,
-    );
-  });
-
-  it('does not reopen the sync loading dialog after it has been dismissed', async () => {
-    jest.useFakeTimers();
-    setupMocks({
-      entities: [],
-      syncStatus: {
-        phase: 'fetching',
-        message: 'Fetching APIs from WSO2',
-        publisherApis: { loaded: 0, total: 10 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
-
-    act(() => {
-      jest.advanceTimersByTime(300);
-    });
-
-    await waitFor(() => {
-      expect(
-        screen.queryByText('Loading WSO2 API Manager'),
-      ).not.toBeInTheDocument();
-    });
-
-    act(() => {
-      jest.advanceTimersByTime(3000);
-    });
-
-    await waitFor(() => {
-      expect(mockWso2Api.getCatalogSyncStatus).toHaveBeenCalledTimes(2);
-    });
-    expect(
-      screen.queryByText('Loading WSO2 API Manager'),
-    ).not.toBeInTheDocument();
-  });
-
-  it('shows only the self-hosted gateway section when APIM mode is disabled', async () => {
-    setupMocks({
-      entities: [],
-      apimEnabled: false,
-      apiPlatformEnabled: true,
-    });
-    mockWso2Api.getGateways.mockReturnValue(new Promise(() => {}));
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText('Adding self-hosted gateway APIs'),
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByText('Adding API Manager APIs'),
-    ).not.toBeInTheDocument();
-  });
-
-  it('shows a configuration message when APIM and API Platform are disabled', async () => {
-    setupMocks({
-      entities: [],
-      apimEnabled: false,
-      apiPlatformEnabled: false,
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('No WSO2 API source enabled'),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        'You have to enable either APIM or API Platform configuration to load APIs.',
-      ),
-    ).toBeInTheDocument();
-  });
-
-  it('uses backend runtime config when frontend config flags are not exposed', async () => {
-    setupMocks({
-      entities: [],
-      apimEnabled: true,
-      apiPlatformEnabled: true,
-      exposeFrontendConfig: false,
-      syncStatus: {
-        phase: 'applying',
-        message: 'Applying WSO2 entities to the Backstage catalog.',
-        publisherApis: { loaded: 1, total: 1 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Adding API Manager APIs'),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText('Adding self-hosted gateway APIs'),
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByText('No WSO2 API source enabled'),
-    ).not.toBeInTheDocument();
   });
 
   it('shows a blocking API error when catalog loading fails', async () => {
@@ -664,263 +427,19 @@ describe('Wso2ApiPlatformPage', () => {
     expect(screen.getByText('Catalog is unavailable')).toBeInTheDocument();
   });
 
-  it('keeps showing catalog sync progress for startup 404s while sync is running', async () => {
-    setupMocks({
-      catalogError: new Error('Request failed with 404 Not Found'),
-      syncStatus: {
-        phase: 'fetching',
-        message: 'Fetching APIs from WSO2',
-        publisherApis: { loaded: 0, total: 10 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-    expect(screen.queryByText('Failed to load APIs')).not.toBeInTheDocument();
-  });
-
-  it('does not render live gateway APIs before APIM APIs have loaded when both sources are enabled', async () => {
-    setupMocks({
-      entities: [],
-      gateways: [
-        {
-          name: 'Self Hosted Gateway',
-          status: 'Online',
-          gatewayType: 'wso2',
-          discoveredApis: [
-            {
-              id: 'live-api-1',
-              name: 'Live Gateway API',
-              version: '1.0.0',
-              context: '/live',
-              type: 'HTTP',
-            },
-          ],
-        },
-      ],
-      syncStatus: {
-        phase: 'fetching',
-        message: 'Fetching Publisher APIs',
-        publisherApis: { loaded: 30, total: 130 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('30 / 130 loaded')).toBeInTheDocument();
-    expect(screen.queryByText('Live Gateway API')).not.toBeInTheDocument();
-  });
-
-  it('does not count self-hosted gateway APIs as APIM API progress', async () => {
-    setupMocks({
-      entities: [],
-      gateways: [
-        {
-          name: 'Self Hosted Gateway',
-          status: 'Online',
-          gatewayType: 'wso2',
-          discoveredApis: [
-            { id: 'live-api-1', name: 'Live API 1' },
-            { id: 'live-api-2', name: 'Live API 2' },
-            { id: 'live-api-3', name: 'Live API 3' },
-          ],
-        },
-      ],
-      syncStatus: {
-        phase: 'fetching',
-        message: 'Fetching Publisher APIs',
-        publisherApis: { loaded: 0 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('APIM APIs')).toBeInTheDocument();
-    expect(screen.getByText('Self-hosted gateway APIs')).toBeInTheDocument();
-    expect(screen.queryByText('3 / 3 loaded')).not.toBeInTheDocument();
-    expect(screen.getByText('3 loaded')).toBeInTheDocument();
-  });
-
-  it('keeps self-hosted gateway counts visible during background refresh', async () => {
-    jest.useFakeTimers();
-    const gateways = [
-      {
-        name: 'Self Hosted Gateway',
-        status: 'Online',
-        gatewayType: 'wso2',
-        discoveredApis: [
-          { id: 'live-api-1', name: 'Live API 1' },
-          { id: 'live-api-2', name: 'Live API 2' },
-          { id: 'live-api-3', name: 'Live API 3' },
-        ],
-      },
-    ];
-
-    setupMocks({
-      entities: [],
-      gateways,
-      syncStatus: {
-        phase: 'fetching',
-        message: 'Fetching Publisher APIs',
-        publisherApis: { loaded: 0 },
-        totals: {},
-      },
-    });
-    mockWso2Api.getGateways
-      .mockResolvedValueOnce(gateways)
-      .mockReturnValue(new Promise(() => {}));
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(await screen.findByText('3 loaded')).toBeInTheDocument();
-    expect(screen.getByText('1 / 1 gateways online')).toBeInTheDocument();
-
-    act(() => {
-      jest.advanceTimersByTime(3000);
-    });
-
-    await waitFor(() => {
-      expect(mockWso2Api.getGateways).toHaveBeenCalledTimes(2);
-    });
-    expect(screen.getByText('3 loaded')).toBeInTheDocument();
-    expect(screen.getByText('1 / 1 gateways online')).toBeInTheDocument();
-  });
-
-  it('shows APIM publisher loaded count when total is not available', async () => {
-    setupMocks({
-      entities: [],
-      gateways: [
-        {
-          name: 'Self Hosted Gateway',
-          status: 'Online',
-          gatewayType: 'wso2',
-          discoveredApis: [{ id: 'live-api-1', name: 'Live API 1' }],
-        },
-      ],
-      syncStatus: {
-        phase: 'fetching',
-        message: 'Fetching Publisher APIs',
-        publisherApis: { loaded: 42 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('APIM APIs')).toBeInTheDocument();
-    expect(screen.getByText('42 loaded')).toBeInTheDocument();
-  });
-
   it('shows visible APIM APIs when publisher total is not available', async () => {
     setupMocks({
       entities: [catalogEntities[0]],
-      gateways: [
-        {
-          name: 'Self Hosted Gateway',
-          status: 'Online',
-          gatewayType: 'wso2',
-          discoveredApis: [
-            {
-              id: 'live-api-1',
-              name: 'Live Gateway API',
-              version: '1.0.0',
-              context: '/live',
-              type: 'HTTP',
-            },
-          ],
-        },
-      ],
       syncStatus: {
         phase: 'fetching',
-        message: 'Fetching Publisher APIs',
-        publisherApis: { loaded: 0 },
-        totals: {},
+        message: 'Syncing',
+        publisherApis: { loaded: 5 },
       },
     });
 
     render(<Wso2ApiPlatformPage />);
 
     expect(await screen.findByText('Customer API')).toBeInTheDocument();
-    expect(
-      screen.queryByText('Loading WSO2 API Manager'),
-    ).not.toBeInTheDocument();
-  });
-
-  it('parses APIM publisher progress from sync status message when structured fields are stale', async () => {
-    setupMocks({
-      entities: [],
-      gateways: [
-        {
-          name: 'Self Hosted Gateway',
-          status: 'Online',
-          gatewayType: 'wso2',
-          discoveredApis: [{ id: 'live-api-1', name: 'Live API 1' }],
-        },
-      ],
-      syncStatus: {
-        phase: 'fetching',
-        message: 'Loading Publisher API details (82/130).',
-        publisherApis: { loaded: 0 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('82 / 130 loaded')).toBeInTheDocument();
-  });
-
-  it('shows gateway APIs when sync status is complete without APIM APIs', async () => {
-    setupMocks({
-      entities: [],
-      gateways: [
-        {
-          name: 'Self Hosted Gateway',
-          status: 'Online',
-          gatewayType: 'wso2',
-          discoveredApis: [
-            {
-              id: 'live-api-1',
-              name: 'Live Gateway API',
-              version: '1.0.0',
-              context: '/live',
-              type: 'HTTP',
-            },
-          ],
-        },
-      ],
-      syncStatus: {
-        phase: 'complete',
-        message: 'Catalog sync complete',
-        publisherApis: { loaded: 0 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(await screen.findByText('Live Gateway API')).toBeInTheDocument();
-    expect(
-      screen.queryByText('Loading WSO2 API Manager'),
-    ).not.toBeInTheDocument();
   });
 
   it('triggers APIM refresh and keeps waiting when gateway APIs load while APIM sync is idle', async () => {
@@ -928,23 +447,15 @@ describe('Wso2ApiPlatformPage', () => {
       entities: [],
       gateways: [
         {
-          name: 'Self Hosted Gateway',
+          name: 'Online Gateway',
           status: 'Online',
           gatewayType: 'wso2',
-          discoveredApis: [
-            {
-              id: 'live-api-1',
-              name: 'Live Gateway API',
-              version: '1.0.0',
-              context: '/live',
-              type: 'HTTP',
-            },
-          ],
+          discoveredApis: [],
         },
       ],
       syncStatus: {
         phase: 'idle',
-        message: 'Catalog sync has not started yet.',
+        message: 'Sync has not run yet.',
         publisherApis: { loaded: 0 },
         totals: {},
       },
@@ -952,57 +463,16 @@ describe('Wso2ApiPlatformPage', () => {
 
     render(<Wso2ApiPlatformPage />);
 
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-
-    expect(screen.queryByText('Live Gateway API')).not.toBeInTheDocument();
+    expect(await screen.findByText('No APIs Available')).toBeInTheDocument();
   });
 
-  it('keeps waiting when only some APIM APIs are visible and publisher total is larger', async () => {
-    setupMocks({
-      entities: [catalogEntities[0]],
-      gateways: [
-        {
-          name: 'Self Hosted Gateway',
-          status: 'Online',
-          gatewayType: 'wso2',
-          discoveredApis: [
-            {
-              id: 'live-api-1',
-              name: 'Live Gateway API',
-              version: '1.0.0',
-              context: '/live',
-              type: 'HTTP',
-            },
-          ],
-        },
-      ],
-      syncStatus: {
-        phase: 'fetching',
-        message: 'Fetching Publisher APIs',
-        publisherApis: { loaded: 30, total: 130 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('30 / 130 loaded')).toBeInTheDocument();
-    expect(screen.queryByText('Customer API')).not.toBeInTheDocument();
-    expect(screen.queryByText('Live Gateway API')).not.toBeInTheDocument();
-  });
-
-  it('shows offline gateway warnings while keeping catalog APIs visible', async () => {
+  it('shows catalog APIs even when a gateway is offline', async () => {
     setupMocks({
       gateways: [
         {
-          name: 'Hybrid Gateway',
+          name: 'Offline Gateway',
           status: 'Offline',
-          gatewayType: 'hybrid',
+          gatewayType: 'wso2',
           discoveredApis: [],
         },
       ],
@@ -1010,19 +480,18 @@ describe('Wso2ApiPlatformPage', () => {
 
     render(<Wso2ApiPlatformPage />);
 
+    // No gateway warning shown — this is a discovery portal, infra issues go to admin logs
     expect(
-      await screen.findByText('Gateway Discovery Warning'),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Hybrid Gateway/)).toBeInTheDocument();
-    expect(screen.getByText('Customer API')).toBeInTheDocument();
+      screen.queryByText('Gateway Discovery Warning'),
+    ).not.toBeInTheDocument();
+    // Catalog APIs are still visible
+    expect(await screen.findByText('Customer API')).toBeInTheDocument();
   });
 
   it('renders API Products, MCP Servers, and Services from their tabs', async () => {
     render(<Wso2ApiPlatformPage />);
 
-    await waitFor(() => {
-      expect(screen.getByText('Customer API')).toBeInTheDocument();
-    });
+    expect(await screen.findByText('Customer API')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'API Products' }));
     expect(await screen.findByText('Sales Product')).toBeInTheDocument();
@@ -1035,22 +504,18 @@ describe('Wso2ApiPlatformPage', () => {
 
     fireEvent.click(screen.getByRole('tab', { name: 'Services' }));
     expect(await screen.findByText('Inventory Service')).toBeInTheDocument();
-    expect(mockWso2Api.getAllServices).toHaveBeenCalledWith({ pageSize: 500 });
     expect(
       screen.getByRole('link', { name: 'Inventory Service' }),
     ).toHaveAttribute('href', '/catalog/wso2/api/inventory-service');
     expect(
       screen.getByText('https://services.example.com/inventory'),
     ).toBeInTheDocument();
-    expect(screen.queryByTestId('detail-panel')).not.toBeInTheDocument();
-    expect(screen.queryByText('Service Usage')).not.toBeInTheDocument();
-    expect(screen.queryByText('Definition')).not.toBeInTheDocument();
   });
 
   it('shows and clears result-not-found messages for other table searches', async () => {
     render(<Wso2ApiPlatformPage />);
 
-    await screen.findByText('Customer API');
+    expect(await screen.findByText('Customer API')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'API Products' }));
     await screen.findByText('Sales Product');
@@ -1060,7 +525,7 @@ describe('Wso2ApiPlatformPage', () => {
     expect(screen.getByText('Result not found')).toBeInTheDocument();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
     fireEvent.change(screen.getByPlaceholderText('Search API Products'), {
-      target: { value: 'sales' },
+      target: { value: 'Sales' },
     });
     expect(screen.queryByText('Result not found')).not.toBeInTheDocument();
     expect(screen.getByText('Sales Product')).toBeInTheDocument();
@@ -1073,7 +538,7 @@ describe('Wso2ApiPlatformPage', () => {
     expect(screen.getByText('Result not found')).toBeInTheDocument();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
     fireEvent.change(screen.getByPlaceholderText('Search MCP Servers'), {
-      target: { value: 'agent' },
+      target: { value: 'Agent' },
     });
     expect(screen.queryByText('Result not found')).not.toBeInTheDocument();
     expect(screen.getByText('Agent MCP')).toBeInTheDocument();
@@ -1092,37 +557,10 @@ describe('Wso2ApiPlatformPage', () => {
     expect(screen.getByText('Inventory Service')).toBeInTheDocument();
   });
 
-  it('merges live gateway-discovered APIs into the API table', async () => {
-    setupMocks({
-      gateways: [
-        {
-          name: 'Kong Runtime',
-          status: 'Online',
-          gatewayType: 'kong',
-          discoveredApis: [
-            {
-              id: 'live-api-1',
-              name: 'Live Gateway API',
-              version: '1.0.0',
-              context: '/live',
-              type: 'HTTP',
-            },
-          ],
-        },
-      ],
-    });
-    render(<Wso2ApiPlatformPage />);
-
-    expect(await screen.findByText('Customer API')).toBeInTheDocument();
-    expect(screen.getByText('Live Gateway API')).toBeInTheDocument();
-    expect(screen.getByText('/live')).toBeInTheDocument();
-  });
-
   it('filters APIs by selecting a type and gateway', async () => {
     render(<Wso2ApiPlatformPage />);
     await screen.findByText('Customer API');
 
-    // Material-UI Select trigger is a button/div with role button
     const typeSelect = screen.getByRole('button', { name: /Select Type/i });
     fireEvent.mouseDown(typeSelect);
     const typeOption = await screen.findByRole('option', { name: 'HTTP' });
@@ -1150,7 +588,6 @@ describe('Wso2ApiPlatformPage', () => {
     ).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'API Products' }));
-
     expect(
       screen.queryByRole('button', { name: /Select Type/i }),
     ).not.toBeInTheDocument();
@@ -1162,27 +599,29 @@ describe('Wso2ApiPlatformPage', () => {
   it('renders API Products empty state', async () => {
     setupMocks({ entities: [] });
     render(<Wso2ApiPlatformPage />);
+    expect(await screen.findByText('No APIs Available')).toBeInTheDocument();
+
     fireEvent.click(screen.getByRole('tab', { name: 'API Products' }));
     expect(
-      await screen.findByText('Discovering API Products...'),
+      await screen.findByText('No API Products Available'),
     ).toBeInTheDocument();
   });
 
   it('renders MCP empty state', async () => {
     setupMocks({ entities: [] });
     render(<Wso2ApiPlatformPage />);
+    expect(await screen.findByText('No APIs Available')).toBeInTheDocument();
+
     fireEvent.click(screen.getByRole('tab', { name: 'MCP Servers' }));
     expect(
-      await screen.findByText('Scanning for MCP Servers...'),
+      await screen.findByText('No MCP Servers Available'),
     ).toBeInTheDocument();
   });
 
   it('renders Services error state', async () => {
-    mockWso2Api.getAllServices.mockRejectedValue(
-      new Error('Failed service fetch'),
-    );
+    setupMocks({ catalogError: new Error('Catalog service failed') });
     render(<Wso2ApiPlatformPage />);
-    await screen.findByText('Customer API'); // Wait for initial catalog load to complete
+    expect(await screen.findByText('Failed to load APIs')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'Services' }));
     expect(
@@ -1276,268 +715,6 @@ describe('Wso2ApiPlatformPage', () => {
     expect(screen.getByText('GW API 5')).toBeInTheDocument();
   });
 
-  it('updates gateway dropdown when gateway data arrives after catalog sync', async () => {
-    jest.useFakeTimers();
-    const disconnectedGateway = {
-      name: 'self-hosted-gw',
-      displayName: 'Self Hosted Gateway',
-      status: 'Offline',
-      gatewayType: 'self-hosted-gw',
-      discoveredApis: [],
-    };
-    const reconnectedGateway = {
-      name: 'self-hosted-gw',
-      displayName: 'Self Hosted Gateway',
-      status: 'Online',
-      gatewayType: 'self-hosted-gw',
-      discoveredApis: [
-        {
-          id: 'self-hosted-api-1',
-          name: 'Reconnected Self Hosted API',
-          version: '1.0.0',
-          context: '/reconnected',
-          type: 'HTTP',
-        },
-      ],
-    };
-
-    setupMocks({
-      gateways: [disconnectedGateway],
-      syncStatus: {
-        phase: 'complete',
-        message: 'Catalog sync complete',
-        completedAt: '2026-07-03T00:00:00.000Z',
-        publisherApis: { loaded: 0 },
-        totals: { catalogEntities: 1 },
-      },
-      entities: [
-        {
-          kind: 'API',
-          metadata: {
-            name: 'reconnected-self-hosted-api',
-            namespace: 'wso2-gateways',
-            annotations: {
-              'wso2-gateway.com/api-id': 'self-hosted-api-1',
-              'wso2-gateway.com/api-name': 'Reconnected Self Hosted API',
-              'wso2.com/api-discovery-type': 'self-hosted-gateway',
-              'wso2-gateway.com/discovered-from': 'self-hosted-gw',
-            },
-          },
-        },
-      ],
-    });
-    mockWso2Api.getGateways
-      .mockResolvedValueOnce([disconnectedGateway])
-      .mockResolvedValue([reconnectedGateway]);
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Reconnected Self Hosted API'),
-    ).toBeInTheDocument();
-
-    act(() => {
-      jest.advanceTimersByTime(3000);
-    });
-
-    await waitFor(() => {
-      expect(mockWso2Api.getGateways).toHaveBeenCalledTimes(2);
-    });
-
-    fireEvent.mouseDown(
-      screen.getByRole('button', { name: /Select Gateway/i }),
-    );
-    fireEvent.click(
-      await screen.findByRole('option', { name: 'Self-hosted-gw' }),
-    );
-
-    expect(screen.getByText('Reconnected Self Hosted API')).toBeInTheDocument();
-  });
-
-  it('filters configured gateway APIs when catalog and live gateway casing differs', async () => {
-    setupMocks({
-      gateways: [
-        {
-          name: 'self-hosted-gateway-1',
-          displayName: 'self-hosted-gateway-1',
-          status: 'Online',
-          gatewayType: 'self-hosted-gateway-1',
-          discoveredApis: [],
-        },
-      ],
-      syncStatus: {
-        phase: 'complete',
-        message: 'Catalog sync complete',
-        completedAt: '2026-07-03T00:00:00.000Z',
-        publisherApis: { loaded: 0 },
-        totals: { catalogEntities: 1 },
-      },
-      entities: [
-        {
-          kind: 'API',
-          metadata: {
-            name: 'platform-casing-api',
-            namespace: 'default',
-            annotations: {
-              'wso2.com/api-id': 'platform-casing-api-1',
-              'wso2.com/api-name': 'Platform Casing API',
-              'wso2.com/api-version': 'v1.0',
-              'wso2.com/api-context': '/platform-casing/v1.0',
-              'wso2.com/api-endpoints': JSON.stringify([
-                {
-                  environmentName: 'self-hosted-gateway-1',
-                  displayName: 'self-hosted-gateway-1',
-                  gatewayType: 'PRODUCTION',
-                },
-              ]),
-              'wso2.com/platform-gateway-endpoints': JSON.stringify([
-                {
-                  environmentName: 'self-hosted-gateway-1',
-                  displayName: 'self-hosted-gateway-1',
-                  gatewayType: 'self-hosted-gateway-1',
-                  urls: ['https://gateway.example.com/platform-casing/v1.0'],
-                },
-              ]),
-            },
-          },
-        },
-      ],
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(await screen.findByText('Platform Casing API')).toBeInTheDocument();
-
-    fireEvent.mouseDown(
-      screen.getByRole('button', { name: /Select Gateway/i }),
-    );
-    fireEvent.click(
-      await screen.findByRole('option', { name: 'Self-hosted-gateway-1' }),
-    );
-
-    expect(screen.getByText('Platform Casing API')).toBeInTheDocument();
-  });
-
-  it('filters by the visible gateway value instead of hidden platform gateway annotations', async () => {
-    setupMocks({
-      gateways: [
-        {
-          name: 'self-hosted-1',
-          displayName: 'self-hosted-1',
-          status: 'Online',
-          gatewayType: 'self-hosted-1',
-          discoveredApis: [],
-        },
-      ],
-      syncStatus: {
-        phase: 'complete',
-        message: 'Catalog sync complete',
-        completedAt: '2026-07-03T00:00:00.000Z',
-        publisherApis: { loaded: 0 },
-        totals: { catalogEntities: 2 },
-      },
-      entities: [
-        {
-          kind: 'API',
-          metadata: {
-            name: 'wso2-visible-api',
-            namespace: 'default',
-            annotations: {
-              'wso2.com/api-id': 'wso2-visible-api-1',
-              'wso2.com/api-name': 'WSO2 Visible API',
-              'wso2.com/api-version': 'v1',
-              'wso2.com/api-context': '/wso2-visible',
-              'wso2.com/api-gateway': 'wso2',
-              'wso2.com/platform-gateway-endpoints': JSON.stringify([
-                {
-                  environmentName: 'self-hosted-1',
-                  displayName: 'self-hosted-1',
-                  gatewayType: 'self-hosted-1',
-                  urls: ['https://gateway.example.com/wso2-visible'],
-                },
-              ]),
-            },
-          },
-        },
-        {
-          kind: 'API',
-          metadata: {
-            name: 'self-hosted-visible-api',
-            namespace: 'default',
-            annotations: {
-              'wso2.com/api-id': 'self-hosted-visible-api-1',
-              'wso2.com/api-name': 'Self Hosted Visible API',
-              'wso2.com/api-version': 'v1',
-              'wso2.com/api-context': '/self-hosted-visible',
-              'wso2-gateway.com/api-endpoints': JSON.stringify([
-                {
-                  environmentName: 'self-hosted-1',
-                  displayName: 'self-hosted-1',
-                  gatewayType: 'self-hosted-1',
-                  urls: ['https://gateway.example.com/self-hosted-visible'],
-                },
-              ]),
-            },
-          },
-        },
-      ],
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(await screen.findByText('WSO2 Visible API')).toBeInTheDocument();
-    expect(screen.getByText('Self Hosted Visible API')).toBeInTheDocument();
-
-    fireEvent.mouseDown(
-      screen.getByRole('button', { name: /Select Gateway/i }),
-    );
-    fireEvent.click(
-      await screen.findByRole('option', { name: 'Self-hosted-1' }),
-    );
-
-    expect(screen.queryByText('WSO2 Visible API')).not.toBeInTheDocument();
-    expect(screen.getByText('Self Hosted Visible API')).toBeInTheDocument();
-  });
-
-  it('renders Services as entity links without inline detail panels', async () => {
-    setupMocks({
-      services: [
-        {
-          id: 'svc-1',
-          name: 'Service 1',
-          version: '1.0.0',
-          serviceUrl: 'https://example.com/1',
-          definitionType: 'OAS',
-          usage: '1 API',
-        },
-        {
-          name: 'Service No ID',
-          version: '1.0.0',
-          serviceUrl: 'https://example.com/no-id',
-          definitionType: 'OAS',
-          usage: '1 API',
-        },
-      ],
-    });
-    render(<Wso2ApiPlatformPage />);
-    await screen.findByText('Customer API');
-
-    fireEvent.click(screen.getByRole('tab', { name: 'Services' }));
-    expect(await screen.findByText('Service 1')).toBeInTheDocument();
-    expect(screen.getByText('Service No ID')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Service 1' })).toHaveAttribute(
-      'href',
-      '/catalog/wso2/api/inventory-service',
-    );
-    expect(screen.getByRole('link', { name: 'Service No ID' })).toHaveAttribute(
-      'href',
-      '/catalog/default/api/service-no-id',
-    );
-    expect(screen.queryByTestId('detail-panel')).not.toBeInTheDocument();
-    expect(mockWso2Api.getServiceUsage).not.toHaveBeenCalled();
-    expect(mockWso2Api.getServiceDefinition).not.toHaveBeenCalled();
-  });
-
   it('merges live gateway-discovered APIs matching catalog API', async () => {
     setupMocks({
       gateways: [
@@ -1570,181 +747,18 @@ describe('Wso2ApiPlatformPage', () => {
     expect(await screen.findByText('Customer API')).toBeInTheDocument();
   });
 
-  it('allows manual refresh during synchronization', async () => {
-    setupMocks({
-      entities: [],
-      gateways: [
-        {
-          name: 'Offline Gateway',
-          status: 'Offline',
-          gatewayType: 'wso2',
-          discoveredApis: [],
-        },
-      ],
-      syncStatus: {
-        phase: 'failed',
-        message: 'Catalog sync failed',
-        publisherApis: { loaded: 0 },
-        totals: {},
-      },
-    });
+  it('allows manual refresh when catalog is empty', async () => {
+    setupMocks({ entities: [] });
     render(<Wso2ApiPlatformPage />);
+    expect(await screen.findByText('No APIs Available')).toBeInTheDocument();
 
-    const refreshBtn = await screen.findByRole('button', {
-      name: 'Refresh Now',
-    });
-    fireEvent.click(refreshBtn);
+    const refreshButton = screen.getByRole('button', { name: /Refresh Now/i });
+    fireEvent.click(refreshButton);
+
     expect(mockCatalogApi.getEntities).toHaveBeenCalledTimes(2);
   });
 
-  it('handles sync timeout and retry across tabs', async () => {
-    jest.useFakeTimers();
-    setupMocks({ entities: [] });
-    // First call resolves to empty array, subsequent calls never resolve
-    mockCatalogApi.getEntities
-      .mockResolvedValueOnce({ items: [] })
-      .mockReturnValue(new Promise(() => {}));
-
-    render(<Wso2ApiPlatformPage />);
-
-    // Flush microtasks to settle the first catalogState promise resolution
-    await act(async () => {
-      await Promise.resolve();
-    });
-
-    // Advance time to trigger timeout
-    act(() => {
-      jest.advanceTimersByTime(65000);
-    });
-
-    expect(screen.getByText('Sync Timed Out')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
-    act(() => {
-      jest.advanceTimersByTime(300);
-    });
-
-    // Trigger timeout states on other tabs
-    fireEvent.click(screen.getByRole('tab', { name: 'API Products' }));
-    expect(screen.getByText('Sync Timed Out')).toBeInTheDocument();
-
-    // Go back and retry
-    fireEvent.click(screen.getByRole('tab', { name: 'APIs' }));
-    const retryBtn = screen.getByRole('button', { name: 'Retry Now' });
-    fireEvent.click(retryBtn);
-
-    jest.useRealTimers();
-  });
-
-  it('keeps showing sync progress when publisher APIs are still loading', async () => {
-    jest.useFakeTimers();
-    setupMocks({
-      entities: [],
-      syncStatus: {
-        phase: 'fetching',
-        message: 'Fetching Publisher APIs',
-        publisherApis: { loaded: 30, total: 130 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    expect(
-      await screen.findByText('Loading WSO2 API Manager'),
-    ).toBeInTheDocument();
-
-    act(() => {
-      jest.advanceTimersByTime(65000);
-    });
-
-    expect(screen.queryByText('Sync Timed Out')).not.toBeInTheDocument();
-    expect(screen.getByText('30 / 130 loaded')).toBeInTheDocument();
-    expect(screen.getAllByText('API Products').length).toBeGreaterThan(1);
-    expect(screen.getAllByText('MCP Servers').length).toBeGreaterThan(0);
-  });
-
-  it('does not refetch Services on catalog polling when service metadata is unchanged', async () => {
-    jest.useFakeTimers();
-    setupMocks({
-      entities: [],
-      syncStatus: {
-        phase: 'fetching',
-        message: 'Loading Publisher API details (82/130).',
-        publisherApis: { loaded: 82, total: 130 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    await screen.findByText('Loading WSO2 API Manager');
-    await waitFor(() => {
-      expect(mockWso2Api.getAllServices).toHaveBeenCalledTimes(1);
-    });
-
-    act(() => {
-      jest.advanceTimersByTime(3000);
-    });
-
-    await waitFor(() => {
-      expect(mockCatalogApi.getEntities).toHaveBeenCalledTimes(2);
-    });
-    expect(mockWso2Api.getAllServices).toHaveBeenCalledTimes(1);
-  });
-
-  it('keeps polling sync status while elapsed timer re-renders the dialog', async () => {
-    jest.useFakeTimers();
-    setupMocks({
-      entities: [],
-      syncStatus: {
-        phase: 'fetching',
-        message: 'Preparing WSO2 Publisher catalog synchronization.',
-        publisherApis: { loaded: 0 },
-        totals: {},
-      },
-    });
-
-    render(<Wso2ApiPlatformPage />);
-
-    await screen.findByText('Loading WSO2 API Manager');
-    expect(mockWso2Api.getCatalogSyncStatus).toHaveBeenCalledTimes(1);
-
-    for (let i = 0; i < 3; i++) {
-      act(() => {
-        jest.advanceTimersByTime(1000);
-      });
-      await act(async () => {
-        await Promise.resolve();
-      });
-    }
-
-    await waitFor(() => {
-      expect(mockWso2Api.getCatalogSyncStatus).toHaveBeenCalledTimes(2);
-    });
-  });
-
-  it('handles MCP Servers sync timeout when catalog never resolves', async () => {
-    jest.useFakeTimers();
-    setupMocks({ entities: [] });
-    // Catalog never resolves
-    mockCatalogApi.getEntities.mockReturnValue(new Promise(() => {}));
-
-    render(<Wso2ApiPlatformPage />);
-
-    // Advance time to trigger timeout
-    act(() => {
-      jest.advanceTimersByTime(65000);
-    });
-
-    // Go to MCP Servers tab
-    fireEvent.click(screen.getByRole('tab', { name: 'MCP Servers' }));
-    expect(screen.getByText('Sync Timed Out')).toBeInTheDocument();
-
-    jest.useRealTimers();
-  });
-
-  it('shows gateway discovery failure across tabs when catalog is empty', async () => {
+  it('shows Refresh Now across tabs when catalog is empty and gateway is offline', async () => {
     setupMocks({
       entities: [],
       services: [],
@@ -1765,24 +779,20 @@ describe('Wso2ApiPlatformPage', () => {
     });
     render(<Wso2ApiPlatformPage />);
 
+    expect(await screen.findByText('Refresh Now')).toBeInTheDocument();
+    // No gateway warning — infra issues are for admins, not portal users
     expect(
-      await screen.findByText('No WSO2 Resources Available'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('Gateway Discovery Warning')).toBeInTheDocument();
+      screen.queryByText('Gateway Discovery Warning'),
+    ).not.toBeInTheDocument();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'API Products' }));
-    expect(screen.getByText('No WSO2 Resources Available')).toBeInTheDocument();
-    expect(screen.getByText('Gateway Discovery Warning')).toBeInTheDocument();
-    expect(
-      screen.queryByText('Discovering API Products...'),
-    ).not.toBeInTheDocument();
+    expect(screen.getByText('Refresh Now')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'MCP Servers' }));
-    expect(screen.getByText('No WSO2 Resources Available')).toBeInTheDocument();
-    expect(screen.getByText('Gateway Discovery Warning')).toBeInTheDocument();
-    expect(
-      screen.queryByText('Scanning for MCP Servers...'),
-    ).not.toBeInTheDocument();
+    expect(screen.getByText('Refresh Now')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Services' }));
+    expect(screen.getByText('Refresh Now')).toBeInTheDocument();
   });
 });

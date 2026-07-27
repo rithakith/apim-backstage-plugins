@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -132,45 +132,52 @@ export const WebSocketConsole = ({
       <Typography variant="h5" style={{ fontWeight: 600, marginBottom: '8px' }}>
         WebSocket Console (wscat generator)
       </Typography>
-     
 
       {!isDeployed && (
         <Box mb={3}>
           <Alert severity="info">
-            <strong>Not Deployed:</strong> This API is not deployed to any gateway. Try out functionality is disabled.
+            <strong>Not Deployed:</strong> This API is not deployed to any
+            gateway. Try out functionality is disabled.
           </Alert>
         </Box>
       )}
 
       {/* Gateway Endpoint URL selector */}
       {isDeployed && (
-      <Card style={{ marginBottom: '24px' }}>
-        <CardContent>
-          <Typography variant="subtitle2" style={{ fontWeight: 600, marginBottom: '12px' }}>
-            Gateway Endpoint
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={selectedUrl === 'custom' ? 6 : 12}>
-              <FormControl variant="outlined" fullWidth size="small">
-                <InputLabel id="ws-endpoint-label">Select Gateway Environment</InputLabel>
-                <Select
-                  labelId="ws-endpoint-label"
-                  value={selectedUrl}
-                  onChange={e => setSelectedUrl(e.target.value as string)}
-                  label="Select Gateway Environment"
-                >
-                  {gatewayUrls.map(urlObj => (
-                    <MenuItem key={urlObj.url} value={urlObj.url}>
-                      {urlObj.description || urlObj.environmentName || urlObj.url} ({urlObj.url})
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+        <Card style={{ marginBottom: '24px' }}>
+          <CardContent>
+            <Typography
+              variant="subtitle2"
+              style={{ fontWeight: 600, marginBottom: '12px' }}
+            >
+              Gateway Endpoint
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={selectedUrl === 'custom' ? 6 : 12}>
+                <FormControl variant="outlined" fullWidth size="small">
+                  <InputLabel id="ws-endpoint-label">
+                    Select Gateway Environment
+                  </InputLabel>
+                  <Select
+                    labelId="ws-endpoint-label"
+                    value={selectedUrl}
+                    onChange={e => setSelectedUrl(e.target.value as string)}
+                    label="Select Gateway Environment"
+                  >
+                    {gatewayUrls.map(urlObj => (
+                      <MenuItem key={urlObj.url} value={urlObj.url}>
+                        {urlObj.description ||
+                          urlObj.environmentName ||
+                          urlObj.url}{' '}
+                        ({urlObj.url})
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
-           
-          </Grid>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
       )}
 
       {/* Topics Accordion List */}
@@ -223,49 +230,77 @@ export const WebSocketConsole = ({
                   </Typography>
                 </Box>
               </AccordionSummary>
-              <AccordionDetails style={{ display: 'block', padding: '16px 24px' }}>
+              <AccordionDetails
+                style={{ display: 'block', padding: '16px 24px' }}
+              >
                 {!isDeployed ? (
-                  <Typography variant="body2" color="textSecondary" style={{ fontStyle: 'italic' }}>
-                    Connect functionality is disabled because the API is not deployed.
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    style={{ fontStyle: 'italic' }}
+                  >
+                    Connect functionality is disabled because the API is not
+                    deployed.
                   </Typography>
                 ) : (
                   <>
-                    <Typography variant="caption" color="textSecondary" style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
+                    <Typography
+                      variant="caption"
+                      color="textSecondary"
+                      style={{
+                        fontWeight: 'bold',
+                        display: 'block',
+                        marginBottom: '8px',
+                      }}
+                    >
                       cURL
                     </Typography>
-                <Box
-                  p={2}
-                  style={{
-                    backgroundColor: '#1E1E1E',
-                    color: '#D4D4D4',
-                    borderRadius: '6px',
-                    border: '1px solid #333',
-                    fontFamily: CODE_FONT_FAMILY,
-                    fontSize: '12.5px',
-                    whiteSpace: 'pre-wrap',
-                    wordBreak: 'break-all',
-                    marginBottom: '8px',
-                  }}
-                >
-                  {getWscatCommand(path)}
-                </Box>
-                <Box display="flex" justifyContent="flex-end" gridGap="16px" style={{ gap: '16px', marginRight: '8px' }}>
-                  <Button
-                    color="primary"
-                    style={{ fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.5px' }}
-                    onClick={() => setRefreshToken(prev => prev + 1)}
-                  >
-                    GENERATE CURL
-                  </Button>
-                  <Button
-                    color="primary"
-                    style={{ fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.5px' }}
-                    onClick={() => handleCopy(path, globalIdx)}
-                  >
-                    {copiedIndex === globalIdx ? 'COPIED' : 'COPY CURL'}
-                  </Button>
-                </Box>
-                </>
+                    <Box
+                      p={2}
+                      style={{
+                        backgroundColor: '#1E1E1E',
+                        color: '#D4D4D4',
+                        borderRadius: '6px',
+                        border: '1px solid #333',
+                        fontFamily: CODE_FONT_FAMILY,
+                        fontSize: '12.5px',
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-all',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      {getWscatCommand(path)}
+                    </Box>
+                    <Box
+                      display="flex"
+                      justifyContent="flex-end"
+                      gridGap="16px"
+                      style={{ gap: '16px', marginRight: '8px' }}
+                    >
+                      <Button
+                        color="primary"
+                        style={{
+                          fontWeight: 700,
+                          fontSize: '0.75rem',
+                          letterSpacing: '0.5px',
+                        }}
+                        onClick={() => setRefreshToken(prev => prev + 1)}
+                      >
+                        GENERATE CURL
+                      </Button>
+                      <Button
+                        color="primary"
+                        style={{
+                          fontWeight: 700,
+                          fontSize: '0.75rem',
+                          letterSpacing: '0.5px',
+                        }}
+                        onClick={() => handleCopy(path, globalIdx)}
+                      >
+                        {copiedIndex === globalIdx ? 'COPIED' : 'COPY CURL'}
+                      </Button>
+                    </Box>
+                  </>
                 )}
               </AccordionDetails>
             </Accordion>
@@ -275,7 +310,13 @@ export const WebSocketConsole = ({
 
       {/* Stateful Inline Paginator */}
       {totalPages > 1 && (
-        <Box display="flex" justifyContent="center" alignItems="center" mt={3} style={{ gap: '16px' }}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          mt={3}
+          style={{ gap: '16px' }}
+        >
           <Button
             variant="outlined"
             size="small"
@@ -291,7 +332,9 @@ export const WebSocketConsole = ({
           <Button
             variant="outlined"
             size="small"
-            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            onClick={() =>
+              setCurrentPage(prev => Math.min(totalPages, prev + 1))
+            }
             disabled={currentPage === totalPages}
             style={{ textTransform: 'none' }}
           >

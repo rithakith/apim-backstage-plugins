@@ -18,12 +18,7 @@
 
 import { useMemo, useState } from 'react';
 import { useAsync } from 'react-use';
-import {
-  EmptyState,
-  InfoCard,
-  Link,
-  Table,
-} from '@backstage/core-components';
+import { EmptyState, InfoCard, Link, Table } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
 import { catalogApiRef, useEntity } from '@backstage/plugin-catalog-react';
 import Box from '@material-ui/core/Box';
@@ -79,7 +74,8 @@ export const EntityWso2ServiceDefinitionCard = () => {
 
   const usageRows = useMemo(() => {
     try {
-      const usageStr = entity.metadata.annotations?.['wso2.com/service-usage-list'];
+      const usageStr =
+        entity.metadata.annotations?.['wso2.com/service-usage-list'];
       if (!usageStr) {
         return [];
       }
@@ -90,7 +86,7 @@ export const EntityWso2ServiceDefinitionCard = () => {
   }, [entity]);
 
   const definitionStr = useMemo(() => {
-    let def = entity.spec?.definition as string | undefined;
+    const def = entity.spec?.definition as string | undefined;
     if (def === 'WSO2 Service Definition placeholder') {
       return undefined;
     }
@@ -181,8 +177,9 @@ export const EntityWso2ServiceDefinitionCard = () => {
 
                     return (
                       <Link
-                        to={`/catalog/${match.namespace}/api/${match.entityName || normalizeEntityName(label)
-                          }`}
+                        to={`/catalog/${match.namespace}/api/${
+                          match.entityName || normalizeEntityName(label)
+                        }`}
                       >
                         {label}
                       </Link>

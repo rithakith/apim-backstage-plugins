@@ -1,4 +1,4 @@
-import React from 'react';
+import { MutableRefObject } from 'react';
 // @ts-ignore
 import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
@@ -7,7 +7,7 @@ import { Wso2ApiDetail } from '../../../../../api';
 interface SwaggerConsoleProps {
   swaggerSpec: any;
   tryOutPlugin: any;
-  apiKeyRef: React.MutableRefObject<string | null>;
+  apiKeyRef: MutableRefObject<string | null>;
   externalApiKey: string;
   apiKeyAuthPolicy: any;
   details?: Wso2ApiDetail;
@@ -29,7 +29,14 @@ export const SwaggerConsole = ({
       spec={swaggerSpec}
       plugins={[tryOutPlugin]}
       supportedSubmitMethods={[
-        'get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace',
+        'get',
+        'put',
+        'post',
+        'delete',
+        'options',
+        'head',
+        'patch',
+        'trace',
       ]}
       requestInterceptor={(req: any) => {
         const currentKey = apiKeyRef.current;
@@ -43,7 +50,9 @@ export const SwaggerConsole = ({
             req.headers[key || 'x-api-key'] = externalApiKey;
           } else if (location === 'query') {
             const separator = req.url.includes('?') ? '&' : '?';
-            req.url = `${req.url}${separator}${key || 'api-key'}=${encodeURIComponent(externalApiKey)}`;
+            req.url = `${req.url}${separator}${
+              key || 'api-key'
+            }=${encodeURIComponent(externalApiKey)}`;
           }
         }
         return req;

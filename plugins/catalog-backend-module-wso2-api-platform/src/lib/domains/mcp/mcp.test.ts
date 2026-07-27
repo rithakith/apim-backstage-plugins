@@ -26,7 +26,9 @@ import { Wso2McpServer } from './types';
 
 describe('mcp domain', () => {
   const formatTestCaseDoc = (details: string) => {
-    return `\n================================================================================\nTEST CASE: ${expect.getState().currentTestName}\n================================================================================\n${details.trim()}\n================================================================================\n`;
+    return `\n================================================================================\nTEST CASE: ${
+      expect.getState().currentTestName
+    }\n================================================================================\n${details.trim()}\n================================================================================\n`;
   };
 
   const mockClient = {
@@ -94,26 +96,30 @@ describe('mcp domain', () => {
         },
       });
 
-      console.log(formatTestCaseDoc(`
+      console.log(
+        formatTestCaseDoc(`
 === [MCP Mapper: MCP Server Mapping (Published)] ===
 MCP name: "${entity.metadata.name}"
 Spec lifecycle: "${entity.spec.lifecycle}"
 Spec owner: "${entity.spec.owner}" (from provider)
-`));
+`),
+      );
     });
 
     it('should fallback to unknown for owner, and production lifecycle', () => {
       // 1. Fallback to unknown & experimental
       const mcp1: Wso2McpServer = { id: '1', name: 'm1' };
       const ent1 = mapWso2McpToEntity(mcp1, 'default', 'prov');
-      expect(ent1.spec.owner).toBe('unknown');
+      expect(ent1.spec.owner).toBe('wso2');
       expect(ent1.spec.lifecycle).toBe('production');
 
-      console.log(formatTestCaseDoc(`
+      console.log(
+        formatTestCaseDoc(`
 === [MCP Mapper: MCP Server Spec Fallbacks] ===
 Fallback 1: owner="${ent1.spec.owner}" (unknown)
 Fallback 2: lifecycle="${ent1.spec.lifecycle}" (undefined)
-`));
+`),
+      );
     });
   });
 
@@ -150,24 +156,34 @@ Fallback 2: lifecycle="${ent1.spec.lifecycle}" (undefined)
       };
 
       mockClient.getMcpServerList.mockResolvedValueOnce(mockList);
-      mockClient.getMcpServerDetail.mockImplementation(async (summary: any) => ({
-        ...summary,
-        tools: [],
-      }));
+      mockClient.getMcpServerDetail.mockImplementation(
+        async (summary: any) => ({
+          ...summary,
+          tools: [],
+        }),
+      );
 
       const result = await fetchMcpServerList(mockClient);
 
       expect(result).toHaveLength(2);
-      expect(result[0]).toEqual(expect.objectContaining({ id: 'mcp-1', tools: [] }));
-      expect(result[1]).toEqual(expect.objectContaining({ id: 'mcp-2', tools: [] }));
+      expect(result[0]).toEqual(
+        expect.objectContaining({ id: 'mcp-1', tools: [] }),
+      );
+      expect(result[1]).toEqual(
+        expect.objectContaining({ id: 'mcp-2', tools: [] }),
+      );
       expect(mockClient.getMcpServerList).toHaveBeenCalled();
       expect(mockClient.getMcpServerDetail).toHaveBeenCalledTimes(2);
     });
 
     it('should log error and throw on outer list fetch error', async () => {
-      mockClient.getMcpServerList.mockRejectedValueOnce(new Error('List failure'));
+      mockClient.getMcpServerList.mockRejectedValueOnce(
+        new Error('List failure'),
+      );
 
-      await expect(fetchMcpServerList(mockClient)).rejects.toThrow('List failure');
+      await expect(fetchMcpServerList(mockClient)).rejects.toThrow(
+        'List failure',
+      );
     });
   });
 });

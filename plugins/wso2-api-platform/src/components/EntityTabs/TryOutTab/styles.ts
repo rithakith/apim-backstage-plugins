@@ -19,46 +19,46 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(theme => ({
-    root: {
-        '& .swagger-ui': {
-            fontFamily: theme.typography.fontFamily,
-            color: theme.palette.text.primary,
+  root: {
+    '& .swagger-ui': {
+      fontFamily: theme.typography.fontFamily,
+      color: theme.palette.text.primary,
 
-            ['& .btn-clear']: {
-                color: theme.palette.text.primary,
-            },
-            [`& .scheme-container`]: {
-                backgroundColor: theme.palette.background.default,
-            },
-            [`& input, & select, & textarea`]: {
-                backgroundColor: theme.palette.background.paper,
-                color: theme.palette.text.primary,
-                borderColor: theme.palette.divider,
-                '&::placeholder': {
-                    color: theme.palette.text.disabled,
-                },
-            },
-            [`& .opblock-tag,
+      ['& .btn-clear']: {
+        color: theme.palette.text.primary,
+      },
+      [`& .scheme-container`]: {
+        backgroundColor: theme.palette.background.default,
+      },
+      [`& input, & select, & textarea`]: {
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.text.primary,
+        borderColor: theme.palette.divider,
+        '&::placeholder': {
+          color: theme.palette.text.disabled,
+        },
+      },
+      [`& .opblock-tag,
           .opblock-tag small,
           table thead tr td,
           table thead tr th,
           table tbody tr td,
           table tbody tr th`]: {
-                fontFamily: theme.typography.fontFamily,
-                color: theme.palette.text.primary,
-                borderColor: theme.palette.divider,
-            },
-            [`& section.models,
+        fontFamily: theme.typography.fontFamily,
+        color: theme.palette.text.primary,
+        borderColor: theme.palette.divider,
+      },
+      [`& section.models,
           section.models.is-open h4`]: {
-                borderColor: theme.palette.divider,
-            },
-            [`& .model-title,
+        borderColor: theme.palette.divider,
+      },
+      [`& .model-title,
           .model .renderedMarkdown,
           .model .description`]: {
-                fontFamily: theme.typography.fontFamily,
-                fontWeight: theme.typography.fontWeightRegular,
-            },
-            [`& h1, h2, h3, h4, h5, h6,
+        fontFamily: theme.typography.fontFamily,
+        fontWeight: theme.typography.fontWeightRegular,
+      },
+      [`& h1, h2, h3, h4, h5, h6,
           .errors h4, .error h4, .opblock h4, section.models h4,
           .response-control-media-type__accept-message,
           .opblock-summary-description,
@@ -76,19 +76,19 @@ export const useStyles = makeStyles(theme => ({
           .error .btn,
           .info .title,
           .info .base-url`]: {
-                fontFamily: theme.typography.fontFamily,
-                color: theme.palette.text.primary,
-            },
-            [`& .opblock .opblock-section-header,
+        fontFamily: theme.typography.fontFamily,
+        color: theme.palette.text.primary,
+      },
+      [`& .opblock .opblock-section-header,
           .model-box,
           section.models .model-container`]: {
-                background: theme.palette.background.default,
-            },
-            [`& .prop-format,
+        background: theme.palette.background.default,
+      },
+      [`& .prop-format,
           .parameter__in`]: {
-                color: theme.palette.text.disabled,
-            },
-            [`& table.model,
+        color: theme.palette.text.disabled,
+      },
+      [`& table.model,
           .parameter__type,
           .model.model-title,
           .model-title,
@@ -99,113 +99,113 @@ export const useStyles = makeStyles(theme => ({
           .model .renderedMarkdown,
           .model .description,
           .errors small`]: {
-                color: theme.palette.text.secondary,
-            },
-            [`& .parameter__name.required:after,
+        color: theme.palette.text.secondary,
+      },
+      [`& .parameter__name.required:after,
         .parameter__name.required span`]: {
-                color: theme.palette.warning.dark,
-            },
-            [`& table.model,
+        color: theme.palette.warning.dark,
+      },
+      [`& table.model,
           table.model .model,
           .opblock-external-docs-wrapper`]: {
-                fontSize: theme.typography.fontSize,
-            },
-            [`& table.headers td`]: {
-                color: theme.palette.text.primary,
-                fontWeight: theme.typography.fontWeightRegular,
-            },
-            [`& .model-hint`]: {
-                color: theme.palette.text.secondary,
-                backgroundColor: theme.palette.background.paper,
-            },
-            [`& .opblock-summary-method,
+        fontSize: theme.typography.fontSize,
+      },
+      [`& table.headers td`]: {
+        color: theme.palette.text.primary,
+        fontWeight: theme.typography.fontWeightRegular,
+      },
+      [`& .model-hint`]: {
+        color: theme.palette.text.secondary,
+        backgroundColor: theme.palette.background.paper,
+      },
+      [`& .opblock-summary-method,
           .info a`]: {
-                fontFamily: theme.typography.fontFamily,
-            },
-            [`& .info, .opblock, .tab`]: {
-                [`& li, p`]: {
-                    fontFamily: theme.typography.fontFamily,
-                    color: theme.palette.text.primary,
-                },
-            },
-            [`& a`]: {
-                color: theme.palette.primary.main,
-            },
-            [`& .renderedMarkdown code`]: {
-                color: theme.palette.secondary.light,
-            },
-            [`& .property-row td:first-child`]: {
-                color: theme.palette.text.primary,
-            },
-            [`& span.prop-type`]: {
-                color: theme.palette.success.light,
-            },
-            [`& .opblock-control-arrow svg, .authorization__btn .unlocked`]: {
-                fill: theme.palette.text.primary,
-            },
+        fontFamily: theme.typography.fontFamily,
+      },
+      [`& .info, .opblock, .tab`]: {
+        [`& li, p`]: {
+          fontFamily: theme.typography.fontFamily,
+          color: theme.palette.text.primary,
+        },
+      },
+      [`& a`]: {
+        color: theme.palette.primary.main,
+      },
+      [`& .renderedMarkdown code`]: {
+        color: theme.palette.secondary.light,
+      },
+      [`& .property-row td:first-child`]: {
+        color: theme.palette.text.primary,
+      },
+      [`& span.prop-type`]: {
+        color: theme.palette.success.light,
+      },
+      [`& .opblock-control-arrow svg, .authorization__btn .unlocked`]: {
+        fill: theme.palette.text.primary,
+      },
 
-            [`& .json-schema-2020-12__title,
+      [`& .json-schema-2020-12__title,
           .json-schema-2020-12-keyword__name,
           .json-schema-2020-12-property .json-schema-2020-12__title,
           .json-schema-2020-12-keyword--description`]: {
-                color: theme.palette.text.primary,
-            },
-            [`.json-schema-2020-12-accordion__icon svg`]: {
-                fill: theme.palette.text.primary,
-            },
-            [`& .json-schema-2020-12-accordion,
+        color: theme.palette.text.primary,
+      },
+      [`.json-schema-2020-12-accordion__icon svg`]: {
+        fill: theme.palette.text.primary,
+      },
+      [`& .json-schema-2020-12-accordion,
           .json-schema-2020-12-expand-deep-button`]: {
-                background: 'none',
-                appearance: 'none',
-            },
-            [`& .json-schema-2020-12-expand-deep-button,
+        background: 'none',
+        appearance: 'none',
+      },
+      [`& .json-schema-2020-12-expand-deep-button,
           .json-schema-2020-12-keyword__name--secondary,
           .json-schema-2020-12-keyword__value--secondary,
           .json-schema-2020-12__attribute--muted,
           .json-schema-2020-12-keyword__value--const,
           .json-schema-2020-12-keyword__value--warning`]: {
-                color: theme.palette.text.secondary,
-            },
-            [`& .json-schema-2020-12-body,
+        color: theme.palette.text.secondary,
+      },
+      [`& .json-schema-2020-12-body,
           .json-schema-2020-12-keyword__value--const,
           .json-schema-2020-12-keyword__value--warning`]: {
-                borderColor: theme.palette.text.secondary,
-            },
-            [`.json-schema-2020-12__constraint--string`]: {
-                backgroundColor: theme.palette.primary.main,
-            },
-            [`& .json-schema-2020-12__attribute--primary`]: {
-                color: theme.palette.primary.main,
-            },
-            [`& .json-schema-2020-12-property--required>.json-schema-2020-12:first-of-type>.json-schema-2020-12-head .json-schema-2020-12__title:after`]:
-            {
-                color: theme.palette.warning.dark,
-            },
+        borderColor: theme.palette.text.secondary,
+      },
+      [`.json-schema-2020-12__constraint--string`]: {
+        backgroundColor: theme.palette.primary.main,
+      },
+      [`& .json-schema-2020-12__attribute--primary`]: {
+        color: theme.palette.primary.main,
+      },
+      [`& .json-schema-2020-12-property--required>.json-schema-2020-12:first-of-type>.json-schema-2020-12-head .json-schema-2020-12__title:after`]:
+        {
+          color: theme.palette.warning.dark,
         },
     },
-    subTabs: {
-        '& .MuiTabs-indicator': {
-            height: 4,
-            backgroundColor: theme.palette.primary.main,
-        },
+  },
+  subTabs: {
+    '& .MuiTabs-indicator': {
+      height: 4,
+      backgroundColor: theme.palette.primary.main,
     },
-    tabRoot: {
-        minWidth: 120,
-        textTransform: 'none',
-        fontWeight: 600,
-        '&.Mui-selected': {
-            borderBottom: `4px solid ${theme.palette.primary.main}`,
-        },
+  },
+  tabRoot: {
+    minWidth: 120,
+    textTransform: 'none',
+    fontWeight: 600,
+    '&.Mui-selected': {
+      borderBottom: `4px solid ${theme.palette.primary.main}`,
     },
-    refreshIconSpin: {
-        animation: '$spin 1s linear infinite',
+  },
+  refreshIconSpin: {
+    animation: '$spin 1s linear infinite',
+  },
+  '@keyframes spin': {
+    '0%': {
+      transform: 'rotate(0deg)',
     },
-    '@keyframes spin': {
-        '0%': {
-            transform: 'rotate(0deg)',
-        },
-        '100%': {
-            transform: 'rotate(360deg)',
-        },
+    '100%': {
+      transform: 'rotate(360deg)',
     },
+  },
 }));

@@ -239,9 +239,7 @@ export class Wso2ApiPlatformClient extends BaseWso2Client {
       params.set('limit', options.limit.toString());
 
     const query = params.toString() ? `?${params.toString()}` : '';
-    return await this.requestServiceCatalog<any>(
-      `/services${query}`,
-      {},    );
+    return await this.requestServiceCatalog<any>(`/services${query}`, {});
   }
 
   /**
@@ -258,9 +256,7 @@ export class Wso2ApiPlatformClient extends BaseWso2Client {
   /**
    * Fetches the raw service definition document.
    */
-  async getServiceDefinition(
-    serviceId: string,
-  ): Promise<string> {
+  async getServiceDefinition(serviceId: string): Promise<string> {
     const encodedServiceId = encodeURIComponent(serviceId);
     const accessToken = await this.getAccessToken();
     const url = `${this.serviceCatalogBaseUrl}/services/${encodedServiceId}/definition`;
@@ -334,14 +330,11 @@ export class Wso2ApiPlatformClient extends BaseWso2Client {
    */
   async getApiWsdlStream(apiId: string): Promise<Response> {
     const encodedApiId = encodeURIComponent(apiId);
-    return await this.fetchPublisherApi(
-      `/apis/${encodedApiId}/wsdl`,
-      {
-        headers: {
-          Accept: 'application/zip, application/wsdl+xml, text/xml, */*',
-        },
+    return await this.fetchPublisherApi(`/apis/${encodedApiId}/wsdl`, {
+      headers: {
+        Accept: 'application/zip, application/wsdl+xml, text/xml, */*',
       },
-    );
+    });
   }
 
   /**
@@ -401,7 +394,9 @@ export class Wso2ApiPlatformClient extends BaseWso2Client {
 
     if (!response.ok) {
       const message = await this.extractWso2ErrorMessage(response);
-      const errorMsg = `WSO2 Publisher request failed (context: SERVICE-ACCOUNT), status ${response.status}: ${message.substring(0, 500)}`;
+      const errorMsg = `WSO2 Publisher request failed (context: SERVICE-ACCOUNT), status ${
+        response.status
+      }: ${message.substring(0, 500)}`;
       this.logger.error(`[WSO2-Client] ${errorMsg}`);
       throw new Error(errorMsg);
     }
@@ -417,7 +412,7 @@ export class Wso2ApiPlatformClient extends BaseWso2Client {
       Accept: 'application/json',
     };
     if (auth) {
-      headers['Authorization'] = auth;
+      headers.Authorization = auth;
     }
 
     this.logger.info(
@@ -453,7 +448,9 @@ export class Wso2ApiPlatformClient extends BaseWso2Client {
       }
 
       this.logger.debug(
-        `[WSO2-GATEWAY-DISCOVERY] Found ${result.length} APIs from gateway ${discoveryUrl}. Sample data: ${JSON.stringify(
+        `[WSO2-GATEWAY-DISCOVERY] Found ${
+          result.length
+        } APIs from gateway ${discoveryUrl}. Sample data: ${JSON.stringify(
           result[0] || {},
         )}`,
       );

@@ -59,6 +59,6 @@ export async function fetchApiProductList(
     API_PRODUCT_DETAIL_CONCURRENCY,
     productSummary => client.getApiProductDetail(productSummary),
   );
-  
+
   return enrichedProducts as Wso2ApiProduct[];
 }

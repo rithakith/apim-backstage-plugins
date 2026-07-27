@@ -204,7 +204,8 @@ export const getGatewayDiscoverySnapshot = (
 export function extractGateways(
   annotations: Record<string, string>,
 ): Wso2GatewayInfo[] {
-  const isApiPlatformEntity = !!annotations['wso2.com/platform-gateway-endpoints'];
+  const isApiPlatformEntity =
+    !!annotations['wso2.com/platform-gateway-endpoints'];
   const isSelfHosted = !!annotations['wso2-gateway.com/api-endpoints'];
 
   let gwEndpointsStr = annotations['wso2.com/gateway-endpoints'];
@@ -243,7 +244,9 @@ export function renderGatewayTypes(gateways?: Wso2GatewayInfo[]): string {
   return types[0];
 }
 
-export function expandByGateways<T extends { id?: string; gateways?: Wso2GatewayInfo[] }>(items: T[]): T[] {
+export function expandByGateways<
+  T extends { id?: string; gateways?: Wso2GatewayInfo[] },
+>(items: T[]): T[] {
   return items.flatMap(item => {
     if (!item.gateways || item.gateways.length <= 1) {
       return [item];

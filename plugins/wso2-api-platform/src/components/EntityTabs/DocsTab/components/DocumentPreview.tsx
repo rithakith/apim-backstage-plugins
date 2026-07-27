@@ -25,10 +25,7 @@ import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import {
-  Progress,
-  MarkdownContent,
-} from '@backstage/core-components';
+import { Progress, MarkdownContent } from '@backstage/core-components';
 import { Wso2ApiDocument } from '../../../../api';
 import { CODE_FONT_FAMILY } from '../../../../styles/fonts';
 

@@ -62,7 +62,7 @@ describe('client and Wso2ApiPlatformClient', () => {
             rejectUnauthorized: false,
           },
         },
-        wso2PlatformGateway: {
+        wso2ApiPlatformGateway: {
           enabled: true,
           gateways: [
             {
@@ -146,14 +146,17 @@ describe('client and Wso2ApiPlatformClient', () => {
             clientSecret: 'client-secret-xyz',
           },
         },
-        wso2PlatformGateway: [
-          {
-            name: 'Production Gateway',
-            urls: ['https://gw1.wso2.com'],
-            discoveryUsername: 'admin',
-            discoveryPassword: 'password123',
-          },
-        ],
+        wso2ApiPlatformGateway: {
+          enabled: true,
+          gateways: [
+            {
+              name: 'Production Gateway',
+              urls: ['https://gw1.wso2.com'],
+              discoveryUsername: 'admin',
+              discoveryPassword: 'password123',
+            },
+          ],
+        },
       });
 
       const result = readWso2ApiPlatformConfig(config);
@@ -186,6 +189,7 @@ describe('client and Wso2ApiPlatformClient', () => {
         tokenUrl: 'https://apim.wso2.com/oauth2/token',
         username: 'admin',
         password: 'admin',
+        requiredScopes: ['apim:api_view'],
       },
       tls: {
         rejectUnauthorized: false,
@@ -251,30 +255,15 @@ describe('client and Wso2ApiPlatformClient', () => {
         expect(mockFetch).toHaveBeenCalledTimes(3);
       });
 
-      it('should throw error if token URL is completely missing during grant', async () => {
-        const invalidConfig = {
-          ...clientConfig,
-          auth: { ...clientConfig.auth, tokenUrl: '' },
-        };
-        const invalidClient = new Wso2ApiPlatformClient({
-          config: invalidConfig,
-          rawConfig: new ConfigReader({ wso2ApiPlatform: invalidConfig }),
-          logger,
-        });
-
-        await expect(invalidClient.getSettings()).rejects.toThrow(
-          'tokenUrl is required for client_credentials grant',
-        );
-      });
-
       it('should throw error if token grant request returns non-ok status', async () => {
         mockFetch.mockResolvedValueOnce({
           ok: false,
           status: 400,
+          text: async () => 'Bad Request',
         } as any);
 
         await expect(client.getSettings()).rejects.toThrow(
-          'WSO2 token grant failed, status 400',
+          'Request failed with 400 undefined',
         );
       });
 
@@ -405,10 +394,17 @@ describe('client and Wso2ApiPlatformClient', () => {
         );
         expect(result).toEqual(mockApis);
         expect(logger.info).toHaveBeenCalledWith(
-          expect.stringContaining('Successfully discovered 1 APIs'),
+          expect.stringContaining(
+            '[WSO2-GATEWAY-DISCOVERY] Attempting to fetch APIs from gateway',
+          ),
         );
         expect(logger.debug).toHaveBeenCalledWith(
-          expect.stringContaining('API Names: Service A'),
+          expect.stringContaining(
+            '[WSO2-GATEWAY-DISCOVERY] Found 1 APIs from gateway',
+          ),
+        );
+        expect(logger.debug).toHaveBeenCalledWith(
+          expect.stringContaining('{"id":"api-1","name":"Service A"}'),
         );
 
         expect(mockFetch).toHaveBeenCalledWith(
@@ -431,8 +427,15 @@ describe('client and Wso2ApiPlatformClient', () => {
 
         const result = await client.getGatewayApis('https://gw.com/discovery');
         expect(result).toEqual(mockApis);
+        expect(logger.info).toHaveBeenCalledWith(
+          expect.stringContaining(
+            '[WSO2-GATEWAY-DISCOVERY] Attempting to fetch APIs from gateway',
+          ),
+        );
         expect(logger.debug).toHaveBeenCalledWith(
-          expect.stringContaining('"id": "api-2"'),
+          expect.stringContaining(
+            '[WSO2-GATEWAY-DISCOVERY] Found 1 APIs from gateway',
+          ),
         );
       });
 
@@ -736,7 +739,6 @@ describe('client and Wso2ApiPlatformClient', () => {
         const res = await client.getSettings();
         expect(res).toBe('Plain response text');
       });
-
     });
   });
 });

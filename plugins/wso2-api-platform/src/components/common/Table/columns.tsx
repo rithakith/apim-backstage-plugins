@@ -155,6 +155,11 @@ export const serviceColumns: TableColumn<any>[] = [
   {
     title: 'Usage',
     field: 'usage',
-    render: rowData => (rowData.usage !== undefined && rowData.usage !== null && rowData.usage !== '' ? rowData.usage : '-'),
+    render: rowData =>
+      rowData.usage !== undefined &&
+      rowData.usage !== null &&
+      rowData.usage !== ''
+        ? rowData.usage
+        : '-',
   },
 ];

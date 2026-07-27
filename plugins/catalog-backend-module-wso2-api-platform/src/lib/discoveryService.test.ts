@@ -61,7 +61,9 @@ const mockFetchMcpServerList = jest.mocked(fetchMcpServerList);
 const mockMapWso2McpToEntity = jest.mocked(mapWso2McpToEntity);
 const mockFetchServiceList = jest.mocked(fetchServiceList);
 const mockMapWso2ServiceToEntity = jest.mocked(mapWso2ServiceToEntity);
-const mockDiscoverWSO2PlatformGatewayApis = jest.mocked(discoverWSO2PlatformGatewayApis);
+const mockDiscoverWSO2PlatformGatewayApis = jest.mocked(
+  discoverWSO2PlatformGatewayApis,
+);
 const mockMapDiscoveredApiToEntity = jest.mocked(mapDiscoveredApiToEntity);
 
 describe('Wso2DiscoveryService', () => {
@@ -120,7 +122,9 @@ describe('Wso2DiscoveryService', () => {
     mockFetchApiProductList.mockResolvedValueOnce(mockProducts);
     mockFetchMcpServerList.mockResolvedValueOnce(mockMcps);
     mockFetchServiceList.mockResolvedValueOnce(mockServicesList);
-    mockDiscoverWSO2PlatformGatewayApis.mockResolvedValueOnce(mockDiscoveredGatewayApis);
+    mockDiscoverWSO2PlatformGatewayApis.mockResolvedValueOnce(
+      mockDiscoveredGatewayApis,
+    );
 
     // Mapped entities
     const apiEntity = {

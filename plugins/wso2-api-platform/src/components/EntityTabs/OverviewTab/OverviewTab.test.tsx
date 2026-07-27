@@ -1,6 +1,7 @@
 /**
  * @jest-environment jsdom
  */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /*
  * Copyright (c) 2026, WSO2 LLC. (http://www.wso2.com).
  *
@@ -18,7 +19,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { render, screen } from '@testing-library/react';
 import { EntityWso2OverviewTab } from './OverviewTab';
 
@@ -45,13 +45,18 @@ jest.mock('@backstage/core-plugin-api', () => ({
     getServiceUsage: jest.fn(),
     getEntities: jest.fn(),
   }),
-  useRouteRef: () => (params: any) => `/catalog/${params.namespace}/${params.kind}/${params.name}`,
+  useRouteRef: () => (params: any) =>
+    `/catalog/${params.namespace}/${params.kind}/${params.name}`,
 }));
 
 // Mock @backstage/plugin-catalog and @backstage/core-components to avoid ESM transpilation failures with transitive dependencies like react-syntax-highlighter
 jest.mock('@backstage/plugin-catalog', () => ({
   AboutField: (props: any) => (
-    <div data-testid={`about-field-${props.label.toLowerCase().replace(/\s+/g, '-')}`}>
+    <div
+      data-testid={`about-field-${props.label
+        .toLowerCase()
+        .replace(/\s+/g, '-')}`}
+    >
       <span className="label">{props.label}</span>
       <span className="value">{props.value}</span>
     </div>
@@ -68,7 +73,9 @@ jest.mock('@backstage/core-components', () => ({
   HeaderIconLinkRow: (props: any) => (
     <div data-testid="header-icon-links">
       {props.links?.map((link: any, idx: number) => (
-        <a key={idx} href={link.href}>{link.label}</a>
+        <a key={idx} href={link.href}>
+          {link.label}
+        </a>
       ))}
     </div>
   ),
@@ -97,7 +104,6 @@ describe('EntityWso2AboutCard', () => {
           'wso2.com/business-owner-email': 'john@wso2.com',
           'wso2.com/technical-owner': 'Jane Smith',
           'wso2.com/technical-owner-email': 'jane@wso2.com',
-
         },
       },
       spec: {
@@ -117,7 +123,7 @@ describe('EntityWso2AboutCard', () => {
 
     // Lifecycle
     expect(screen.getByText('Lifecycle')).toBeDefined();
-    expect(screen.getByText('Published')).toBeDefined();
+    expect(screen.getByText('PUBLISHED')).toBeDefined();
 
     // Context & Version
     expect(screen.getByText('Context')).toBeDefined();
@@ -127,43 +133,53 @@ describe('EntityWso2AboutCard', () => {
 
     // Description
     expect(screen.getByText('Description')).toBeDefined();
-    expect(screen.getByText('This is a test WSO2 API description.')).toBeDefined();
+    expect(
+      screen.getByText('This is a test WSO2 API description.'),
+    ).toBeDefined();
 
     // Gateway URL
     expect(screen.getByText('Gateway')).toBeDefined();
-    expect(screen.getByText('Production (https://gw.wso2.com/test-context/1.0.0)')).toBeDefined();
+    expect(
+      screen.getByText('Production (https://gw.wso2.com/test-context/1.0.0)'),
+    ).toBeDefined();
 
     // TechDocs header vertical links
     expect(screen.getByText('View TechDocs')).toBeDefined();
-    const link = screen.getByRole('link', { name: 'View TechDocs' }) as HTMLAnchorElement;
-    expect(link.getAttribute('href')).toBe('/catalog/default/api/test-api/wso2');
-
+    const link = screen.getByRole('link', {
+      name: 'View TechDocs',
+    }) as HTMLAnchorElement;
+    expect(link.getAttribute('href')).toBe(
+      '/catalog/default/api/test-api/wso2',
+    );
   });
 
   it('should render Gateway as "Unknown" if api-endpoints JSON is completely malformed', () => {
-    mockEntity.metadata.annotations['wso2.com/api-endpoints'] = '{invalid-json}';
+    mockEntity.metadata.annotations['wso2.com/api-endpoints'] =
+      '{invalid-json}';
     render(<EntityWso2OverviewTab />);
 
     expect(screen.getByText('Gateway')).toBeDefined();
     expect(screen.getByText('Unknown')).toBeDefined();
-
   });
 
   it('should not render Gateway if api-endpoints array is empty and api-gateway is absent', () => {
-    mockEntity.metadata.annotations['wso2.com/api-endpoints'] = JSON.stringify([]);
+    mockEntity.metadata.annotations['wso2.com/api-endpoints'] = JSON.stringify(
+      [],
+    );
     render(<EntityWso2OverviewTab />);
 
     expect(screen.queryByText('Gateway')).toBeNull();
-
   });
 
   it('should render Gateway from api-gateway when api-endpoints array is empty', () => {
-    mockEntity.metadata.annotations['wso2.com/api-endpoints'] = JSON.stringify([]);
+    mockEntity.metadata.annotations['wso2.com/api-endpoints'] = JSON.stringify(
+      [],
+    );
     mockEntity.metadata.annotations['wso2.com/api-gateway'] = 'wso2';
     render(<EntityWso2OverviewTab />);
 
     expect(screen.getByText('Gateway')).toBeDefined();
-    expect(screen.getByText('wso2')).toBeDefined();
+    expect(screen.getByText('WSO2')).toBeDefined();
   });
 
   it('should support Gateway endpoints defined with string urls instead of array', () => {
@@ -176,7 +192,9 @@ describe('EntityWso2AboutCard', () => {
     render(<EntityWso2OverviewTab />);
 
     expect(screen.getByText('Gateway')).toBeDefined();
-    expect(screen.getByText('Sandbox (https://sandbox.gw.wso2.com/test)')).toBeDefined();
+    expect(
+      screen.getByText('Sandbox (https://sandbox.gw.wso2.com/test)'),
+    ).toBeDefined();
   });
 
   it('should support annotations prefixed with wso2-gateway.com/ as fallback', () => {
@@ -187,10 +205,9 @@ describe('EntityWso2AboutCard', () => {
     };
     render(<EntityWso2OverviewTab />);
 
-    expect(screen.getByText('Deprecated')).toBeDefined();
+    expect(screen.getByText('DEPRECATED')).toBeDefined();
     expect(screen.getByText('/fallback-context')).toBeDefined();
     expect(screen.getByText('2.0.0')).toBeDefined();
-
   });
 
   it('should fallback display name to entity name if title is completely absent', () => {
@@ -215,7 +232,6 @@ describe('EntityWso2AboutCard', () => {
     expect(screen.queryByText('Gateway')).toBeNull();
 
     expect(screen.queryByText('Description')).toBeNull();
-
   });
 
   it('should display values from explicit WSO2 annotations', () => {
@@ -233,13 +249,12 @@ describe('EntityWso2AboutCard', () => {
     expect(screen.getByText('Context')).toBeDefined();
     expect(screen.getByText('/annotation-context')).toBeDefined();
     expect(screen.getByText('Lifecycle')).toBeDefined();
-    expect(screen.getByText('Published')).toBeDefined();
+    expect(screen.getByText('PUBLISHED')).toBeDefined();
     expect(screen.getByText('Provider')).toBeDefined();
     expect(screen.getByText('annotation-provider')).toBeDefined();
 
     expect(screen.getByText('Description')).toBeDefined();
     expect(screen.getByText('Description from catalog metadata')).toBeDefined();
-
   });
 
   it('should support array, string, and invalid JSON values for api-security-scheme', () => {

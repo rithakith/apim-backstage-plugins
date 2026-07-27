@@ -27,9 +27,9 @@ paths:
       summary: Exchange client credentials for a WSO2 access token
       description: |
         Exchanges client credentials for a WSO2 access token. 
-        
+
         **Important:** The client credentials must belong to an application owned/subscribed by a user with appropriate roles/permissions (such as `admin` or a publisher role) to authorize the requested scopes.
-        
+
         The scopes are categorized by task:
         * **Core API Ingestion:** `apim:api_view apim:publisher_settings`
         * **Advanced Ingestion & Publishing:** `apim:api_create apim:api_publish apim:api_import_export`
@@ -110,103 +110,103 @@ paths:
                 type: object
                 additionalProperties: true
               example:
-                devportalUrl: "https://localhost:9447/devportal"
+                devportalUrl: 'https://localhost:9447/devportal'
                 environment:
-                  - id: "Default"
-                    name: "Default"
-                    displayName: "Default"
-                    type: "hybrid"
-                    gatewayType: "Regular"
-                    mode: "WRITE_ONLY"
-                    serverUrl: "https://localhost:9447/services/"
-                    provider: "wso2"
+                  - id: 'Default'
+                    name: 'Default'
+                    displayName: 'Default'
+                    type: 'hybrid'
+                    gatewayType: 'Regular'
+                    mode: 'WRITE_ONLY'
+                    serverUrl: 'https://localhost:9447/services/'
+                    provider: 'wso2'
                     showInApiConsole: true
                     vhosts:
-                      - host: "localhost"
-                        httpContext: ""
+                      - host: 'localhost'
+                        httpContext: ''
                         httpPort: 8284
                         httpsPort: 8247
                         wsPort: 9099
-                        wsHost: "localhost"
+                        wsHost: 'localhost'
                         wssPort: 8099
-                        wssHost: "localhost"
+                        wssHost: 'localhost'
                         websubHttpPort: 9021
                         websubHttpsPort: 8021
                     endpointURIs: []
                     additionalProperties: []
                     permissions:
-                      permissionType: "PUBLIC"
+                      permissionType: 'PUBLIC'
                       roles: []
-                  - id: "014681a1-c2db-4bed-8b4a-41e14a793764"
-                    name: "Dasun-gateway"
-                    displayName: "Dasun-gateway"
-                    type: "hybrid"
-                    gatewayType: "AWS"
-                    mode: "WRITE_ONLY"
+                  - id: '014681a1-c2db-4bed-8b4a-41e14a793764'
+                    name: 'Dasun-gateway'
+                    displayName: 'Dasun-gateway'
+                    type: 'hybrid'
+                    gatewayType: 'AWS'
+                    mode: 'WRITE_ONLY'
                     serverUrl: null
-                    provider: "external"
+                    provider: 'external'
                     showInApiConsole: true
                     vhosts:
-                      - host: "{apiId}.execute-api.{region}.amazonaws.com"
-                        httpContext: ""
+                      - host: '{apiId}.execute-api.{region}.amazonaws.com'
+                        httpContext: ''
                         httpPort: 80
                         httpsPort: 443
                         wsPort: null
-                        wsHost: "{apiId}.execute-api.{region}.amazonaws.com"
+                        wsHost: '{apiId}.execute-api.{region}.amazonaws.com'
                         wssPort: null
-                        wssHost: "{apiId}.execute-api.{region}.amazonaws.com"
+                        wssHost: '{apiId}.execute-api.{region}.amazonaws.com'
                         websubHttpPort: 9021
                         websubHttpsPort: 8021
                     endpointURIs: []
                     additionalProperties:
-                      - key: "secret_key"
-                        value: "*****"
-                      - key: "stage"
-                        value: "fed"
-                      - key: "region"
-                        value: "ap-south-1"
-                      - key: "access_key"
-                        value: "*****"
-                      - key: "organization"
-                        value: "carbon.super"
+                      - key: 'secret_key'
+                        value: '*****'
+                      - key: 'stage'
+                        value: 'fed'
+                      - key: 'region'
+                        value: 'ap-south-1'
+                      - key: 'access_key'
+                        value: '*****'
+                      - key: 'organization'
+                        value: 'carbon.super'
                     permissions:
-                      permissionType: "PUBLIC"
+                      permissionType: 'PUBLIC'
                       roles: []
                 gatewayTypes:
-                  - "Regular"
-                  - "APK"
-                  - "AWS"
-                  - "Azure"
-                  - "Kong"
-                  - "Envoy"
-                  - "APIPlatform"
+                  - 'Regular'
+                  - 'APK'
+                  - 'AWS'
+                  - 'Azure'
+                  - 'Kong'
+                  - 'Envoy'
+                  - 'APIPlatform'
                 gatewayFeatureCatalog:
                   gatewayFeatures:
                     Azure:
                       basic: []
                       runtime:
-                        - "cors"
-                        - "transportsHTTP"
-                        - "transportsHTTPS"
+                        - 'cors'
+                        - 'transportsHTTP'
+                        - 'transportsHTTPS'
                       resources: []
                       localScopes: []
                       policies:
-                        - "policies"
+                        - 'policies'
                       monetization: []
                       subscriptions: []
                       endpoints:
-                        - "http"
-                        - "typePRODUCTION"
+                        - 'http'
+                        - 'typePRODUCTION'
                       endpointSecurity: []
                       tryout: []
                 scopes:
-                  - "apim:admin"
-                  - "apim:publisher_settings"
-                  - "openid"
+                  - 'apim:admin'
+                  - 'apim:publisher_settings'
+                  - 'openid'
                 monetizationAttributes: []
                 subscriberContactAttributes:
-                  - recipient: ""
-                    delimiter: ""
+                  - recipient: ''
+                    delimiter: ''
                 securityAuditProperties:
                   isGlobal: null
                   overrideGlobal: null
@@ -218,9 +218,9 @@ paths:
                 portalConfigurationOnlyModeEnabled: false
                 retryCallWithNewOAuthTokenEnabled: true
                 crossTenantSubscriptionEnabled: false
-                defaultAdvancePolicy: "Unlimited"
-                defaultSubscriptionPolicy: "Unlimited"
-                authorizationHeader: "Authorization"
+                defaultAdvancePolicy: 'Unlimited'
+                defaultSubscriptionPolicy: 'Unlimited'
+                authorizationHeader: 'Authorization'
                 isJWTEnabledForLoginTokens: false
                 orgAccessControlEnabled: true
                 allowSubscriptionValidationDisabling: true
@@ -237,9 +237,9 @@ paths:
                 $ref: '#/components/schemas/Wso2Error'
               example:
                 code: 401
-                message: ""
-                description: "Unauthenticated request"
-                moreInfo: ""
+                message: ''
+                description: 'Unauthenticated request'
+                moreInfo: ''
                 error: []
         '500':
           $ref: '#/components/responses/Wso2Error'
@@ -282,29 +282,29 @@ paths:
               example:
                 count: 14
                 list:
-                  - id: "b779100d-982b-4771-b329-ce05a3c98b67"
-                    name: "Chats"
-                    displayName: "Chats websocket"
+                  - id: 'b779100d-982b-4771-b329-ce05a3c98b67'
+                    name: 'Chats'
+                    displayName: 'Chats websocket'
                     description: null
-                    context: "/chats"
+                    context: '/chats'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "1.0.0"
-                    provider: "subadmin"
-                    type: "WS"
-                    subtype: "DEFAULT"
+                    version: '1.0.0'
+                    provider: 'subadmin'
+                    type: 'WS'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "PUBLISHED"
+                      - 'all'
+                    lifeCycleStatus: 'PUBLISHED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1780378737952"
-                    updatedTime: "1780577491332"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1780378737952'
+                    updatedTime: '1780577491332'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -313,29 +313,29 @@ paths:
                     technicalOwnerEmail: null
                     egress: false
                     initiatedFromGateway: false
-                  - id: "69664fec-acd3-466f-b6df-27126abafc2a"
-                    name: "dataflex web service"
-                    displayName: "dataflex web service"
+                  - id: '69664fec-acd3-466f-b6df-27126abafc2a'
+                    name: 'dataflex web service'
+                    displayName: 'dataflex web service'
                     description: null
-                    context: "/dataflex"
+                    context: '/dataflex'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "v1"
-                    provider: "admin"
-                    type: "SOAP"
-                    subtype: "DEFAULT"
+                    version: 'v1'
+                    provider: 'admin'
+                    type: 'SOAP'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "PUBLISHED"
+                      - 'all'
+                    lifeCycleStatus: 'PUBLISHED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1781006112167"
-                    updatedTime: "1781006288719"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1781006112167'
+                    updatedTime: '1781006288719'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -344,29 +344,29 @@ paths:
                     technicalOwnerEmail: null
                     egress: false
                     initiatedFromGateway: false
-                  - id: "b23c8513-efe1-4d76-b02a-f08d9e1fb9cc"
-                    name: "endpoint1"
-                    displayName: "endpoint1"
+                  - id: 'b23c8513-efe1-4d76-b02a-f08d9e1fb9cc'
+                    name: 'endpoint1'
+                    displayName: 'endpoint1'
                     description: "This is a RESTFul API for Pizza Shack online pizza delivery store.\n"
-                    context: "/endpoint1"
+                    context: '/endpoint1'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "v1"
-                    provider: "admin"
-                    type: "HTTP"
-                    subtype: "DEFAULT"
+                    version: 'v1'
+                    provider: 'admin'
+                    type: 'HTTP'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "PUBLISHED"
+                      - 'all'
+                    lifeCycleStatus: 'PUBLISHED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1781023935417"
-                    updatedTime: "1781058466779"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1781023935417'
+                    updatedTime: '1781058466779'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -375,30 +375,30 @@ paths:
                     technicalOwnerEmail: null
                     egress: false
                     initiatedFromGateway: false
-                  - id: "f703e447-ed7c-4488-9951-a7ef7a4e322f"
-                    name: "GeminiAPI"
-                    displayName: "GeminiAPI"
+                  - id: 'f703e447-ed7c-4488-9951-a7ef7a4e322f'
+                    name: 'GeminiAPI'
+                    displayName: 'GeminiAPI'
                     description: >-
                       The Gemini API allows developers to build generative AI applications using Gemini models. Gemini is our most capable model, built from the ground up to be multimodal. It can generalize and seamlessly understand, operate across, and combine different types of information including language, images, audio, video, and code. You can use the Gemini API for use cases like reasoning across text and images, content generation, dialogue agents, summarization and classification systems, and more.
-                    context: "/geminiapi"
+                    context: '/geminiapi'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "v1beta"
-                    provider: "admin"
-                    type: "HTTP"
-                    subtype: "AIAPI"
+                    version: 'v1beta'
+                    provider: 'admin'
+                    type: 'HTTP'
+                    subtype: 'AIAPI'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "CREATED"
+                      - 'all'
+                    lifeCycleStatus: 'CREATED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1780378743061"
-                    updatedTime: "1780564619755"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1780378743061'
+                    updatedTime: '1780564619755'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -407,29 +407,29 @@ paths:
                     technicalOwnerEmail: null
                     egress: true
                     initiatedFromGateway: false
-                  - id: "2bb7508a-b033-447b-9fa8-331866f73bcd"
-                    name: "graphql-2"
-                    displayName: "graphql-2"
+                  - id: '2bb7508a-b033-447b-9fa8-331866f73bcd'
+                    name: 'graphql-2'
+                    displayName: 'graphql-2'
                     description: null
-                    context: "/graphql"
+                    context: '/graphql'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "v1"
-                    provider: "admin"
-                    type: "GRAPHQL"
-                    subtype: "DEFAULT"
+                    version: 'v1'
+                    provider: 'admin'
+                    type: 'GRAPHQL'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "PUBLISHED"
+                      - 'all'
+                    lifeCycleStatus: 'PUBLISHED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1780478655676"
-                    updatedTime: "1780479078819"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1780478655676'
+                    updatedTime: '1780479078819'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -438,29 +438,29 @@ paths:
                     technicalOwnerEmail: null
                     egress: false
                     initiatedFromGateway: false
-                  - id: "6b5e8620-19c6-4d24-8931-f535d9567499"
-                    name: "PhoneVerification"
-                    displayName: "PhoneVerification"
+                  - id: '6b5e8620-19c6-4d24-8931-f535d9567499'
+                    name: 'PhoneVerification'
+                    displayName: 'PhoneVerification'
                     description: null
-                    context: "/phoneverify"
+                    context: '/phoneverify'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "1.0.0"
-                    provider: "subadmin"
-                    type: "SOAP"
-                    subtype: "DEFAULT"
+                    version: '1.0.0'
+                    provider: 'subadmin'
+                    type: 'SOAP'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "PUBLISHED"
+                      - 'all'
+                    lifeCycleStatus: 'PUBLISHED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1780378765210"
-                    updatedTime: "1781010410525"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1780378765210'
+                    updatedTime: '1781010410525'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -469,60 +469,60 @@ paths:
                     technicalOwnerEmail: null
                     egress: false
                     initiatedFromGateway: false
-                  - id: "bc4449a7-6654-4669-8786-506e86473f67"
-                    name: "PizzaShackAPI"
-                    displayName: "PizzaShackAPI"
-                    description: "This is a simple API for Pizza Shack online pizza delivery store."
-                    context: "/pizzashack"
+                  - id: 'bc4449a7-6654-4669-8786-506e86473f67'
+                    name: 'PizzaShackAPI'
+                    displayName: 'PizzaShackAPI'
+                    description: 'This is a simple API for Pizza Shack online pizza delivery store.'
+                    context: '/pizzashack'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "1.0.0"
-                    provider: "admin"
-                    type: "HTTP"
-                    subtype: "DEFAULT"
+                    version: '1.0.0'
+                    provider: 'admin'
+                    type: 'HTTP'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "PUBLISHED"
+                      - 'all'
+                    lifeCycleStatus: 'PUBLISHED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1780378767829"
-                    updatedTime: "1780640368496"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1780378767829'
+                    updatedTime: '1780640368496'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
-                    businessOwner: "Jane Roe"
-                    businessOwnerEmail: "marketing@pizzashack.com"
-                    technicalOwner: "John Doe"
-                    technicalOwnerEmail: "architecture@pizzashack.com"
+                    businessOwner: 'Jane Roe'
+                    businessOwnerEmail: 'marketing@pizzashack.com'
+                    technicalOwner: 'John Doe'
+                    technicalOwnerEmail: 'architecture@pizzashack.com'
                     egress: false
                     initiatedFromGateway: false
-                  - id: "5cb37703-e41c-45ef-8f0b-61d28b4e39f2"
-                    name: "RepoWatcher"
-                    displayName: "RepoWatcher websub webhook"
+                  - id: '5cb37703-e41c-45ef-8f0b-61d28b4e39f2'
+                    name: 'RepoWatcher'
+                    displayName: 'RepoWatcher websub webhook'
                     description: null
-                    context: "/repo-watcher"
+                    context: '/repo-watcher'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "1.0.0"
-                    provider: "subadmin"
-                    type: "WEBSUB"
-                    subtype: "DEFAULT"
+                    version: '1.0.0'
+                    provider: 'subadmin'
+                    type: 'WEBSUB'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "PUBLISHED"
+                      - 'all'
+                    lifeCycleStatus: 'PUBLISHED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1780378771188"
-                    updatedTime: "1780378771471"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1780378771188'
+                    updatedTime: '1780378771471'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -531,29 +531,29 @@ paths:
                     technicalOwnerEmail: null
                     egress: false
                     initiatedFromGateway: false
-                  - id: "b5fe46f9-90fe-407f-9b82-018f3875e269"
-                    name: "ResilienceTest_API_001-azure"
-                    displayName: "ResilienceTest_API_001"
-                    description: "Automated mock API for WSO2 Federated Discovery resilience testing (API #1)"
-                    context: "/resilience-test-api-001"
+                  - id: 'b5fe46f9-90fe-407f-9b82-018f3875e269'
+                    name: 'ResilienceTest_API_001-azure'
+                    displayName: 'ResilienceTest_API_001'
+                    description: 'Automated mock API for WSO2 Federated Discovery resilience testing (API #1)'
+                    context: '/resilience-test-api-001'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "1.0.0"
-                    provider: "admin"
-                    type: "HTTP"
-                    subtype: "DEFAULT"
+                    version: '1.0.0'
+                    provider: 'admin'
+                    type: 'HTTP'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "CREATED"
+                      - 'all'
+                    lifeCycleStatus: 'CREATED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1781155694984"
-                    updatedTime: "1781155695033"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "external"
-                    gatewayType: "Azure"
+                    createdTime: '1781155694984'
+                    updatedTime: '1781155695033'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'external'
+                    gatewayType: 'Azure'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -562,29 +562,29 @@ paths:
                     technicalOwnerEmail: null
                     egress: false
                     initiatedFromGateway: true
-                  - id: "f8039c3a-0b73-40c2-ab18-0c25656e298c"
-                    name: "ServerSentEvents"
-                    displayName: "ServerSentEvents SSE"
+                  - id: 'f8039c3a-0b73-40c2-ab18-0c25656e298c'
+                    name: 'ServerSentEvents'
+                    displayName: 'ServerSentEvents SSE'
                     description: null
-                    context: "/events"
+                    context: '/events'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "1.0.0"
-                    provider: "subadmin"
-                    type: "SSE"
-                    subtype: "DEFAULT"
+                    version: '1.0.0'
+                    provider: 'subadmin'
+                    type: 'SSE'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "PUBLISHED"
+                      - 'all'
+                    lifeCycleStatus: 'PUBLISHED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1780378777382"
-                    updatedTime: "1780378777902"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1780378777382'
+                    updatedTime: '1780378777902'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -593,29 +593,29 @@ paths:
                     technicalOwnerEmail: null
                     egress: false
                     initiatedFromGateway: false
-                  - id: "4e08dd1f-e4e8-4df5-922f-b78cb844cc19"
-                    name: "StreetlightsAPI"
-                    displayName: "StreetlightsAPI AsyncAPI"
+                  - id: '4e08dd1f-e4e8-4df5-922f-b78cb844cc19'
+                    name: 'StreetlightsAPI'
+                    displayName: 'StreetlightsAPI AsyncAPI'
                     description: null
-                    context: "/streetlights"
+                    context: '/streetlights'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "1.0.0"
-                    provider: "subadmin"
-                    type: "WS"
-                    subtype: "DEFAULT"
+                    version: '1.0.0'
+                    provider: 'subadmin'
+                    type: 'WS'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "PUBLISHED"
+                      - 'all'
+                    lifeCycleStatus: 'PUBLISHED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1780378782627"
-                    updatedTime: "1780378783233"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1780378782627'
+                    updatedTime: '1780378783233'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -624,9 +624,9 @@ paths:
                     technicalOwnerEmail: null
                     egress: false
                     initiatedFromGateway: false
-                  - id: "621f52df-dc25-4b47-b76b-9df2845a2d91"
-                    name: "SwaggerPetstore-OpenAPI30"
-                    displayName: "SwaggerPetstore-OpenAPI30"
+                  - id: '621f52df-dc25-4b47-b76b-9df2845a2d91'
+                    name: 'SwaggerPetstore-OpenAPI30'
+                    displayName: 'SwaggerPetstore-OpenAPI30'
                     description: >-
                       This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about
                       Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
@@ -636,25 +636,25 @@ paths:
                       Some useful links:
                       - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
                       - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
-                    context: "/swaggerpetstore-openapi3.0"
+                    context: '/swaggerpetstore-openapi3.0'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "1.0.27"
-                    provider: "subadmin"
-                    type: "HTTP"
-                    subtype: "DEFAULT"
+                    version: '1.0.27'
+                    provider: 'subadmin'
+                    type: 'HTTP'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "CREATED"
+                      - 'all'
+                    lifeCycleStatus: 'CREATED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1780378787743"
-                    updatedTime: "1780378788313"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1780378787743'
+                    updatedTime: '1780378788313'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -663,29 +663,29 @@ paths:
                     technicalOwnerEmail: null
                     egress: false
                     initiatedFromGateway: false
-                  - id: "18c7fba3-3bdc-4d95-aaa5-268e16d25af6"
-                    name: "webhook websub"
-                    displayName: "webhook websub"
+                  - id: '18c7fba3-3bdc-4d95-aaa5-268e16d25af6'
+                    name: 'webhook websub'
+                    displayName: 'webhook websub'
                     description: null
-                    context: "/wehbook"
+                    context: '/wehbook'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "v1"
-                    provider: "admin"
-                    type: "WEBSUB"
-                    subtype: "DEFAULT"
+                    version: 'v1'
+                    provider: 'admin'
+                    type: 'WEBSUB'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "PUBLISHED"
+                      - 'all'
+                    lifeCycleStatus: 'PUBLISHED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1781007752852"
-                    updatedTime: "1781007872447"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1781007752852'
+                    updatedTime: '1781007872447'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -694,29 +694,29 @@ paths:
                     technicalOwnerEmail: null
                     egress: false
                     initiatedFromGateway: false
-                  - id: "6e3a87d8-7b05-40c0-8d73-dc8b6b445c77"
-                    name: "websocket api"
-                    displayName: "websocket api"
+                  - id: '6e3a87d8-7b05-40c0-8d73-dc8b6b445c77'
+                    name: 'websocket api'
+                    displayName: 'websocket api'
                     description: null
-                    context: "/ws-echo"
+                    context: '/ws-echo'
                     additionalProperties: []
                     additionalPropertiesMap: {}
-                    version: "v1"
-                    provider: "admin"
-                    type: "WS"
-                    subtype: "DEFAULT"
+                    version: 'v1'
+                    provider: 'admin'
+                    type: 'WS'
+                    subtype: 'DEFAULT'
                     audience: null
                     audiences:
-                      - "all"
-                    lifeCycleStatus: "PUBLISHED"
+                      - 'all'
+                    lifeCycleStatus: 'PUBLISHED'
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1780475048721"
-                    updatedTime: "1780476141799"
-                    updatedBy: "wso2.system.user"
-                    gatewayVendor: "wso2"
-                    gatewayType: "wso2/synapse"
+                    createdTime: '1780475048721'
+                    updatedTime: '1780476141799'
+                    updatedBy: 'wso2.system.user'
+                    gatewayVendor: 'wso2'
+                    gatewayType: 'wso2/synapse'
                     advertiseOnly: false
                     monetizedInfo: false
                     businessOwner: null
@@ -729,8 +729,8 @@ paths:
                   offset: 0
                   limit: 1000
                   total: 14
-                  next: ""
-                  previous: ""
+                  next: ''
+                  previous: ''
         '401':
           $ref: '#/components/responses/Wso2Error'
         '500':
@@ -758,14 +758,14 @@ paths:
                 type: object
                 additionalProperties: true
               example:
-                id: "bc4449a7-6654-4669-8786-506e86473f67"
-                name: "PizzaShackAPI"
-                displayName: "PizzaShackAPI"
-                description: "This is a simple API for Pizza Shack online pizza delivery store."
-                context: "/pizzashack"
-                version: "1.0.0"
-                provider: "admin"
-                lifeCycleStatus: "PUBLISHED"
+                id: 'bc4449a7-6654-4669-8786-506e86473f67'
+                name: 'PizzaShackAPI'
+                displayName: 'PizzaShackAPI'
+                description: 'This is a simple API for Pizza Shack online pizza delivery store.'
+                context: '/pizzashack'
+                version: '1.0.0'
+                provider: 'admin'
+                lifeCycleStatus: 'PUBLISHED'
                 wsdlInfo: null
                 wsdlUrl: null
                 responseCachingEnabled: false
@@ -777,126 +777,126 @@ paths:
                 revisionId: 0
                 enableSchemaValidation: false
                 enableSubscriberVerification: false
-                type: "HTTP"
+                type: 'HTTP'
                 audience: null
                 audiences:
-                  - "all"
+                  - 'all'
                 transport:
-                  - "http"
-                  - "https"
+                  - 'http'
+                  - 'https'
                 tags:
-                  - "pizza"
+                  - 'pizza'
                 policies:
-                  - "DefaultSubscriptionless"
+                  - 'DefaultSubscriptionless'
                 organizationPolicies: []
-                apiThrottlingPolicy: "Unlimited"
-                authorizationHeader: "Authorization"
-                apiKeyHeader: "ApiKey"
+                apiThrottlingPolicy: 'Unlimited'
+                authorizationHeader: 'Authorization'
+                apiKeyHeader: 'ApiKey'
                 securityScheme:
-                  - "api_key"
-                  - "oauth_basic_auth_api_key_mandatory"
-                  - "oauth2"
+                  - 'api_key'
+                  - 'oauth_basic_auth_api_key_mandatory'
+                  - 'oauth2'
                 maxTps: null
-                visibility: "PUBLIC"
+                visibility: 'PUBLIC'
                 visibleRoles: []
                 visibleTenants: []
                 visibleOrganizations:
-                  - "none"
+                  - 'none'
                 mediationPolicies: []
                 apiPolicies: null
                 apiHubPolicies: []
-                subscriptionAvailability: "CURRENT_TENANT"
+                subscriptionAvailability: 'CURRENT_TENANT'
                 subscriptionAvailableTenants: []
                 additionalProperties: []
                 additionalPropertiesMap: {}
                 monetization: null
-                accessControl: "NONE"
+                accessControl: 'NONE'
                 accessControlRoles: []
                 businessInformation:
-                  businessOwner: "Jane Roe"
-                  businessOwnerEmail: "marketing@pizzashack.com"
-                  technicalOwner: "John Doe"
-                  technicalOwnerEmail: "architecture@pizzashack.com"
+                  businessOwner: 'Jane Roe'
+                  businessOwnerEmail: 'marketing@pizzashack.com'
+                  technicalOwner: 'John Doe'
+                  technicalOwnerEmail: 'architecture@pizzashack.com'
                 corsConfiguration:
                   corsConfigurationEnabled: false
                   accessControlAllowOrigins:
-                    - "*"
+                    - '*'
                   accessControlAllowCredentials: false
                   accessControlAllowHeaders:
-                    - "authorization"
-                    - "Access-Control-Allow-Origin"
-                    - "Content-Type"
-                    - "SOAPAction"
-                    - "apikey"
-                    - "Internal-Key"
+                    - 'authorization'
+                    - 'Access-Control-Allow-Origin'
+                    - 'Content-Type'
+                    - 'SOAPAction'
+                    - 'apikey'
+                    - 'Internal-Key'
                   accessControlAllowMethods:
-                    - "GET"
-                    - "PUT"
-                    - "POST"
-                    - "DELETE"
-                    - "PATCH"
-                    - "OPTIONS"
+                    - 'GET'
+                    - 'PUT'
+                    - 'POST'
+                    - 'DELETE'
+                    - 'PATCH'
+                    - 'OPTIONS'
                 websubSubscriptionConfiguration:
                   enable: false
-                  secret: ""
-                  signingAlgorithm: "SHA1"
-                  signatureHeader: "x-hub-signature"
+                  secret: ''
+                  signingAlgorithm: 'SHA1'
+                  signatureHeader: 'x-hub-signature'
                 workflowStatus: null
-                createdTime: "1780378767829"
-                lastUpdatedTimestamp: "1780640368496"
-                lastUpdatedTime: "2026-06-05 06:19:28.496"
+                createdTime: '1780378767829'
+                lastUpdatedTimestamp: '1780640368496'
+                lastUpdatedTime: '2026-06-05 06:19:28.496'
                 endpointConfig:
-                  endpoint_type: "http"
+                  endpoint_type: 'http'
                   sandbox_endpoints:
-                    url: "https://localhost:9447/am/sample/pizzashack/v1/api/"
+                    url: 'https://localhost:9447/am/sample/pizzashack/v1/api/'
                   production_endpoints:
-                    url: "https://localhost:9447/am/sample/pizzashack/v1/api/"
+                    url: 'https://localhost:9447/am/sample/pizzashack/v1/api/'
                 primaryProductionEndpointId: null
                 primarySandboxEndpointId: null
-                endpointImplementationType: "ENDPOINT"
+                endpointImplementationType: 'ENDPOINT'
                 subtypeConfiguration:
-                  subtype: "DEFAULT"
+                  subtype: 'DEFAULT'
                   configuration: null
                 scopes:
                   - scope:
                       id: null
-                      name: "gdfg"
-                      displayName: "gdfg"
-                      description: ""
+                      name: 'gdfg'
+                      displayName: 'gdfg'
+                      description: ''
                       bindings: []
                       usageCount: null
                     shared: false
                   - scope:
                       id: null
-                      name: "hehe"
-                      displayName: "hehe"
-                      description: ""
+                      name: 'hehe'
+                      displayName: 'hehe'
+                      description: ''
                       bindings: []
                       usageCount: null
                     shared: false
                   - scope:
                       id: null
-                      name: "rewrew"
-                      displayName: "rewrew"
-                      description: ""
+                      name: 'rewrew'
+                      displayName: 'rewrew'
+                      description: ''
                       bindings:
-                        - "admin"
+                        - 'admin'
                       usageCount: null
                     shared: false
                   - scope:
                       id: null
-                      name: "testing"
-                      displayName: "testing"
-                      description: ""
+                      name: 'testing'
+                      displayName: 'testing'
+                      description: ''
                       bindings: []
                       usageCount: null
                     shared: false
                 operations:
-                  - id: ""
-                    target: "/order"
-                    verb: "POST"
-                    authType: "Application & Application User"
-                    throttlingPolicy: "Unlimited"
+                  - id: ''
+                    target: '/order'
+                    verb: 'POST'
+                    authType: 'Application & Application User'
+                    throttlingPolicy: 'Unlimited'
                     scopes: []
                     usedProductIds: []
                     amznResourceName: null
@@ -909,13 +909,13 @@ paths:
                       response: []
                       fault: []
                     operationHubPolicies: []
-                  - id: ""
-                    target: "/menu"
-                    verb: "GET"
-                    authType: "Application & Application User"
-                    throttlingPolicy: "Unlimited"
+                  - id: ''
+                    target: '/menu'
+                    verb: 'GET'
+                    authType: 'Application & Application User'
+                    throttlingPolicy: 'Unlimited'
                     scopes:
-                      - "rewrew"
+                      - 'rewrew'
                     usedProductIds: []
                     amznResourceName: null
                     amznResourceTimeout: null
@@ -927,11 +927,11 @@ paths:
                       response: []
                       fault: []
                     operationHubPolicies: []
-                  - id: ""
-                    target: "/order/{orderId}"
-                    verb: "PUT"
-                    authType: "Application & Application User"
-                    throttlingPolicy: "Unlimited"
+                  - id: ''
+                    target: '/order/{orderId}'
+                    verb: 'PUT'
+                    authType: 'Application & Application User'
+                    throttlingPolicy: 'Unlimited'
                     scopes: []
                     usedProductIds: []
                     amznResourceName: null
@@ -944,11 +944,11 @@ paths:
                       response: []
                       fault: []
                     operationHubPolicies: []
-                  - id: ""
-                    target: "/order/{orderId}"
-                    verb: "DELETE"
-                    authType: "Application & Application User"
-                    throttlingPolicy: "Unlimited"
+                  - id: ''
+                    target: '/order/{orderId}'
+                    verb: 'DELETE'
+                    authType: 'Application & Application User'
+                    throttlingPolicy: 'Unlimited'
                     scopes: []
                     usedProductIds: []
                     amznResourceName: null
@@ -964,17 +964,17 @@ paths:
                 threatProtectionPolicies: null
                 categories: []
                 keyManagers:
-                  - "all"
+                  - 'all'
                 serviceInfo: null
                 advertiseInfo:
                   advertised: false
                   apiExternalProductionEndpoint: null
                   apiExternalSandboxEndpoint: null
                   originalDevPortalUrl: null
-                  apiOwner: "admin"
-                  vendor: "WSO2"
-                gatewayVendor: "wso2"
-                gatewayType: "wso2/synapse"
+                  apiOwner: 'admin'
+                  vendor: 'WSO2'
+                gatewayVendor: 'wso2'
+                gatewayType: 'wso2/synapse'
                 initiatedFromGateway: false
                 asyncTransportProtocols: []
                 egress: false
@@ -992,9 +992,9 @@ paths:
                 $ref: '#/components/schemas/Wso2Error'
               example:
                 code: 404
-                message: "Not Found"
+                message: 'Not Found'
                 description: "Requested API with Id 'fjdskjfds' not found"
-                moreInfo: ""
+                moreInfo: ''
                 error: []
   /api/am/publisher/v4/apis/{apiId}/swagger:
     get:
@@ -1019,325 +1019,323 @@ paths:
                 type: object
                 additionalProperties: true
               example:
-                openapi: "3.0.0"
+                openapi: '3.0.0'
                 info:
-                  title: "PizzaShackAPI"
+                  title: 'PizzaShackAPI'
                   description: "This is an online pizza delivery store.\n"
                   contact:
-                    name: "John Doe"
-                    url: "http://www.pizzashack.com"
-                    email: "architecture@pizzashack.com"
+                    name: 'John Doe'
+                    url: 'http://www.pizzashack.com'
+                    email: 'architecture@pizzashack.com'
                   license:
-                    name: "Apache 2.0"
-                    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-                  version: "1.0.0"
+                    name: 'Apache 2.0'
+                    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+                  version: '1.0.0'
                 servers:
-                  - url: "https://localhost:9443/am/sample/pizzashack/v1/api"
-                    description: "Production API server"
+                  - url: 'https://localhost:9443/am/sample/pizzashack/v1/api'
+                    description: 'Production API server'
                     x-internal: false
                 security:
                   - default: []
                 tags:
-                  - name: "menu"
-                    description: "Operations related to menu management."
-                  - name: "order"
-                    description: "Operations related to order management."
+                  - name: 'menu'
+                    description: 'Operations related to menu management.'
+                  - name: 'order'
+                    description: 'Operations related to order management.'
                 paths:
                   /order:
                     post:
                       tags:
-                        - "order"
-                      description: "Create a new Order"
-                      operationId: "getOrders"
+                        - 'order'
+                      description: 'Create a new Order'
+                      operationId: 'getOrders'
                       requestBody:
-                        $ref: "#/components/requestBodies/Order"
+                        $ref: '#/components/requestBodies/Order'
                       responses:
-                        "201":
-                          description: "Created. Successful response with the newly created object as entity inthe body.Location header contains URL of newly created entity."
+                        '201':
+                          description: 'Created. Successful response with the newly created object as entity inthe body.Location header contains URL of newly created entity.'
                           headers:
                             Location:
-                              description: "The URL of the newly created resource."
-                              style: "simple"
+                              description: 'The URL of the newly created resource.'
+                              style: 'simple'
                               explode: false
                               schema:
-                                type: "string"
+                                type: 'string'
                             Content-Type:
-                              description: "The content type of the body."
-                              style: "simple"
+                              description: 'The content type of the body.'
+                              style: 'simple'
                               explode: false
                               schema:
-                                type: "string"
+                                type: 'string'
                           content:
                             application/json:
                               schema:
-                                $ref: "#/components/schemas/Order"
-                        "400":
-                          description: "Bad Request. Invalid request or validation error."
+                                $ref: '#/components/schemas/Order'
+                        '400':
+                          description: 'Bad Request. Invalid request or validation error.'
                           content:
                             application/json:
                               schema:
-                                $ref: "#/components/schemas/Error"
-                        "415":
-                          description: "Unsupported Media Type. The entity of the request was in a not supported format."
+                                $ref: '#/components/schemas/Error'
+                        '415':
+                          description: 'Unsupported Media Type. The entity of the request was in a not supported format.'
                           content:
                             application/json:
                               schema:
-                                $ref: "#/components/schemas/Error"
+                                $ref: '#/components/schemas/Error'
                       security:
                         - default: []
-                      x-auth-type: "Application & Application User"
-                      x-throttling-tier: "Unlimited"
+                      x-auth-type: 'Application & Application User'
+                      x-throttling-tier: 'Unlimited'
                       x-wso2-application-security:
                         security-types:
-                          - "api_key"
-                          - "oauth2"
+                          - 'api_key'
+                          - 'oauth2'
                         optional: false
                   /menu:
                     get:
                       tags:
-                        - "menu"
-                      description: "Return a list of available menu items"
-                      operationId: "getMenu"
+                        - 'menu'
+                      description: 'Return a list of available menu items'
+                      operationId: 'getMenu'
                       responses:
-                        "200":
-                          description: "OK. List of APIs is returned."
+                        '200':
+                          description: 'OK. List of APIs is returned.'
                           content:
                             application/json:
                               schema:
-                                type: "array"
+                                type: 'array'
                                 items:
-                                  $ref: "#/components/schemas/MenuItem"
-                        "406":
-                          description: "Not Acceptable. The requested media type is not supported"
+                                  $ref: '#/components/schemas/MenuItem'
+                        '406':
+                          description: 'Not Acceptable. The requested media type is not supported'
                           content:
                             application/json:
                               schema:
-                                $ref: "#/components/schemas/Error"
+                                $ref: '#/components/schemas/Error'
                       security:
                         - default:
-                            - "rewrew"
-                      x-auth-type: "Application & Application User"
-                      x-throttling-tier: "Unlimited"
+                            - 'rewrew'
+                      x-auth-type: 'Application & Application User'
+                      x-throttling-tier: 'Unlimited'
                       x-wso2-application-security:
                         security-types:
-                          - "api_key"
-                          - "oauth2"
+                          - 'api_key'
+                          - 'oauth2'
                         optional: false
                   /order/{orderId}:
                     put:
                       tags:
-                        - "order"
-                      description: "Update an existing Order"
-                      operationId: "updateOrder"
+                        - 'order'
+                      description: 'Update an existing Order'
+                      operationId: 'updateOrder'
                       requestBody:
-                        $ref: "#/components/requestBodies/Order"
+                        $ref: '#/components/requestBodies/Order'
                       responses:
-                        "200":
-                          description: "OK. Successful response with updated Order"
+                        '200':
+                          description: 'OK. Successful response with updated Order'
                           headers:
                             Location:
-                              description: "The URL of the newly created resource."
-                              style: "simple"
+                              description: 'The URL of the newly created resource.'
+                              style: 'simple'
                               explode: false
                               schema:
-                                type: "string"
+                                type: 'string'
                             Content-Type:
-                              description: "The content type of the body."
-                              style: "simple"
+                              description: 'The content type of the body.'
+                              style: 'simple'
                               explode: false
                               schema:
-                                type: "string"
+                                type: 'string'
                           content:
                             application/json:
                               schema:
-                                $ref: "#/components/schemas/Order"
-                        "400":
-                          description: "Bad Request. Invalid request or validation error"
+                                $ref: '#/components/schemas/Order'
+                        '400':
+                          description: 'Bad Request. Invalid request or validation error'
                           content:
                             application/json:
                               schema:
-                                $ref: "#/components/schemas/Error"
-                        "404":
-                          description: "Not Found. The resource to be updated does not exist."
+                                $ref: '#/components/schemas/Error'
+                        '404':
+                          description: 'Not Found. The resource to be updated does not exist.'
                           content:
                             application/json:
                               schema:
-                                $ref: "#/components/schemas/Error"
+                                $ref: '#/components/schemas/Error'
                       security:
                         - default: []
-                      x-auth-type: "Application & Application User"
-                      x-throttling-tier: "Unlimited"
+                      x-auth-type: 'Application & Application User'
+                      x-throttling-tier: 'Unlimited'
                       x-wso2-application-security:
                         security-types:
-                          - "api_key"
-                          - "oauth2"
+                          - 'api_key'
+                          - 'oauth2'
                         optional: false
                     delete:
                       tags:
-                        - "order"
-                      description: "Delete an existing Order"
-                      operationId: "deleteOrder"
+                        - 'order'
+                      description: 'Delete an existing Order'
+                      operationId: 'deleteOrder'
                       responses:
-                        "200":
-                          description: "OK. Resource successfully deleted."
-                        "404":
-                          description: "Not Found. Resource to be deleted does not exist."
+                        '200':
+                          description: 'OK. Resource successfully deleted.'
+                        '404':
+                          description: 'Not Found. Resource to be deleted does not exist.'
                           content:
                             application/json:
                               schema:
-                                $ref: "#/components/schemas/Error"
+                                $ref: '#/components/schemas/Error'
                       security:
                         - default: []
-                      x-auth-type: "Application & Application User"
-                      x-throttling-tier: "Unlimited"
+                      x-auth-type: 'Application & Application User'
+                      x-throttling-tier: 'Unlimited'
                       x-wso2-application-security:
                         security-types:
-                          - "api_key"
-                          - "oauth2"
+                          - 'api_key'
+                          - 'oauth2'
                         optional: false
                     parameters:
-                      - name: "orderId"
-                        in: "path"
-                        description: "Order Id"
+                      - name: 'orderId'
+                        in: 'path'
+                        description: 'Order Id'
                         required: true
-                        style: "simple"
+                        style: 'simple'
                         explode: false
                         schema:
-                          type: "string"
-                          format: "string"
+                          type: 'string'
+                          format: 'string'
                 components:
-
-        
                   schemas:
                     ErrorListItem:
-                      title: "Description of individual errors that may have occurred during a request."
+                      title: 'Description of individual errors that may have occurred during a request.'
                       required:
-                        - "code"
-                        - "message"
+                        - 'code'
+                        - 'message'
                       properties:
                         message:
-                          type: "string"
-                          description: "Description about individual errors occurred"
+                          type: 'string'
+                          description: 'Description about individual errors occurred'
                         code:
-                          type: "integer"
-                          format: "int64"
+                          type: 'integer'
+                          format: 'int64'
                     MenuItem:
-                      title: "Pizza menu Item"
+                      title: 'Pizza menu Item'
                       required:
-                        - "name"
+                        - 'name'
                       properties:
                         price:
-                          type: "string"
+                          type: 'string'
                         description:
-                          type: "string"
+                          type: 'string'
                         name:
-                          type: "string"
+                          type: 'string'
                         image:
-                          type: "string"
+                          type: 'string'
                     Order:
-                      title: "Pizza Order"
+                      title: 'Pizza Order'
                       required:
-                        - "orderId"
+                        - 'orderId'
                       properties:
                         customerName:
-                          type: "string"
+                          type: 'string'
                         delivered:
-                          type: "boolean"
+                          type: 'boolean'
                         address:
-                          type: "string"
+                          type: 'string'
                         pizzaType:
-                          type: "string"
+                          type: 'string'
                         creditCardNumber:
-                          type: "string"
+                          type: 'string'
                         quantity:
-                          type: "number"
+                          type: 'number'
                         orderId:
-                          type: "string"
+                          type: 'string'
                     Error:
-                      title: "Error object returned with 4XX HTTP status"
+                      title: 'Error object returned with 4XX HTTP status'
                       required:
-                        - "code"
-                        - "message"
+                        - 'code'
+                        - 'message'
                       properties:
                         message:
-                          type: "string"
-                          description: "Error message."
+                          type: 'string'
+                          description: 'Error message.'
                         error:
-                          type: "array"
-                          description: "If there are more than one error list them out. Ex. list out validation errors by each field."
+                          type: 'array'
+                          description: 'If there are more than one error list them out. Ex. list out validation errors by each field.'
                           items:
-                            $ref: "#/components/schemas/ErrorListItem"
+                            $ref: '#/components/schemas/ErrorListItem'
                         description:
-                          type: "string"
-                          description: "A detail description about the error message."
+                          type: 'string'
+                          description: 'A detail description about the error message.'
                         code:
-                          type: "integer"
-                          format: "int64"
+                          type: 'integer'
+                          format: 'int64'
                         moreInfo:
-                          type: "string"
-                          description: "Preferably an url with more details about the error."
+                          type: 'string'
+                          description: 'Preferably an url with more details about the error.'
                   requestBodies:
                     Order:
-                      description: "Order object that needs to be added"
+                      description: 'Order object that needs to be added'
                       content:
                         application/json:
                           schema:
-                            $ref: "#/components/schemas/Order"
+                            $ref: '#/components/schemas/Order'
                       required: true
                   securitySchemes:
                     default:
-                      type: "oauth2"
+                      type: 'oauth2'
                       flows:
                         implicit:
-                          authorizationUrl: "https://test.com"
+                          authorizationUrl: 'https://test.com'
                           scopes:
-                            testing: ""
-                            gdfg: ""
-                            rewrew: ""
-                            hehe: ""
+                            testing: ''
+                            gdfg: ''
+                            rewrew: ''
+                            hehe: ''
                           x-scopes-bindings:
-                            testing: ""
-                            hehe: ""
-                            gdfg: ""
-                            rewrew: "admin"
-                x-wso2-api-key-header: "ApiKey"
-                x-wso2-auth-header: "Authorization"
-                x-throttling-tier: "Unlimited"
+                            testing: ''
+                            hehe: ''
+                            gdfg: ''
+                            rewrew: 'admin'
+                x-wso2-api-key-header: 'ApiKey'
+                x-wso2-auth-header: 'Authorization'
+                x-throttling-tier: 'Unlimited'
                 x-wso2-cors:
                   corsConfigurationEnabled: false
                   accessControlAllowOrigins:
-                    - "*"
+                    - '*'
                   accessControlAllowCredentials: false
                   accessControlAllowHeaders:
-                    - "authorization"
-                    - "Access-Control-Allow-Origin"
-                    - "Content-Type"
-                    - "SOAPAction"
-                    - "apikey"
-                    - "Internal-Key"
+                    - 'authorization'
+                    - 'Access-Control-Allow-Origin'
+                    - 'Content-Type'
+                    - 'SOAPAction'
+                    - 'apikey'
+                    - 'Internal-Key'
                   accessControlAllowMethods:
-                    - "GET"
-                    - "PUT"
-                    - "POST"
-                    - "DELETE"
-                    - "PATCH"
-                    - "OPTIONS"
+                    - 'GET'
+                    - 'PUT'
+                    - 'POST'
+                    - 'DELETE'
+                    - 'PATCH'
+                    - 'OPTIONS'
                 x-wso2-production-endpoints:
                   urls:
-                    - "https://localhost:9447/am/sample/pizzashack/v1/api/"
-                  type: "http"
+                    - 'https://localhost:9447/am/sample/pizzashack/v1/api/'
+                  type: 'http'
                 x-wso2-sandbox-endpoints:
                   urls:
-                    - "https://localhost:9447/am/sample/pizzashack/v1/api/"
-                  type: "http"
-                x-wso2-basePath: "/pizzashack/1.0.0"
+                    - 'https://localhost:9447/am/sample/pizzashack/v1/api/'
+                  type: 'http'
+                x-wso2-basePath: '/pizzashack/1.0.0'
                 x-wso2-transports:
-                  - "http"
-                  - "https"
+                  - 'http'
+                  - 'https'
                 x-wso2-application-security:
                   security-types:
-                    - "api_key"
-                    - "oauth2"
+                    - 'api_key'
+                    - 'oauth2'
                   optional: false
                 x-wso2-response-cache:
                   enabled: false
@@ -1355,9 +1353,9 @@ paths:
                 $ref: '#/components/schemas/Wso2Error'
               example:
                 code: 500
-                message: "Internal server error"
-                description: "Error while retrieving swagger of API : b779100d-982b-4771-b329-ce05a3c98b67"
-                moreInfo: ""
+                message: 'Internal server error'
+                description: 'Error while retrieving swagger of API : b779100d-982b-4771-b329-ce05a3c98b67'
+                moreInfo: ''
                 error: []
   /api/am/publisher/v4/apis/{apiId}/wsdl:
     get:
@@ -1383,7 +1381,7 @@ paths:
         '200':
           description: |
             API WSDL definition.
-            
+
             Returns the WSDL definition for SOAP and SOAP-to-REST APIs. Can be returned as a plain XML document or as a ZIP file.
           content:
             application/wsdl+xml:
@@ -1427,17 +1425,17 @@ paths:
                   summary: General Error (e.g. for non-SOAP APIs)
                   value:
                     code: 900967
-                    message: "General Error"
-                    description: "Server Error Occurred"
-                    moreInfo: ""
+                    message: 'General Error'
+                    description: 'Server Error Occurred'
+                    moreInfo: ''
                     error: []
                 internalServerError:
                   summary: Internal Server Error
                   value:
                     code: 500
-                    message: "Internal server error"
-                    description: "Error while retrieving WSDL of API : b779100d-982b-4771-b329-ce05a3c98b67"
-                    moreInfo: ""
+                    message: 'Internal server error'
+                    description: 'Error while retrieving WSDL of API : b779100d-982b-4771-b329-ce05a3c98b67'
+                    moreInfo: ''
                     error: []
   /api/am/publisher/v4/apis/{apiId}/asyncapi:
     get:
@@ -1457,7 +1455,7 @@ paths:
         '200':
           description: |
             API AsyncAPI definition.
-            
+
             Returns the AsyncAPI definition for WebSocket or other asynchronous APIs. For non-AsyncAPIs (such as HTTP REST APIs), an empty/blank response (`{}`) is returned.
           content:
             application/json:
@@ -1468,38 +1466,38 @@ paths:
                 asyncApi:
                   summary: Definition for AsyncAPIs (e.g. WebSocket, WebSub)
                   value:
-                    asyncapi: "3.0.0"
+                    asyncapi: '3.0.0'
                     info:
-                      title: "Chats"
-                      version: "1.0.0"
+                      title: 'Chats'
+                      version: '1.0.0'
                     servers:
                       production:
-                        host: "localhost:8080"
-                        protocol: "ws"
-                        pathname: "/"
+                        host: 'localhost:8080'
+                        protocol: 'ws'
+                        pathname: '/'
                       sandbox:
-                        host: "localhost:8080"
-                        protocol: "ws"
-                        pathname: "/"
+                        host: 'localhost:8080'
+                        protocol: 'ws'
+                        pathname: '/'
                     channels:
-                      "*":
-                        address: "/*"
+                      '*':
+                        address: '/*'
                     operations:
                       receive_/*:
-                        action: "receive"
+                        action: 'receive'
                         channel:
-                          $ref: "#/channels/*"
+                          $ref: '#/channels/*'
                       send_/*:
-                        action: "send"
+                        action: 'send'
                         channel:
-                          $ref: "#/channels/*"
+                          $ref: '#/channels/*'
                     components:
                       securitySchemes:
                         oauth2:
-                          type: "oauth2"
+                          type: 'oauth2'
                           flows:
                             implicit:
-                              authorizationUrl: "http://localhost:9999"
+                              authorizationUrl: 'http://localhost:9999'
                               availableScopes: {}
                               x-scopes-bindings: {}
                 nonAsyncApi:
@@ -1580,8 +1578,8 @@ paths:
                   offset: 0
                   limit: 25
                   total: 3
-                  next: ""
-                  previous: ""
+                  next: ''
+                  previous: ''
         '404':
           $ref: '#/components/responses/Wso2Error'
   /api/am/publisher/v4/api-products:
@@ -1618,8 +1616,8 @@ paths:
                     securityScheme:
                       - oauth_basic_auth_api_key_mandatory
                       - oauth2
-                    createdTime: "1781022559830"
-                    updatedTime: "1781022562110"
+                    createdTime: '1781022559830'
+                    updatedTime: '1781022562110'
                     gatewayVendor: null
                     audiences: []
                     monetizedInfo: false
@@ -1641,8 +1639,8 @@ paths:
                       - api_key
                       - oauth_basic_auth_api_key_mandatory
                       - oauth2
-                    createdTime: "1780462443706"
-                    updatedTime: "1781073721951"
+                    createdTime: '1780462443706'
+                    updatedTime: '1781073721951'
                     gatewayVendor: null
                     audiences: []
                     monetizedInfo: false
@@ -1655,8 +1653,8 @@ paths:
                   offset: 0
                   limit: 25
                   total: 2
-                  next: ""
-                  previous: ""
+                  next: ''
+                  previous: ''
         '401':
           $ref: '#/components/responses/Wso2Error'
   /api/am/publisher/v4/api-products/{productId}:
@@ -1683,428 +1681,416 @@ paths:
                 additionalProperties: true
               example:
                 {
-                  "id": "1e040473-3bf6-4454-8788-639e403b0f56",
-                  "name": "product",
-                  "displayName": "product",
-                  "context": "/apiproduct",
-                  "version": "v1",
-                  "description": null,
-                  "provider": "admin",
-                  "hasThumbnail": false,
-                  "state": "PUBLISHED",
-                  "enableSchemaValidation": false,
-                  "isDefaultVersion": true,
-                  "isRevision": false,
-                  "revisionedApiProductId": null,
-                  "revisionId": 0,
-                  "responseCachingEnabled": false,
-                  "cacheTimeout": 300,
-                  "visibility": "PUBLIC",
-                  "visibleRoles": [],
-                  "visibleTenants": [],
-                  "accessControl": "NONE",
-                  "accessControlRoles": [],
-                  "apiType": null,
-                  "transport": [
-                    "http",
-                    "https"
-                  ],
-                  "tags": [],
-                  "policies": [
-                    "DefaultSubscriptionless"
-                  ],
-                  "apiThrottlingPolicy": null,
-                  "authorizationHeader": "Authorization",
-                  "apiKeyHeader": "ApiKey",
-                  "securityScheme": [
-                    "api_key",
-                    "oauth_basic_auth_api_key_mandatory",
-                    "oauth2"
-                  ],
-                  "subscriptionAvailability": "ALL_TENANTS",
-                  "subscriptionAvailableTenants": [],
-                  "additionalProperties": [],
-                  "additionalPropertiesMap": {},
-                  "monetization": null,
-                  "businessInformation": {
-                    "businessOwner": null,
-                    "businessOwnerEmail": null,
-                    "technicalOwner": null,
-                    "technicalOwnerEmail": null
-                  },
-                  "corsConfiguration": {
-                    "corsConfigurationEnabled": false,
-                    "accessControlAllowOrigins": [
-                      "*"
-                    ],
-                    "accessControlAllowCredentials": false,
-                    "accessControlAllowHeaders": [
-                      "authorization",
-                      "Access-Control-Allow-Origin",
-                      "Content-Type",
-                      "SOAPAction",
-                      "apikey",
-                      "Internal-Key"
-                    ],
-                    "accessControlAllowMethods": [
-                      "GET",
-                      "PUT",
-                      "POST",
-                      "DELETE",
-                      "PATCH",
-                      "OPTIONS"
-                    ]
-                  },
-                  "createdTime": "1780462443706",
-                  "lastUpdatedTime": null,
-                  "lastUpdatedTimestamp": null,
-                  "gatewayVendor": "wso2",
-                  "apis": [
+                  'id': '1e040473-3bf6-4454-8788-639e403b0f56',
+                  'name': 'product',
+                  'displayName': 'product',
+                  'context': '/apiproduct',
+                  'version': 'v1',
+                  'description': null,
+                  'provider': 'admin',
+                  'hasThumbnail': false,
+                  'state': 'PUBLISHED',
+                  'enableSchemaValidation': false,
+                  'isDefaultVersion': true,
+                  'isRevision': false,
+                  'revisionedApiProductId': null,
+                  'revisionId': 0,
+                  'responseCachingEnabled': false,
+                  'cacheTimeout': 300,
+                  'visibility': 'PUBLIC',
+                  'visibleRoles': [],
+                  'visibleTenants': [],
+                  'accessControl': 'NONE',
+                  'accessControlRoles': [],
+                  'apiType': null,
+                  'transport': ['http', 'https'],
+                  'tags': [],
+                  'policies': ['DefaultSubscriptionless'],
+                  'apiThrottlingPolicy': null,
+                  'authorizationHeader': 'Authorization',
+                  'apiKeyHeader': 'ApiKey',
+                  'securityScheme':
+                    ['api_key', 'oauth_basic_auth_api_key_mandatory', 'oauth2'],
+                  'subscriptionAvailability': 'ALL_TENANTS',
+                  'subscriptionAvailableTenants': [],
+                  'additionalProperties': [],
+                  'additionalPropertiesMap': {},
+                  'monetization': null,
+                  'businessInformation':
                     {
-                      "name": "NewAPI",
-                      "apiId": "0a030405-4df9-4072-8c2d-aa28c42dc39a",
-                      "version": "1.0",
-                      "operations": [
-                        {
-                          "id": "",
-                          "target": "/*",
-                          "verb": "GET",
-                          "authType": "Application & Application User",
-                          "throttlingPolicy": "Unlimited",
-                          "scopes": [],
-                          "usedProductIds": [],
-                          "amznResourceName": null,
-                          "amznResourceTimeout": null,
-                          "amznResourceContentEncode": null,
-                          "payloadSchema": null,
-                          "uriMapping": null,
-                          "operationPolicies": {
-                            "request": [
-                              {
-                                "policyName": "addQueryParam",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "b3a5accd-15d3-46be-b643-b7b8edcf83e5",
-                                "parameters": {
-                                  "paramKey": "ehhe",
-                                  "paramValue": "sdfsa"
-                                }
-                              },
-                              {
-                                "policyName": "applyAcceptHeader",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "2e1cd328-6e11-4d83-807d-45d7800ae380",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "changeHTTPMethod",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "74ffdc48-65a5-4abc-ae43-a4b50f0a2807",
-                                "parameters": {
-                                  "httpMethod": "GET"
-                                }
-                              },
-                              {
-                                "policyName": "debugRequestFlow",
-                                "policyVersion": "v2",
-                                "policyType": "common",
-                                "policyId": "24df3234-5f4e-4b02-b674-3bb185dd1a05",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "disableChunking",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "e084688f-aa3f-4187-acff-6146301ab0e2",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "setToHeader",
-                                "policyVersion": "v2",
-                                "policyType": "common",
-                                "policyId": "c259d9e0-bd51-4f62-bf46-331badbe48f5",
-                                "parameters": {
-                                  "value": "fdsfsd"
-                                }
-                              },
-                              {
-                                "policyName": "removeHeader",
-                                "policyVersion": "v2",
-                                "policyType": "common",
-                                "policyId": "b0b94184-9294-4e77-bdae-cc17ca587116",
-                                "parameters": {
-                                  "headerName": "fdsfsd"
-                                }
-                              },
-                              {
-                                "policyName": "preserveAcceptHeader",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "79aa3753-4700-4134-95a2-216652c7bab9",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "xmlToJson",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "b3c92349-277b-4a2e-a548-70f125ef97ab",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "addHeader",
-                                "policyVersion": "v3",
-                                "policyType": "common",
-                                "policyId": "f3c09ff8-f160-4fa8-a078-7647fe84f06b",
-                                "parameters": {
-                                  "headerValue": "gfdgd",
-                                  "headerName": "gdgfg"
-                                }
-                              },
-                              {
-                                "policyName": "addLogMessage",
-                                "policyVersion": "v2",
-                                "policyType": "common",
-                                "policyId": "54b45dcc-2547-4f68-b7fd-f66c641d2de3",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "applyAcceptHeader",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "2e1cd328-6e11-4d83-807d-45d7800ae380",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "debugRequestFlow",
-                                "policyVersion": "v2",
-                                "policyType": "common",
-                                "policyId": "24df3234-5f4e-4b02-b674-3bb185dd1a05",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "disableChunking",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "e084688f-aa3f-4187-acff-6146301ab0e2",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "jsonValidator",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "2b1ff4a3-5fd3-4831-b0b4-b67088143b6d",
-                                "parameters": {
-                                  "maxKeyLength": "100",
-                                  "maxPropertyCount": "100",
-                                  "maxArrayElementCount": "100",
-                                  "requestMessageBufferSize": "1024",
-                                  "maxJsonDepth": "100",
-                                  "jsonSchemaValidator": "org.wso2.carbon.apimgt.gateway.mediators.JsonSchemaValidator",
-                                  "maxStringLength": "100"
-                                }
-                              },
-                              {
-                                "policyName": "xmlToJson",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "b3c92349-277b-4a2e-a548-70f125ef97ab",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "validateCsrfCookie",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "592f1e71-1652-483f-8448-2265230d37fc",
-                                "parameters": {
-                                  "csrfCookieName": "atbv"
-                                }
-                              }
-                            ],
-                            "response": [
-                              {
-                                "policyName": "addHeader",
-                                "policyVersion": "v3",
-                                "policyType": "common",
-                                "policyId": "f3c09ff8-f160-4fa8-a078-7647fe84f06b",
-                                "parameters": {
-                                  "headerValue": "sfds",
-                                  "headerName": "sdfsa"
-                                }
-                              },
-                              {
-                                "policyName": "disableChunking",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "e084688f-aa3f-4187-acff-6146301ab0e2",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "jsonToXML",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "e246458c-e765-45b3-ade7-28a18c1ceb72",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "debugResponseFlow",
-                                "policyVersion": "v2",
-                                "policyType": "common",
-                                "policyId": "8f542b65-9bc3-47bb-ac82-347c1bd87939",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "addLogMessage",
-                                "policyVersion": "v2",
-                                "policyType": "common",
-                                "policyId": "54b45dcc-2547-4f68-b7fd-f66c641d2de3",
-                                "parameters": {}
-                              }
-                            ],
-                            "fault": [
-                              {
-                                "policyName": "removeHeader",
-                                "policyVersion": "v2",
-                                "policyType": "common",
-                                "policyId": "b0b94184-9294-4e77-bdae-cc17ca587116",
-                                "parameters": {
-                                  "headerName": "dsfds"
-                                }
-                              },
-                              {
-                                "policyName": "jsonFault",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "c58afd9f-732d-4996-87a5-a4841ec46d87",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "debugJsonFault",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "b5d1d5dc-370e-4f95-a5d6-21c73a19bd2a",
-                                "parameters": {}
-                              },
-                              {
-                                "policyName": "addHeader",
-                                "policyVersion": "v3",
-                                "policyType": "common",
-                                "policyId": "f3c09ff8-f160-4fa8-a078-7647fe84f06b",
-                                "parameters": {
-                                  "headerValue": "gdfgd",
-                                  "headerName": "dfgdfg"
-                                }
-                              }
-                            ]
-                          },
-                          "operationHubPolicies": []
-                        },
-                        {
-                          "id": "",
-                          "target": "/*",
-                          "verb": "PUT",
-                          "authType": "Application & Application User",
-                          "throttlingPolicy": "Unlimited",
-                          "scopes": [],
-                          "usedProductIds": [],
-                          "amznResourceName": null,
-                          "amznResourceTimeout": null,
-                          "amznResourceContentEncode": null,
-                          "payloadSchema": null,
-                          "uriMapping": null,
-                          "operationPolicies": {
-                            "request": [
-                              {
-                                "policyName": "addQueryParam",
-                                "policyVersion": "v1",
-                                "policyType": "common",
-                                "policyId": "b3a5accd-15d3-46be-b643-b7b8edcf83e5",
-                                "parameters": {
-                                  "paramKey": "ehhe",
-                                  "paramValue": "sdfsa"
-                                }
-                              }
-                            ],
-                            "response": [
-                              {
-                                "policyName": "addHeader",
-                                "policyVersion": "v3",
-                                "policyType": "common",
-                                "policyId": "f3c09ff8-f160-4fa8-a078-7647fe84f06b",
-                                "parameters": {
-                                  "headerValue": "sfds",
-                                  "headerName": "sdfsa"
-                                }
-                              }
-                            ],
-                            "fault": [
-                              {
-                                "policyName": "removeHeader",
-                                "policyVersion": "v2",
-                                "policyType": "common",
-                                "policyId": "b0b94184-9294-4e77-bdae-cc17ca587116",
-                                "parameters": {
-                                  "headerName": "dsfds"
-                                }
-                              }
-                            ]
-                          },
-                          "operationHubPolicies": []
-                        }
-                      ]
+                      'businessOwner': null,
+                      'businessOwnerEmail': null,
+                      'technicalOwner': null,
+                      'technicalOwnerEmail': null,
                     },
+                  'corsConfiguration':
                     {
-                      "name": "PizzaShackAPI",
-                      "apiId": "bc4449a7-6654-4669-8786-506e86473f67",
-                      "version": "1.0.0",
-                      "operations": [
-                        {
-                          "id": "",
-                          "target": "/menu",
-                          "verb": "GET",
-                          "authType": "Application & Application User",
-                          "throttlingPolicy": "Unlimited",
-                          "scopes": [
-                            "rewrew"
-                          ],
-                          "usedProductIds": [],
-                          "amznResourceName": null,
-                          "amznResourceTimeout": null,
-                          "amznResourceContentEncode": null,
-                          "payloadSchema": null,
-                          "uriMapping": null,
-                          "operationPolicies": {
-                            "request": [],
-                            "response": [],
-                            "fault": []
-                          },
-                          "operationHubPolicies": []
-                        }
-                      ]
-                    }
-                  ],
-                  "scopes": [
-                    {
-                      "scope": {
-                        "id": null,
-                        "name": "rewrew",
-                        "displayName": "rewrew",
-                        "description": "",
-                        "bindings": [
-                          "admin"
+                      'corsConfigurationEnabled': false,
+                      'accessControlAllowOrigins': ['*'],
+                      'accessControlAllowCredentials': false,
+                      'accessControlAllowHeaders':
+                        [
+                          'authorization',
+                          'Access-Control-Allow-Origin',
+                          'Content-Type',
+                          'SOAPAction',
+                          'apikey',
+                          'Internal-Key',
                         ],
-                        "usageCount": null
+                      'accessControlAllowMethods':
+                        ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'OPTIONS'],
+                    },
+                  'createdTime': '1780462443706',
+                  'lastUpdatedTime': null,
+                  'lastUpdatedTimestamp': null,
+                  'gatewayVendor': 'wso2',
+                  'apis':
+                    [
+                      {
+                        'name': 'NewAPI',
+                        'apiId': '0a030405-4df9-4072-8c2d-aa28c42dc39a',
+                        'version': '1.0',
+                        'operations':
+                          [
+                            {
+                              'id': '',
+                              'target': '/*',
+                              'verb': 'GET',
+                              'authType': 'Application & Application User',
+                              'throttlingPolicy': 'Unlimited',
+                              'scopes': [],
+                              'usedProductIds': [],
+                              'amznResourceName': null,
+                              'amznResourceTimeout': null,
+                              'amznResourceContentEncode': null,
+                              'payloadSchema': null,
+                              'uriMapping': null,
+                              'operationPolicies':
+                                {
+                                  'request':
+                                    [
+                                      {
+                                        'policyName': 'addQueryParam',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': 'b3a5accd-15d3-46be-b643-b7b8edcf83e5',
+                                        'parameters':
+                                          {
+                                            'paramKey': 'ehhe',
+                                            'paramValue': 'sdfsa',
+                                          },
+                                      },
+                                      {
+                                        'policyName': 'applyAcceptHeader',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': '2e1cd328-6e11-4d83-807d-45d7800ae380',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'changeHTTPMethod',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': '74ffdc48-65a5-4abc-ae43-a4b50f0a2807',
+                                        'parameters': { 'httpMethod': 'GET' },
+                                      },
+                                      {
+                                        'policyName': 'debugRequestFlow',
+                                        'policyVersion': 'v2',
+                                        'policyType': 'common',
+                                        'policyId': '24df3234-5f4e-4b02-b674-3bb185dd1a05',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'disableChunking',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': 'e084688f-aa3f-4187-acff-6146301ab0e2',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'setToHeader',
+                                        'policyVersion': 'v2',
+                                        'policyType': 'common',
+                                        'policyId': 'c259d9e0-bd51-4f62-bf46-331badbe48f5',
+                                        'parameters': { 'value': 'fdsfsd' },
+                                      },
+                                      {
+                                        'policyName': 'removeHeader',
+                                        'policyVersion': 'v2',
+                                        'policyType': 'common',
+                                        'policyId': 'b0b94184-9294-4e77-bdae-cc17ca587116',
+                                        'parameters':
+                                          { 'headerName': 'fdsfsd' },
+                                      },
+                                      {
+                                        'policyName': 'preserveAcceptHeader',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': '79aa3753-4700-4134-95a2-216652c7bab9',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'xmlToJson',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': 'b3c92349-277b-4a2e-a548-70f125ef97ab',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'addHeader',
+                                        'policyVersion': 'v3',
+                                        'policyType': 'common',
+                                        'policyId': 'f3c09ff8-f160-4fa8-a078-7647fe84f06b',
+                                        'parameters':
+                                          {
+                                            'headerValue': 'gfdgd',
+                                            'headerName': 'gdgfg',
+                                          },
+                                      },
+                                      {
+                                        'policyName': 'addLogMessage',
+                                        'policyVersion': 'v2',
+                                        'policyType': 'common',
+                                        'policyId': '54b45dcc-2547-4f68-b7fd-f66c641d2de3',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'applyAcceptHeader',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': '2e1cd328-6e11-4d83-807d-45d7800ae380',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'debugRequestFlow',
+                                        'policyVersion': 'v2',
+                                        'policyType': 'common',
+                                        'policyId': '24df3234-5f4e-4b02-b674-3bb185dd1a05',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'disableChunking',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': 'e084688f-aa3f-4187-acff-6146301ab0e2',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'jsonValidator',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': '2b1ff4a3-5fd3-4831-b0b4-b67088143b6d',
+                                        'parameters':
+                                          {
+                                            'maxKeyLength': '100',
+                                            'maxPropertyCount': '100',
+                                            'maxArrayElementCount': '100',
+                                            'requestMessageBufferSize': '1024',
+                                            'maxJsonDepth': '100',
+                                            'jsonSchemaValidator': 'org.wso2.carbon.apimgt.gateway.mediators.JsonSchemaValidator',
+                                            'maxStringLength': '100',
+                                          },
+                                      },
+                                      {
+                                        'policyName': 'xmlToJson',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': 'b3c92349-277b-4a2e-a548-70f125ef97ab',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'validateCsrfCookie',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': '592f1e71-1652-483f-8448-2265230d37fc',
+                                        'parameters':
+                                          { 'csrfCookieName': 'atbv' },
+                                      },
+                                    ],
+                                  'response':
+                                    [
+                                      {
+                                        'policyName': 'addHeader',
+                                        'policyVersion': 'v3',
+                                        'policyType': 'common',
+                                        'policyId': 'f3c09ff8-f160-4fa8-a078-7647fe84f06b',
+                                        'parameters':
+                                          {
+                                            'headerValue': 'sfds',
+                                            'headerName': 'sdfsa',
+                                          },
+                                      },
+                                      {
+                                        'policyName': 'disableChunking',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': 'e084688f-aa3f-4187-acff-6146301ab0e2',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'jsonToXML',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': 'e246458c-e765-45b3-ade7-28a18c1ceb72',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'debugResponseFlow',
+                                        'policyVersion': 'v2',
+                                        'policyType': 'common',
+                                        'policyId': '8f542b65-9bc3-47bb-ac82-347c1bd87939',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'addLogMessage',
+                                        'policyVersion': 'v2',
+                                        'policyType': 'common',
+                                        'policyId': '54b45dcc-2547-4f68-b7fd-f66c641d2de3',
+                                        'parameters': {},
+                                      },
+                                    ],
+                                  'fault':
+                                    [
+                                      {
+                                        'policyName': 'removeHeader',
+                                        'policyVersion': 'v2',
+                                        'policyType': 'common',
+                                        'policyId': 'b0b94184-9294-4e77-bdae-cc17ca587116',
+                                        'parameters': { 'headerName': 'dsfds' },
+                                      },
+                                      {
+                                        'policyName': 'jsonFault',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': 'c58afd9f-732d-4996-87a5-a4841ec46d87',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'debugJsonFault',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': 'b5d1d5dc-370e-4f95-a5d6-21c73a19bd2a',
+                                        'parameters': {},
+                                      },
+                                      {
+                                        'policyName': 'addHeader',
+                                        'policyVersion': 'v3',
+                                        'policyType': 'common',
+                                        'policyId': 'f3c09ff8-f160-4fa8-a078-7647fe84f06b',
+                                        'parameters':
+                                          {
+                                            'headerValue': 'gdfgd',
+                                            'headerName': 'dfgdfg',
+                                          },
+                                      },
+                                    ],
+                                },
+                              'operationHubPolicies': [],
+                            },
+                            {
+                              'id': '',
+                              'target': '/*',
+                              'verb': 'PUT',
+                              'authType': 'Application & Application User',
+                              'throttlingPolicy': 'Unlimited',
+                              'scopes': [],
+                              'usedProductIds': [],
+                              'amznResourceName': null,
+                              'amznResourceTimeout': null,
+                              'amznResourceContentEncode': null,
+                              'payloadSchema': null,
+                              'uriMapping': null,
+                              'operationPolicies':
+                                {
+                                  'request':
+                                    [
+                                      {
+                                        'policyName': 'addQueryParam',
+                                        'policyVersion': 'v1',
+                                        'policyType': 'common',
+                                        'policyId': 'b3a5accd-15d3-46be-b643-b7b8edcf83e5',
+                                        'parameters':
+                                          {
+                                            'paramKey': 'ehhe',
+                                            'paramValue': 'sdfsa',
+                                          },
+                                      },
+                                    ],
+                                  'response':
+                                    [
+                                      {
+                                        'policyName': 'addHeader',
+                                        'policyVersion': 'v3',
+                                        'policyType': 'common',
+                                        'policyId': 'f3c09ff8-f160-4fa8-a078-7647fe84f06b',
+                                        'parameters':
+                                          {
+                                            'headerValue': 'sfds',
+                                            'headerName': 'sdfsa',
+                                          },
+                                      },
+                                    ],
+                                  'fault':
+                                    [
+                                      {
+                                        'policyName': 'removeHeader',
+                                        'policyVersion': 'v2',
+                                        'policyType': 'common',
+                                        'policyId': 'b0b94184-9294-4e77-bdae-cc17ca587116',
+                                        'parameters': { 'headerName': 'dsfds' },
+                                      },
+                                    ],
+                                },
+                              'operationHubPolicies': [],
+                            },
+                          ],
                       },
-                      "shared": false
-                    }
-                  ],
-                  "categories": [],
-                  "workflowStatus": null,
-                  "audiences": [
-                    "all"
-                  ],
-                  "egress": false
+                      {
+                        'name': 'PizzaShackAPI',
+                        'apiId': 'bc4449a7-6654-4669-8786-506e86473f67',
+                        'version': '1.0.0',
+                        'operations':
+                          [
+                            {
+                              'id': '',
+                              'target': '/menu',
+                              'verb': 'GET',
+                              'authType': 'Application & Application User',
+                              'throttlingPolicy': 'Unlimited',
+                              'scopes': ['rewrew'],
+                              'usedProductIds': [],
+                              'amznResourceName': null,
+                              'amznResourceTimeout': null,
+                              'amznResourceContentEncode': null,
+                              'payloadSchema': null,
+                              'uriMapping': null,
+                              'operationPolicies':
+                                { 'request': [], 'response': [], 'fault': [] },
+                              'operationHubPolicies': [],
+                            },
+                          ],
+                      },
+                    ],
+                  'scopes':
+                    [
+                      {
+                        'scope':
+                          {
+                            'id': null,
+                            'name': 'rewrew',
+                            'displayName': 'rewrew',
+                            'description': '',
+                            'bindings': ['admin'],
+                            'usageCount': null,
+                          },
+                        'shared': false,
+                      },
+                    ],
+                  'categories': [],
+                  'workflowStatus': null,
+                  'audiences': ['all'],
+                  'egress': false,
                 }
         '404':
           $ref: '#/components/responses/Wso2Error'
@@ -2240,7 +2226,7 @@ paths:
                         implicit:
                           authorizationUrl: https://test.com
                           scopes:
-                            rewrew: ""
+                            rewrew: ''
                           x-scopes-bindings:
                             rewrew: admin
             application/yaml:
@@ -2288,8 +2274,8 @@ paths:
                     workflowStatus: null
                     hasThumbnail: false
                     securityScheme: []
-                    createdTime: "1780378791895"
-                    updatedTime: "1781071002019"
+                    createdTime: '1780378791895'
+                    updatedTime: '1781071002019'
                     updatedBy: wso2.system.user
                     gatewayVendor: wso2
                     gatewayType: wso2/synapse
@@ -2305,8 +2291,8 @@ paths:
                   offset: 0
                   limit: 25
                   total: 1
-                  next: ""
-                  previous: ""
+                  next: ''
+                  previous: ''
         '401':
           $ref: '#/components/responses/Wso2Error'
   /api/am/publisher/v4/mcp-servers/{mcpId}:
@@ -2333,204 +2319,169 @@ paths:
                 additionalProperties: true
               example:
                 {
-                  "id": "fa5ba364-67d1-43c6-a651-43025e0512bd",
-                  "name": "EverythingMCP",
-                  "displayName": "EverythingMCP",
-                  "description": null,
-                  "context": "/everything",
-                  "endpointConfig": null,
-                  "version": "1.0.0",
-                  "provider": "admin",
-                  "lifeCycleStatus": "PUBLISHED",
-                  "hasThumbnail": false,
-                  "isDefaultVersion": false,
-                  "isRevision": false,
-                  "revisionedMCPServerId": null,
-                  "revisionId": 0,
-                  "enableSchemaValidation": false,
-                  "audiences": [
-                    "all"
-                  ],
-                  "transport": [
-                    "http",
-                    "https"
-                  ],
-                  "tags": [],
-                  "policies": [
-                    "DefaultSubscriptionless"
-                  ],
-                  "organizationPolicies": [],
-                  "throttlingPolicy": null,
-                  "authorizationHeader": "Authorization",
-                  "apiKeyHeader": "ApiKey",
-                  "securityScheme": [
-                    "oauth_basic_auth_api_key_mandatory",
-                    "oauth2"
-                  ],
-                  "maxTps": null,
-                  "visibility": "PUBLIC",
-                  "visibleRoles": [],
-                  "visibleTenants": [],
-                  "visibleOrganizations": [
-                    "none"
-                  ],
-                  "mcpServerPolicies": null,
-                  "subscriptionAvailability": "CURRENT_TENANT",
-                  "subscriptionAvailableTenants": [],
-                  "additionalPropertiesMap": {},
-                  "monetization": null,
-                  "accessControl": "NONE",
-                  "accessControlRoles": [],
-                  "businessInformation": {
-                    "businessOwner": null,
-                    "businessOwnerEmail": null,
-                    "technicalOwner": null,
-                    "technicalOwnerEmail": null
-                  },
-                  "corsConfiguration": {
-                    "corsConfigurationEnabled": true,
-                    "accessControlAllowOrigins": [
-                      "*"
+                  'id': 'fa5ba364-67d1-43c6-a651-43025e0512bd',
+                  'name': 'EverythingMCP',
+                  'displayName': 'EverythingMCP',
+                  'description': null,
+                  'context': '/everything',
+                  'endpointConfig': null,
+                  'version': '1.0.0',
+                  'provider': 'admin',
+                  'lifeCycleStatus': 'PUBLISHED',
+                  'hasThumbnail': false,
+                  'isDefaultVersion': false,
+                  'isRevision': false,
+                  'revisionedMCPServerId': null,
+                  'revisionId': 0,
+                  'enableSchemaValidation': false,
+                  'audiences': ['all'],
+                  'transport': ['http', 'https'],
+                  'tags': [],
+                  'policies': ['DefaultSubscriptionless'],
+                  'organizationPolicies': [],
+                  'throttlingPolicy': null,
+                  'authorizationHeader': 'Authorization',
+                  'apiKeyHeader': 'ApiKey',
+                  'securityScheme':
+                    ['oauth_basic_auth_api_key_mandatory', 'oauth2'],
+                  'maxTps': null,
+                  'visibility': 'PUBLIC',
+                  'visibleRoles': [],
+                  'visibleTenants': [],
+                  'visibleOrganizations': ['none'],
+                  'mcpServerPolicies': null,
+                  'subscriptionAvailability': 'CURRENT_TENANT',
+                  'subscriptionAvailableTenants': [],
+                  'additionalPropertiesMap': {},
+                  'monetization': null,
+                  'accessControl': 'NONE',
+                  'accessControlRoles': [],
+                  'businessInformation':
+                    {
+                      'businessOwner': null,
+                      'businessOwnerEmail': null,
+                      'technicalOwner': null,
+                      'technicalOwnerEmail': null,
+                    },
+                  'corsConfiguration':
+                    {
+                      'corsConfigurationEnabled': true,
+                      'accessControlAllowOrigins': ['*'],
+                      'accessControlAllowCredentials': false,
+                      'accessControlAllowHeaders':
+                        [
+                          'authorization',
+                          'Access-Control-Allow-Origin',
+                          'Content-Type',
+                          'SOAPAction',
+                          'apikey',
+                          'Internal-Key',
+                          'MCP-Protocol-Version',
+                          'Mcp-Session-Id',
+                        ],
+                      'accessControlAllowMethods':
+                        ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'OPTIONS'],
+                    },
+                  'workflowStatus': null,
+                  'protocolVersion': '2025-06-18',
+                  'createdTime': '1780378791895',
+                  'lastUpdatedTimestamp': '1781071002019',
+                  'lastUpdatedTime': '2026-06-10 05:56:42.019',
+                  'subtypeConfiguration':
+                    { 'subtype': 'SERVER_PROXY', 'configuration': null },
+                  'scopes': [],
+                  'operations':
+                    [
+                      {
+                        'id': '',
+                        'target': 'add',
+                        'feature': 'TOOL',
+                        'authType': 'Application & Application User',
+                        'throttlingPolicy': 'Unlimited',
+                        'scopes': [],
+                        'payloadSchema': null,
+                        'uriMapping': null,
+                        'schemaDefinition': '{"$schema":"http://json-schema.org/draft-07/schema#","additionalProperties":false,"type":"object","properties":{"a":{"description":"First number","type":"number"},"b":{"description":"Second number","type":"number"}},"required":["a","b"]}',
+                        'description': 'Adds two numbers',
+                        'operationPolicies':
+                          { 'request': [], 'response': [], 'fault': [] },
+                        'backendOperationMapping':
+                          {
+                            'backendId': '7e7c47cd-aa97-40b4-83ee-1d31dedf345c',
+                            'backendOperation':
+                              { 'target': 'add', 'verb': 'TOOL' },
+                          },
+                        'apiOperationMapping': null,
+                      },
+                      {
+                        'id': '',
+                        'target': 'echo',
+                        'feature': 'TOOL',
+                        'authType': 'Application & Application User',
+                        'throttlingPolicy': 'Unlimited',
+                        'scopes': [],
+                        'payloadSchema': null,
+                        'uriMapping': null,
+                        'schemaDefinition': '{"$schema":"http://json-schema.org/draft-07/schema#","additionalProperties":false,"type":"object","properties":{"message":{"description":"Message to echo","type":"string"}},"required":["message"]}',
+                        'description': 'Echoes back the input',
+                        'operationPolicies':
+                          { 'request': [], 'response': [], 'fault': [] },
+                        'backendOperationMapping':
+                          {
+                            'backendId': '7e7c47cd-aa97-40b4-83ee-1d31dedf345c',
+                            'backendOperation':
+                              { 'target': 'echo', 'verb': 'TOOL' },
+                          },
+                        'apiOperationMapping': null,
+                      },
+                      {
+                        'id': '',
+                        'target': 'orderPizza',
+                        'feature': 'TOOL',
+                        'authType': 'Application & Application User',
+                        'throttlingPolicy': 'Unlimited',
+                        'scopes': [],
+                        'payloadSchema': null,
+                        'uriMapping': null,
+                        'schemaDefinition': '{"$schema":"http://json-schema.org/draft-07/schema#","additionalProperties":false,"type":"object","properties":{"pizzaType":{"description":"Type of pizza to order","type":"string"},"quantity":{"description":"Number of pizzas to order","type":"integer","minimum":1},"deliveryAddress":{"description":"Delivery address for the order","type":"string"},"creditCardNumber":{"description":"Credit card number for payment","type":"string"},"customerName":{"description":"Name of the customer","type":"string"}},"required":["pizzaType","quantity","customerName","deliveryAddress","creditCardNumber"]}',
+                        'description': 'Order a pizza from the menu. This tool allows you to place an order for a pizza.',
+                        'operationPolicies':
+                          { 'request': [], 'response': [], 'fault': [] },
+                        'backendOperationMapping':
+                          {
+                            'backendId': '7e7c47cd-aa97-40b4-83ee-1d31dedf345c',
+                            'backendOperation':
+                              { 'target': 'orderPizza', 'verb': 'TOOL' },
+                          },
+                        'apiOperationMapping': null,
+                      },
+                      {
+                        'id': '',
+                        'target': 'viewPizzaMenu',
+                        'feature': 'TOOL',
+                        'authType': 'Application & Application User',
+                        'throttlingPolicy': 'Unlimited',
+                        'scopes': [],
+                        'payloadSchema': null,
+                        'uriMapping': null,
+                        'schemaDefinition': '{"$schema":"http://json-schema.org/draft-07/schema#","additionalProperties":false,"type":"object","properties":{}}',
+                        'description': 'View the pizza menu. This tool provides a list of available pizzas.',
+                        'operationPolicies':
+                          { 'request': [], 'response': [], 'fault': [] },
+                        'backendOperationMapping':
+                          {
+                            'backendId': '7e7c47cd-aa97-40b4-83ee-1d31dedf345c',
+                            'backendOperation':
+                              { 'target': 'viewPizzaMenu', 'verb': 'TOOL' },
+                          },
+                        'apiOperationMapping': null,
+                      },
                     ],
-                    "accessControlAllowCredentials": false,
-                    "accessControlAllowHeaders": [
-                      "authorization",
-                      "Access-Control-Allow-Origin",
-                      "Content-Type",
-                      "SOAPAction",
-                      "apikey",
-                      "Internal-Key",
-                      "MCP-Protocol-Version",
-                      "Mcp-Session-Id"
-                    ],
-                    "accessControlAllowMethods": [
-                      "GET",
-                      "PUT",
-                      "POST",
-                      "DELETE",
-                      "PATCH",
-                      "OPTIONS"
-                    ]
-                  },
-                  "workflowStatus": null,
-                  "protocolVersion": "2025-06-18",
-                  "createdTime": "1780378791895",
-                  "lastUpdatedTimestamp": "1781071002019",
-                  "lastUpdatedTime": "2026-06-10 05:56:42.019",
-                  "subtypeConfiguration": {
-                    "subtype": "SERVER_PROXY",
-                    "configuration": null
-                  },
-                  "scopes": [],
-                  "operations": [
-                    {
-                      "id": "",
-                      "target": "add",
-                      "feature": "TOOL",
-                      "authType": "Application & Application User",
-                      "throttlingPolicy": "Unlimited",
-                      "scopes": [],
-                      "payloadSchema": null,
-                      "uriMapping": null,
-                      "schemaDefinition": "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"a\":{\"description\":\"First number\",\"type\":\"number\"},\"b\":{\"description\":\"Second number\",\"type\":\"number\"}},\"required\":[\"a\",\"b\"]}",
-                      "description": "Adds two numbers",
-                      "operationPolicies": {
-                        "request": [],
-                        "response": [],
-                        "fault": []
-                      },
-                      "backendOperationMapping": {
-                        "backendId": "7e7c47cd-aa97-40b4-83ee-1d31dedf345c",
-                        "backendOperation": {
-                          "target": "add",
-                          "verb": "TOOL"
-                        }
-                      },
-                      "apiOperationMapping": null
-                    },
-                    {
-                      "id": "",
-                      "target": "echo",
-                      "feature": "TOOL",
-                      "authType": "Application & Application User",
-                      "throttlingPolicy": "Unlimited",
-                      "scopes": [],
-                      "payloadSchema": null,
-                      "uriMapping": null,
-                      "schemaDefinition": "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"message\":{\"description\":\"Message to echo\",\"type\":\"string\"}},\"required\":[\"message\"]}",
-                      "description": "Echoes back the input",
-                      "operationPolicies": {
-                        "request": [],
-                        "response": [],
-                        "fault": []
-                      },
-                      "backendOperationMapping": {
-                        "backendId": "7e7c47cd-aa97-40b4-83ee-1d31dedf345c",
-                        "backendOperation": {
-                          "target": "echo",
-                          "verb": "TOOL"
-                        }
-                      },
-                      "apiOperationMapping": null
-                    },
-                    {
-                      "id": "",
-                      "target": "orderPizza",
-                      "feature": "TOOL",
-                      "authType": "Application & Application User",
-                      "throttlingPolicy": "Unlimited",
-                      "scopes": [],
-                      "payloadSchema": null,
-                      "uriMapping": null,
-                      "schemaDefinition": "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"pizzaType\":{\"description\":\"Type of pizza to order\",\"type\":\"string\"},\"quantity\":{\"description\":\"Number of pizzas to order\",\"type\":\"integer\",\"minimum\":1},\"deliveryAddress\":{\"description\":\"Delivery address for the order\",\"type\":\"string\"},\"creditCardNumber\":{\"description\":\"Credit card number for payment\",\"type\":\"string\"},\"customerName\":{\"description\":\"Name of the customer\",\"type\":\"string\"}},\"required\":[\"pizzaType\",\"quantity\",\"customerName\",\"deliveryAddress\",\"creditCardNumber\"]}",
-                      "description": "Order a pizza from the menu. This tool allows you to place an order for a pizza.",
-                      "operationPolicies": {
-                        "request": [],
-                        "response": [],
-                        "fault": []
-                      },
-                      "backendOperationMapping": {
-                        "backendId": "7e7c47cd-aa97-40b4-83ee-1d31dedf345c",
-                        "backendOperation": {
-                          "target": "orderPizza",
-                          "verb": "TOOL"
-                        }
-                      },
-                      "apiOperationMapping": null
-                    },
-                    {
-                      "id": "",
-                      "target": "viewPizzaMenu",
-                      "feature": "TOOL",
-                      "authType": "Application & Application User",
-                      "throttlingPolicy": "Unlimited",
-                      "scopes": [],
-                      "payloadSchema": null,
-                      "uriMapping": null,
-                      "schemaDefinition": "{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"additionalProperties\":false,\"type\":\"object\",\"properties\":{}}",
-                      "description": "View the pizza menu. This tool provides a list of available pizzas.",
-                      "operationPolicies": {
-                        "request": [],
-                        "response": [],
-                        "fault": []
-                      },
-                      "backendOperationMapping": {
-                        "backendId": "7e7c47cd-aa97-40b4-83ee-1d31dedf345c",
-                        "backendOperation": {
-                          "target": "viewPizzaMenu",
-                          "verb": "TOOL"
-                        }
-                      },
-                      "apiOperationMapping": null
-                    }
-                  ],
-                  "categories": [],
-                  "keyManagers": [
-                    "all"
-                  ],
-                  "gatewayVendor": "wso2",
-                  "gatewayType": "wso2/synapse",
-                  "initiatedFromGateway": false
+                  'categories': [],
+                  'keyManagers': ['all'],
+                  'gatewayVendor': 'wso2',
+                  'gatewayType': 'wso2/synapse',
+                  'initiatedFromGateway': false,
                 }
         '404':
           $ref: '#/components/responses/Wso2Error'
@@ -2562,8 +2513,8 @@ paths:
                   offset: 0
                   limit: 25
                   total: 0
-                  next: ""
-                  previous: ""
+                  next: ''
+                  previous: ''
         '404':
           $ref: '#/components/responses/Wso2Error'
   /api/am/devportal/v3/apis/{apiId}/api-keys/generate:
@@ -2684,16 +2635,16 @@ paths:
                     securityType: NONE
                     mutualSSLEnabled: false
                     usage: 2
-                    createdTime: "2026-06-04 06:10:55.497"
-                    lastUpdatedTime: "2026-06-04 06:10:55.497"
+                    createdTime: '2026-06-04 06:10:55.497'
+                    lastUpdatedTime: '2026-06-04 06:10:55.497'
                     md5: '{"hash":"b80fcd8e06b9c977bc7d11799df206de19a851b86e23340a8edc3cb37e2f1672","algorithm":"SHA-256"}'
                     definitionUrl: null
                 pagination:
                   offset: 0
                   limit: 1000
                   total: 1
-                  next: ""
-                  previous: ""
+                  next: ''
+                  previous: ''
         '401':
           $ref: '#/components/responses/Wso2Error'
   /api/am/service-catalog/v1/services/{serviceId}/usage:
@@ -2779,7 +2730,7 @@ paths:
               -H "Authorization: Basic $WSO2_GATEWAY_DISCOVERY_BASIC_TOKEN"
       servers:
         - url: https://fab4-14-1-78-245.ngrok-free.app
-          description: Configured wso2PlatformGateway.discoveryUrl host for APIPlatform.
+          description: Configured wso2ApiPlatformGateway.discoveryUrl host for APIPlatform.
       security:
         - GatewayDiscoveryAuth: []
         - {}
@@ -2813,7 +2764,7 @@ paths:
               -H "Authorization: Basic $WSO2_GATEWAY_DISCOVERY_BASIC_TOKEN"
       servers:
         - url: https://fab4-14-1-78-245.ngrok-free.app
-          description: Configured wso2PlatformGateway.discoveryUrl host for APIPlatform.
+          description: Configured wso2ApiPlatformGateway.discoveryUrl host for APIPlatform.
       security:
         - GatewayDiscoveryAuth: []
         - {}
@@ -3973,9 +3924,9 @@ components:
         scope:
           type: string
       example:
-        access_token: "eyJ4NXQiOiJZMkUxWXpsaU5UUm1PV0kyWkRNNVpqTTVObUV4WVdGaE4yRTNPREEwT0RFek9UTmpNV1JtWW1JMU5qZGpabUZqWm1JNU5qSmxObUU0T0dGa05qVTRPQSIsImtpZCI6IlkyRTFZemxpTlRSbU9XSTJaRE01WmpNNU5tRXhZV0ZoTjJFM09EQTBPREV6T1ROak1XUm1ZbUkxTmpkalptRmpabUk1TmpKbE5tRTRPR0ZrTmpVNE9BX1JTMjU2IiwidHlwIjoiYXQrand0IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI5YTY0OThlNi1lMmE1LTQ1NmMtODgyNS00MzA5YmQ5Zjg3N2EiLCJhdXQiOiJBUFBMSUNBVElPTiIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDcvb2F1dGgyL3Rva2VuIiwiZW50aXR5X2lkIjoiZnlqWHJ0WUY3ODM0U2Rid0JyXzl0U0dLZ0s4YSIsImNsaWVudF9pZCI6ImZ5alhydFlGNzgzNFNkYndCcl85dFNHS2dLOGEiLCJ1c2lkIjoiOTgzNDdlMjctMDJiOS00ZGRjLTk3YzktZjNkOTNkZDU5ZjU5IiwiYXVkIjoiZnlqWHJ0WUY3ODM0U2Rid0JyXzl0U0dLZ0s4YSIsIm5iZiI6MTc4MTIzNjgxNCwiYXpwIjoiZnlqWHJ0WUY3ODM0U2Rid0JyXzl0U0dLZ0s4YSIsInNjb3BlIjoiYXBpbTphcGlfY3JlYXRlIGFwaW06YXBpX2ltcG9ydF9leHBvcnQgYXBpbTphcGlfcHVibGlzaCBhcGltOmFwaV92aWV3IGFwaW06bGxtX3Byb3ZpZGVyX3JlYWQgYXBpbTptY3Bfc2VydmVyX2NyZWF0ZSBhcGltOm1jcF9zZXJ2ZXJfZ2VuZXJhdGVfa2V5IGFwaW06bWNwX3NlcnZlcl9pbXBvcnRfZXhwb3J0IGFwaW06bWNwX3NlcnZlcl9saXN0X3ZpZXcgYXBpbTptY3Bfc2VydmVyX3B1Ymxpc2ggYXBpbTptY3Bfc2VydmVyX3ZpZXcgYXBpbTpwdWJsaXNoZXJfc2V0dGluZ3MiLCJleHAiOjE3ODEyNDA0MTQsImlhdCI6MTc4MTIzNjgxNCwianRpIjoiYzcyNjM0MTItZmUwZC00NzMwLWI1YjMtOTliOGQxYmQwMzEzIn0.gaWTLNBN_w_EORqy1Dkl9CaoDxVeyUbmgE-YSvAKq0GnwYBIbO_z3m7GzNKUdq5AsBR9WjMMwD3C6yYizvC3_jkI_io2wBv_ld9l62-x5HDG48QU678g7ccu14zHR6w38O0Csuq3HI5_fC1SMWpTSkHihTSiskEXdLc2xQFjhImHhPCj1asFI8E3gphIv82ik2eFFNWQ_Hz3vHTEKVYuR5xzzCnFAXrnPdgdlOSoUJsXeYeQE4YKRUoRXBV2zH8G6shl0noV4kCJraucPlh1fu7JXXebzpzGbduIJJXHo0k9Xsf-He6sH6MTxZKJ8W-O9iHU9IHDDTFaAzh675SnZQ"
-        scope: "apim:api_create apim:api_import_export apim:api_publish apim:api_view apim:llm_provider_read apim:mcp_server_create apim:mcp_server_generate_key apim:mcp_server_import_export apim:mcp_server_list_view apim:mcp_server_publish apim:mcp_server_view apim:publisher_settings"
-        token_type: "Bearer"
+        access_token: 'eyJ4NXQiOiJZMkUxWXpsaU5UUm1PV0kyWkRNNVpqTTVObUV4WVdGaE4yRTNPREEwT0RFek9UTmpNV1JtWW1JMU5qZGpabUZqWm1JNU5qSmxObUU0T0dGa05qVTRPQSIsImtpZCI6IlkyRTFZemxpTlRSbU9XSTJaRE01WmpNNU5tRXhZV0ZoTjJFM09EQTBPREV6T1ROak1XUm1ZbUkxTmpkalptRmpabUk1TmpKbE5tRTRPR0ZrTmpVNE9BX1JTMjU2IiwidHlwIjoiYXQrand0IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI5YTY0OThlNi1lMmE1LTQ1NmMtODgyNS00MzA5YmQ5Zjg3N2EiLCJhdXQiOiJBUFBMSUNBVElPTiIsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojk0NDcvb2F1dGgyL3Rva2VuIiwiZW50aXR5X2lkIjoiZnlqWHJ0WUY3ODM0U2Rid0JyXzl0U0dLZ0s4YSIsImNsaWVudF9pZCI6ImZ5alhydFlGNzgzNFNkYndCcl85dFNHS2dLOGEiLCJ1c2lkIjoiOTgzNDdlMjctMDJiOS00ZGRjLTk3YzktZjNkOTNkZDU5ZjU5IiwiYXVkIjoiZnlqWHJ0WUY3ODM0U2Rid0JyXzl0U0dLZ0s4YSIsIm5iZiI6MTc4MTIzNjgxNCwiYXpwIjoiZnlqWHJ0WUY3ODM0U2Rid0JyXzl0U0dLZ0s4YSIsInNjb3BlIjoiYXBpbTphcGlfY3JlYXRlIGFwaW06YXBpX2ltcG9ydF9leHBvcnQgYXBpbTphcGlfcHVibGlzaCBhcGltOmFwaV92aWV3IGFwaW06bGxtX3Byb3ZpZGVyX3JlYWQgYXBpbTptY3Bfc2VydmVyX2NyZWF0ZSBhcGltOm1jcF9zZXJ2ZXJfZ2VuZXJhdGVfa2V5IGFwaW06bWNwX3NlcnZlcl9pbXBvcnRfZXhwb3J0IGFwaW06bWNwX3NlcnZlcl9saXN0X3ZpZXcgYXBpbTptY3Bfc2VydmVyX3B1Ymxpc2ggYXBpbTptY3Bfc2VydmVyX3ZpZXcgYXBpbTpwdWJsaXNoZXJfc2V0dGluZ3MiLCJleHAiOjE3ODEyNDA0MTQsImlhdCI6MTc4MTIzNjgxNCwianRpIjoiYzcyNjM0MTItZmUwZC00NzMwLWI1YjMtOTliOGQxYmQwMzEzIn0.gaWTLNBN_w_EORqy1Dkl9CaoDxVeyUbmgE-YSvAKq0GnwYBIbO_z3m7GzNKUdq5AsBR9WjMMwD3C6yYizvC3_jkI_io2wBv_ld9l62-x5HDG48QU678g7ccu14zHR6w38O0Csuq3HI5_fC1SMWpTSkHihTSiskEXdLc2xQFjhImHhPCj1asFI8E3gphIv82ik2eFFNWQ_Hz3vHTEKVYuR5xzzCnFAXrnPdgdlOSoUJsXeYeQE4YKRUoRXBV2zH8G6shl0noV4kCJraucPlh1fu7JXXebzpzGbduIJJXHo0k9Xsf-He6sH6MTxZKJ8W-O9iHU9IHDDTFaAzh675SnZQ'
+        scope: 'apim:api_create apim:api_import_export apim:api_publish apim:api_view apim:llm_provider_read apim:mcp_server_create apim:mcp_server_generate_key apim:mcp_server_import_export apim:mcp_server_list_view apim:mcp_server_publish apim:mcp_server_view apim:publisher_settings'
+        token_type: 'Bearer'
         expires_in: 3600
     ListResponse:
       type: object
@@ -4012,11 +3963,9 @@ components:
       additionalProperties: true
       example:
         code: 401
-        message: ""
-        description: "Unauthenticated request"
-        moreInfo: ""
+        message: ''
+        description: 'Unauthenticated request'
+        moreInfo: ''
         error: []
 security:
   - BearerAuth: []
-
-

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useAsyncRetry } from 'react-use';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -36,10 +36,7 @@ import {
   mcpColumns,
   serviceColumns,
 } from '../common/Table/columns';
-import {
-  GatewayDiscoveryFailureContent,
-  GatewayDiscoveryWarningPanel,
-} from '../common/GatewayDiscoveryWarning';
+import { GatewayDiscoveryFailureContent } from '../common/GatewayDiscoveryWarning';
 import { SearchToolbar } from '../common/SearchToolbar';
 
 import { useCatalogEntities } from './hooks/useCatalogEntities';
@@ -144,10 +141,32 @@ export const Wso2ApiPlatformPage = () => {
   const mcpCount = mcpListState.value?.mcpServers?.length ?? 0;
   const totalCatalogResourceCount = apiCount + apiProductCount + mcpCount;
 
-  const retryAll = () => {
+  const retryAll = useCallback(() => {
     catalogState.retry();
     gatewaysState.retry();
-  };
+  }, [catalogState, gatewaysState]);
+
+  // Poll gateway connectivity only — catalog is populated by the backend entity provider
+  // on its own schedule, re-fetching it from the frontend won't bring new data sooner.
+  const hasGatewayIssue =
+    offlineGateways.length > 0 || !!gatewaysState.error;
+
+  const gatewayRetryRef = useRef(gatewaysState.retry);
+  useEffect(() => {
+    gatewayRetryRef.current = gatewaysState.retry;
+  }, [gatewaysState.retry]);
+
+  useEffect(() => {
+    if (!hasGatewayIssue) {
+      return undefined;
+    }
+
+    const interval = setInterval(() => {
+      gatewayRetryRef.current();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [hasGatewayIssue]);
 
   const apiListState = {
     // Only block on catalog loading — gateway failures should not prevent APIM APIs from showing.
@@ -251,18 +270,11 @@ export const Wso2ApiPlatformPage = () => {
 
   const isGatewayDiscoveryFailureEmptyState =
     !catalogState.loading &&
-    (offlineGateways.length > 0 || !!gatewaysState.error) &&
+    offlineGateways.length > 0 &&
     totalCatalogResourceCount === 0;
 
-  const gatewayDiscoveryWarningPanel = (
-    <GatewayDiscoveryWarningPanel 
-      offlineGateways={offlineGateways} 
-      gatewayError={gatewaysState.error}
-    />
-  );
   const gatewayDiscoveryFailureContent = (
     <GatewayDiscoveryFailureContent
-      gatewayDiscoveryWarningPanel={gatewayDiscoveryWarningPanel}
       loading={apiListState.loading}
       onRetry={() => apiListState.retry()}
     />
@@ -270,7 +282,9 @@ export const Wso2ApiPlatformPage = () => {
 
   // Filter API Products based on selected gateway
   const filteredApiProducts = useMemo(() => {
-    let products = expandByGateways(apiProductListState.value?.apiProducts || []);
+    const products = expandByGateways(
+      apiProductListState.value?.apiProducts || [],
+    );
     return products;
   }, [apiProductListState.value?.apiProducts]);
 
@@ -416,14 +430,12 @@ export const Wso2ApiPlatformPage = () => {
 
         {tabValue === 0 && (
           <ApiTab
-            gatewayDiscoveryWarningPanel={gatewayDiscoveryWarningPanel}
             isGatewayDiscoveryFailureEmptyState={
               isGatewayDiscoveryFailureEmptyState
             }
             gatewayDiscoveryFailureContent={gatewayDiscoveryFailureContent}
             apiListState={apiListState}
             apiCount={apiCount}
-            offlineGatewayCount={offlineGateways.length}
             apiTableToolbar={apiTableToolbar}
             visibleApis={visibleApis}
             columns={apiColumns}
@@ -436,6 +448,10 @@ export const Wso2ApiPlatformPage = () => {
 
         {tabValue === 1 && (
           <ApiProductsTab
+            isGatewayDiscoveryFailureEmptyState={
+              isGatewayDiscoveryFailureEmptyState
+            }
+            gatewayDiscoveryFailureContent={gatewayDiscoveryFailureContent}
             apiProductListState={apiProductListState}
             searchToolbar={
               <Box className={classes.apiTableToolbar}>
@@ -457,6 +473,10 @@ export const Wso2ApiPlatformPage = () => {
 
         {tabValue === 2 && (
           <McpServersTab
+            isGatewayDiscoveryFailureEmptyState={
+              isGatewayDiscoveryFailureEmptyState
+            }
+            gatewayDiscoveryFailureContent={gatewayDiscoveryFailureContent}
             mcpListState={mcpListState}
             searchToolbar={
               <Box className={classes.apiTableToolbar}>
@@ -478,6 +498,10 @@ export const Wso2ApiPlatformPage = () => {
 
         {tabValue === 3 && (
           <ServicesTab
+            isGatewayDiscoveryFailureEmptyState={
+              isGatewayDiscoveryFailureEmptyState
+            }
+            gatewayDiscoveryFailureContent={gatewayDiscoveryFailureContent}
             servicesListState={servicesListState}
             searchToolbar={
               <Box className={classes.apiTableToolbar}>

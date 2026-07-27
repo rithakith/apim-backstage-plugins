@@ -26,7 +26,7 @@ export function registerGatewayRoutes(
   router.get('/gateways', async (req, res) => {
     try {
       await ensureAuthenticated(req);
-      
+
       const config = client.getConfig();
       const gateways: any[] = [];
 
@@ -35,7 +35,7 @@ export function registerGatewayRoutes(
         try {
           const settings = await client.getSettings();
           const gatewayTypes = settings?.gatewayTypes || [];
-          
+
           gatewayTypes.forEach((gwType: string) => {
             gateways.push({
               name: gwType,
@@ -48,8 +48,9 @@ export function registerGatewayRoutes(
             });
           });
         } catch (e: any) {
-          logger.warn(`Failed to fetch APIM settings for gateways: ${e.message}`);
-          throw e; // Allow error to bubble up so that the router.test.ts GET /gateways 500 error test passes
+          logger.warn(
+            `Failed to fetch APIM settings for gateways: ${e.message}. Check APIM configuration or client credentials.`,
+          );
         }
       }
 

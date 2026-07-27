@@ -17,11 +17,7 @@
  */
 
 import { useMemo, useState } from 'react';
-import {
-  InfoCard,
-  WarningPanel,
-  EmptyState,
-} from '@backstage/core-components';
+import { InfoCard, WarningPanel, EmptyState } from '@backstage/core-components';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { useApi } from '@backstage/core-plugin-api';
 import Box from '@material-ui/core/Box';
@@ -105,7 +101,8 @@ const EntityWso2TryOutTabContent = () => {
 
   const apiType = (details?.type || '').toUpperCase();
 
-  const hasSwaggerTab = !isMcp && apiType !== 'GRAPHQL' && !isAsyncType(apiType);
+  const hasSwaggerTab =
+    !isMcp && apiType !== 'GRAPHQL' && !isAsyncType(apiType);
   const hasConsoleTab =
     !isMcp &&
     hasOperationsOnly &&
@@ -128,7 +125,9 @@ const EntityWso2TryOutTabContent = () => {
     }
 
     // Fallback to CORS headers
-    const headers = details.corsConfiguration?.accessControlAllowHeaders || details.accessControlAllowHeaders;
+    const headers =
+      details.corsConfiguration?.accessControlAllowHeaders ||
+      details.accessControlAllowHeaders;
     if (!headers || !Array.isArray(headers)) return true;
     return headers.some(h => h.toLowerCase() === 'apikey');
   }, [details]);
@@ -137,13 +136,18 @@ const EntityWso2TryOutTabContent = () => {
     if (!details || !Array.isArray(details.policies)) return false;
     return details.policies.some((p: string) => {
       const lower = p.toLowerCase().trim();
-      return lower === 'defaultsubscriptionless' || lower === 'asyncdefaultsubscriptionless';
+      return (
+        lower === 'defaultsubscriptionless' ||
+        lower === 'asyncdefaultsubscriptionless'
+      );
     });
   }, [details]);
 
   const apiKeyAuthPolicy = useMemo(() => {
     // Check API level
-    const globalOps = Array.isArray(gatewayApiPolicies) ? gatewayApiPolicies : [];
+    const globalOps = Array.isArray(gatewayApiPolicies)
+      ? gatewayApiPolicies
+      : [];
     const global = globalOps.find((p: any) => p.name === 'api-key-auth');
     if (global) return global;
 
@@ -162,7 +166,12 @@ const EntityWso2TryOutTabContent = () => {
     }
 
     return null;
-  }, [gatewayApiPolicies, gatewayOperations, hasSubscriptionlessPolicies, hasApiKeyHeader]);
+  }, [
+    gatewayApiPolicies,
+    gatewayOperations,
+    hasSubscriptionlessPolicies,
+    hasApiKeyHeader,
+  ]);
 
   const tryOutPlugin = useMemo(() => {
     const type = (details?.type || '').toUpperCase();
@@ -192,7 +201,14 @@ const EntityWso2TryOutTabContent = () => {
         TryItOutButton: () => <DisabledTryOutButton message={message} />,
       },
     };
-  }, [isDeployed, details, isDiscovered, hasSubscriptionlessPolicies, apiKeyAuthPolicy, skipKeyGeneration]);
+  }, [
+    isDeployed,
+    details,
+    isDiscovered,
+    hasSubscriptionlessPolicies,
+    apiKeyAuthPolicy,
+    skipKeyGeneration,
+  ]);
 
   if (!apiId) return null;
 
@@ -200,22 +216,26 @@ const EntityWso2TryOutTabContent = () => {
 
   const renderAuthSection = (padding = '20px') => (
     <Box style={{ paddingLeft: padding, paddingRight: padding }}>
-      {isDeployed && !isDiscovered && !skipKeyGeneration && hasSubscriptionlessPolicies && hasApiKeyHeader && (
-        <TryOutApiKeyInput
-          manualKeyInput={manualKeyInput}
-          setManualKeyInput={setManualKeyInput}
-          applyManualKey={applyManualKey}
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-          customKeyName={customKeyName}
-          setCustomKeyName={setCustomKeyName}
-          generatedKey={generatedKey}
-          setGeneratedKey={setGeneratedKey}
-          apiClient={apiClient}
-          apiId={apiId!}
-          isKeyLoading={isKeyLoading}
-        />
-      )}
+      {isDeployed &&
+        !isDiscovered &&
+        !skipKeyGeneration &&
+        hasSubscriptionlessPolicies &&
+        hasApiKeyHeader && (
+          <TryOutApiKeyInput
+            manualKeyInput={manualKeyInput}
+            setManualKeyInput={setManualKeyInput}
+            applyManualKey={applyManualKey}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            customKeyName={customKeyName}
+            setCustomKeyName={setCustomKeyName}
+            generatedKey={generatedKey}
+            setGeneratedKey={setGeneratedKey}
+            apiClient={apiClient}
+            apiId={apiId!}
+            isKeyLoading={isKeyLoading}
+          />
+        )}
     </Box>
   );
 
@@ -358,8 +378,14 @@ const EntityWso2TryOutTabContent = () => {
       )}
 
       {/* Progressive loading bar for background API requests */}
-      {!isLoading && !isPlaceholder && (isRevisionsLoading) && (
-        <Box style={{ position: 'relative', marginTop: '-8px', marginBottom: '8px' }}>
+      {!isLoading && !isPlaceholder && isRevisionsLoading && (
+        <Box
+          style={{
+            position: 'relative',
+            marginTop: '-8px',
+            marginBottom: '8px',
+          }}
+        >
           <LinearProgress style={{ height: 2 }} color="primary" />
         </Box>
       )}
@@ -397,7 +423,6 @@ const EntityWso2TryOutTabContent = () => {
 
       {(definition || isMcp) && !isPlaceholder && (
         <>
-
           {/* Gateway Error for 'Try out' - Only for non-discovered APIs */}
           {!isDiscovered && generateKeyError && (
             <Box mb={2}>

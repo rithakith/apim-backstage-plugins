@@ -90,7 +90,6 @@ Static Factory fromConfig built successfully.
 
   describe('run', () => {
     it('should start an initial sync after the provider connects', async () => {
-      jest.useFakeTimers();
       const config = new ConfigReader({
         catalog: {
           providers: {
@@ -120,8 +119,7 @@ Static Factory fromConfig built successfully.
       mockDiscoverAll.mockResolvedValueOnce(mockEntities);
 
       await provider.connect(mockConnection);
-      jest.runOnlyPendingTimers();
-      await Promise.resolve();
+      await provider.run();
 
       expect(mockDiscoverAll).toHaveBeenCalledTimes(1);
       expect(mockConnection.applyMutation).toHaveBeenCalledWith({
@@ -181,17 +179,20 @@ Expected Exception:
           auth: { clientId: 'id', clientSecret: 'secret' },
           publisherBasePath: '/api/am/publisher/v3',
         },
-        wso2PlatformGateway: [
-          {
-            name: 'gate-one',
-            environmentType: 'SANDBOX',
-            urls: ['https://gw1.com'],
-            discoveryUrl: 'https://discovery1.com',
-            discoveryUsername: 'gw-user',
-            discoveryPassword: 'gw-password',
-            organizationId: 'tenant-1',
-          },
-        ],
+        wso2ApiPlatformGateway: {
+          enabled: true,
+          gateways: [
+            {
+              name: 'gate-one',
+              environmentType: 'SANDBOX',
+              urls: ['https://gw1.com'],
+              discoveryUrl: 'https://discovery1.com',
+              discoveryUsername: 'gw-user',
+              discoveryPassword: 'gw-password',
+              organizationId: 'tenant-1',
+            },
+          ],
+        },
       });
 
       const provider = Wso2ApiEntityProvider.fromConfig(config, {
@@ -274,7 +275,8 @@ Ingested Entities Count: ${mockEntities.length}
       });
       await provider.connect(mockConnection);
 
-      mockDiscoverAll.mockRejectedValueOnce(new Error('Auth failed'));
+      mockDiscoverAll.mockReset();
+      mockDiscoverAll.mockRejectedValue(new Error('Auth failed'));
 
       await expect(provider.run()).rejects.toThrow('Auth failed');
 

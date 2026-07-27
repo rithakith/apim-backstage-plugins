@@ -93,10 +93,7 @@ export function registerStreamingRoutes(
   router.get('/apis/:apiId/documents/:documentId/content', async (req, res) => {
     const { apiId, documentId } = req.params;
     try {
-      const response = await client.getDocumentContentStream(
-        apiId,
-        documentId,
-      );
+      const response = await client.getDocumentContentStream(apiId, documentId);
 
       if (!response.ok) {
         if (response.status === 404) {

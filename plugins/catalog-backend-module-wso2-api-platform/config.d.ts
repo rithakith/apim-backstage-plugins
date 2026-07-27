@@ -7,15 +7,21 @@ export interface Config {
          */
         namespace?: string;
         schedule: {
-          frequency: {
-            minutes?: number;
-          } | string;
-          timeout: {
-            minutes?: number;
-          } | string;
-          initialDelay?: {
-            seconds?: number;
-          } | string;
+          frequency:
+            | {
+                minutes?: number;
+              }
+            | string;
+          timeout:
+            | {
+                minutes?: number;
+              }
+            | string;
+          initialDelay?:
+            | {
+                seconds?: number;
+              }
+            | string;
         };
       };
     };
@@ -45,7 +51,7 @@ export interface Config {
       requiredScopes: string[];
     };
   };
-  wso2PlatformGateway?: {
+  wso2ApiPlatformGateway?: {
     /**
      * Enables WSO2 API Platform Gateway discovery.
      * Defaults to false.

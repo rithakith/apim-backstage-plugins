@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 /* eslint-disable no-nested-ternary */
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
@@ -123,14 +123,20 @@ export const SseConsole = ({
       <Typography variant="h5" style={{ fontWeight: 600, marginBottom: '8px' }}>
         SSE Console
       </Typography>
-      <Typography variant="body2" color="textSecondary" style={{ marginBottom: '24px' }}>
-        Generate SSE terminal connection statements (`curl`) utilizing target server environments and authorization credentials.
+      <Typography
+        variant="body2"
+        color="textSecondary"
+        style={{ marginBottom: '24px' }}
+      >
+        Generate SSE terminal connection statements (`curl`) utilizing target
+        server environments and authorization credentials.
       </Typography>
 
       {!isDeployed && (
         <Box mb={3}>
           <Alert severity="info">
-            <strong>Not Deployed:</strong> This API is not deployed to any gateway. Try out functionality is disabled.
+            <strong>Not Deployed:</strong> This API is not deployed to any
+            gateway. Try out functionality is disabled.
           </Alert>
         </Box>
       )}
@@ -138,7 +144,8 @@ export const SseConsole = ({
       {isDeployed && !isApiKeyEnabled && (
         <Box mb={3}>
           <Alert severity="warning">
-            <strong>API Key Disabled:</strong> Invocation is only supported when API Key authentication is enabled.
+            <strong>API Key Disabled:</strong> Invocation is only supported when
+            API Key authentication is enabled.
           </Alert>
         </Box>
       )}
@@ -147,13 +154,18 @@ export const SseConsole = ({
       {isDeployed && isApiKeyEnabled && (
         <Card style={{ marginBottom: '24px' }}>
           <CardContent>
-            <Typography variant="subtitle2" style={{ fontWeight: 600, marginBottom: '12px' }}>
+            <Typography
+              variant="subtitle2"
+              style={{ fontWeight: 600, marginBottom: '12px' }}
+            >
               Server
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={selectedUrl === 'custom' ? 6 : 12}>
                 <FormControl variant="outlined" fullWidth size="small">
-                  <InputLabel id="sse-endpoint-label">Select Gateway Environment</InputLabel>
+                  <InputLabel id="sse-endpoint-label">
+                    Select Gateway Environment
+                  </InputLabel>
                   <Select
                     labelId="sse-endpoint-label"
                     value={selectedUrl}
@@ -162,7 +174,10 @@ export const SseConsole = ({
                   >
                     {gatewayUrls.map(urlObj => (
                       <MenuItem key={urlObj.url} value={urlObj.url}>
-                        {urlObj.description || urlObj.environmentName || urlObj.url} ({urlObj.url})
+                        {urlObj.description ||
+                          urlObj.environmentName ||
+                          urlObj.url}{' '}
+                        ({urlObj.url})
                       </MenuItem>
                     ))}
                   </Select>
@@ -223,18 +238,38 @@ export const SseConsole = ({
                   </Typography>
                 </Box>
               </AccordionSummary>
-              <AccordionDetails style={{ display: 'block', padding: '16px 24px' }}>
+              <AccordionDetails
+                style={{ display: 'block', padding: '16px 24px' }}
+              >
                 {!isDeployed ? (
-                  <Typography variant="body2" color="textSecondary" style={{ fontStyle: 'italic' }}>
-                    Connect functionality is disabled because the API is not deployed.
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    style={{ fontStyle: 'italic' }}
+                  >
+                    Connect functionality is disabled because the API is not
+                    deployed.
                   </Typography>
                 ) : !isApiKeyEnabled ? (
-                  <Typography variant="body2" color="textSecondary" style={{ fontStyle: 'italic' }}>
-                    Invocation is disabled because API Key authentication is not enabled for this API.
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    style={{ fontStyle: 'italic' }}
+                  >
+                    Invocation is disabled because API Key authentication is not
+                    enabled for this API.
                   </Typography>
                 ) : (
                   <>
-                    <Typography variant="caption" color="textSecondary" style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
+                    <Typography
+                      variant="caption"
+                      color="textSecondary"
+                      style={{
+                        fontWeight: 'bold',
+                        display: 'block',
+                        marginBottom: '8px',
+                      }}
+                    >
                       curl
                     </Typography>
                     <Box
@@ -253,17 +288,29 @@ export const SseConsole = ({
                     >
                       {getCurlCommand(path)}
                     </Box>
-                    <Box display="flex" justifyContent="flex-end" style={{ gap: '16px', marginRight: '8px' }}>
+                    <Box
+                      display="flex"
+                      justifyContent="flex-end"
+                      style={{ gap: '16px', marginRight: '8px' }}
+                    >
                       <Button
                         color="primary"
-                        style={{ fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.5px' }}
+                        style={{
+                          fontWeight: 700,
+                          fontSize: '0.75rem',
+                          letterSpacing: '0.5px',
+                        }}
                         onClick={() => setRefreshToken(prev => prev + 1)}
                       >
                         GENERATE CURL
                       </Button>
                       <Button
                         color="primary"
-                        style={{ fontWeight: 700, fontSize: '0.75rem', letterSpacing: '0.5px' }}
+                        style={{
+                          fontWeight: 700,
+                          fontSize: '0.75rem',
+                          letterSpacing: '0.5px',
+                        }}
                         onClick={() => handleCopy(path, globalIdx)}
                       >
                         {copiedIndex === globalIdx ? 'COPIED' : 'COPY CURL'}
@@ -279,7 +326,13 @@ export const SseConsole = ({
 
       {/* Stateful Inline Paginator */}
       {totalPages > 1 && (
-        <Box display="flex" justifyContent="center" alignItems="center" mt={3} style={{ gap: '16px' }}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          mt={3}
+          style={{ gap: '16px' }}
+        >
           <Button
             variant="outlined"
             size="small"
@@ -295,7 +348,9 @@ export const SseConsole = ({
           <Button
             variant="outlined"
             size="small"
-            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            onClick={() =>
+              setCurrentPage(prev => Math.min(totalPages, prev + 1))
+            }
             disabled={currentPage === totalPages}
             style={{ textTransform: 'none' }}
           >

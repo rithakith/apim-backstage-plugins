@@ -35,7 +35,7 @@ export interface Config {
    * Configuration for self-hosted WSO2 API Platform Gateways.
    * @visibility frontend
    */
-  wso2PlatformGateway?: {
+  wso2ApiPlatformGateway?: {
     /**
      * Enables WSO2 API Platform Gateway discovery.
      * Defaults to false.

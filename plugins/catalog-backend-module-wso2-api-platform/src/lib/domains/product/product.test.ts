@@ -126,10 +126,6 @@ describe('product domain', () => {
             'wso2.com/is-api-product': 'true',
             'wso2.com/gateway-endpoints': '[]',
             'wso2.com/product-resources': JSON.stringify(product.apis),
-            'wso2.com/business-owner': 'Alice',
-            'wso2.com/business-owner-email': 'alice@company.com',
-            'wso2.com/technical-owner': 'Bob',
-            'wso2.com/technical-owner-email': 'bob@company.com',
             'wso2.com/api-throttling-policy': 'Bronze',
             'wso2.com/api-visibility': 'PUBLIC',
             'wso2.com/api-transports': JSON.stringify(['http']),
@@ -137,9 +133,7 @@ describe('product domain', () => {
             'wso2.com/api-authorization-header': 'Authorization',
             'wso2.com/api-key-header': 'ApiKey',
             'wso2.com/api-max-tps': '100',
-            'wso2.com/policies': JSON.stringify([
-              'DefaultSubscriptionless',
-            ]),
+            'wso2.com/policies': JSON.stringify(['DefaultSubscriptionless']),
             'wso2.com/api-level-policies': JSON.stringify({
               request: [{ policyName: 'addHeader', policyVersion: 'v1' }],
             }),
@@ -165,7 +159,7 @@ describe('product domain', () => {
         spec: {
           type: 'api_product',
           lifecycle: 'production',
-          owner: 'Bob',
+          owner: 'wso2',
           definition: 'openapi: 3.0.0...',
         },
       });
@@ -181,7 +175,7 @@ Spec owner: "${entity.spec.owner}" (from technicalOwner)
     });
 
     it('should fallback to businessOwner, provider, and unknown for owner, and production lifecycle', () => {
-      // 1. Fallback to businessOwner
+      // 1. All fallback -> wso2
       const prod1: Wso2ApiProduct = {
         id: '1',
         name: 'p1',
@@ -190,16 +184,11 @@ Spec owner: "${entity.spec.owner}" (from technicalOwner)
         provider: 'p',
         businessInformation: { businessOwner: 'Alice Business' },
       };
-      const ent1 = mapWso2ProductToEntity(
-        prod1,
-        'default',
-        'prov',
-        undefined,
-      );
-      expect(ent1.spec.owner).toBe('Alice Business');
+      const ent1 = mapWso2ProductToEntity(prod1, 'default', 'prov', undefined);
+      expect(ent1.spec.owner).toBe('wso2');
       expect(ent1.spec.lifecycle).toBe('production');
 
-      // 2. Fallback to provider
+      // 2. Fallback -> wso2 (provider is not used as owner)
       const prod2: Wso2ApiProduct = {
         id: '2',
         name: 'p2',
@@ -207,28 +196,18 @@ Spec owner: "${entity.spec.owner}" (from technicalOwner)
         context: 'c',
         provider: 'p-team',
       };
-      const ent2 = mapWso2ProductToEntity(
-        prod2,
-        'default',
-        'prov',
-        undefined,
-      );
-      expect(ent2.spec.owner).toBe('p-team');
+      const ent2 = mapWso2ProductToEntity(prod2, 'default', 'prov', undefined);
+      expect(ent2.spec.owner).toBe('wso2');
 
-      // 3. Fallback to unknown
+      // 3. Fallback -> wso2
       const prod3 = {
         id: '3',
         name: 'p3',
         version: '1',
         context: 'c',
       } as unknown as Wso2ApiProduct;
-      const ent3 = mapWso2ProductToEntity(
-        prod3,
-        'default',
-        'prov',
-        undefined,
-      );
-      expect(ent3.spec.owner).toBe('unknown');
+      const ent3 = mapWso2ProductToEntity(prod3, 'default', 'prov', undefined);
+      expect(ent3.spec.owner).toBe('wso2');
 
       console.log(
         formatTestCaseDoc(`
@@ -290,9 +269,16 @@ Fallback 3: owner="${ent3.spec.owner}" (unknown)
       const mockSwagger = 'swagger-def';
       mockClient.getApiProductDefinition.mockResolvedValueOnce(mockSwagger);
 
-      const result = await fetchApiProductDefinition(mockClient, 'prod-1', 'MyProduct');
+      const result = await fetchApiProductDefinition(
+        mockClient,
+        'prod-1',
+        'MyProduct',
+      );
       expect(result).toBe(mockSwagger);
-      expect(mockClient.getApiProductDefinition).toHaveBeenCalledWith('prod-1', 'MyProduct');
+      expect(mockClient.getApiProductDefinition).toHaveBeenCalledWith(
+        'prod-1',
+        'MyProduct',
+      );
     });
   });
 
@@ -318,24 +304,34 @@ Fallback 3: owner="${ent3.spec.owner}" (unknown)
       };
 
       mockClient.getApiProductList.mockResolvedValueOnce(mockList);
-      mockClient.getApiProductDetail.mockImplementation(async (summary: any) => ({
-        ...summary,
-        enriched: true,
-      }));
+      mockClient.getApiProductDetail.mockImplementation(
+        async (summary: any) => ({
+          ...summary,
+          enriched: true,
+        }),
+      );
 
       const result = await fetchApiProductList(mockClient);
 
       expect(result).toHaveLength(2);
-      expect(result[0]).toEqual(expect.objectContaining({ id: 'prod-1', enriched: true }));
-      expect(result[1]).toEqual(expect.objectContaining({ id: 'prod-2', enriched: true }));
+      expect(result[0]).toEqual(
+        expect.objectContaining({ id: 'prod-1', enriched: true }),
+      );
+      expect(result[1]).toEqual(
+        expect.objectContaining({ id: 'prod-2', enriched: true }),
+      );
       expect(mockClient.getApiProductList).toHaveBeenCalled();
       expect(mockClient.getApiProductDetail).toHaveBeenCalledTimes(2);
     });
 
     it('should log error and throw on outer list fetch error', async () => {
-      mockClient.getApiProductList.mockRejectedValueOnce(new Error('List failure'));
+      mockClient.getApiProductList.mockRejectedValueOnce(
+        new Error('List failure'),
+      );
 
-      await expect(fetchApiProductList(mockClient)).rejects.toThrow('List failure');
+      await expect(fetchApiProductList(mockClient)).rejects.toThrow(
+        'List failure',
+      );
     });
   });
 });

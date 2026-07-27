@@ -75,12 +75,12 @@ Test Cases:
       ];
       const outputs = inputs.map(normalizeGatewayType);
 
-      expect(outputs[0]).toBe('wso2');
-      expect(outputs[1]).toBe('wso2');
-      expect(outputs[2]).toBe('wso2');
-      expect(outputs[3]).toBe('wso2');
+      expect(outputs[0]).toBe('WSO2');
+      expect(outputs[1]).toBe('WSO2');
+      expect(outputs[2]).toBe('WSO2');
+      expect(outputs[3]).toBe('WSO2');
       expect(outputs[4]).toBe('self-hosted');
-      expect(outputs[5]).toBe('wso2');
+      expect(outputs[5]).toBe('WSO2');
 
       console.log(
         formatTestCaseDoc(`
@@ -120,7 +120,13 @@ Test Cases:
             type: 'production',
             gatewayType: 'wso2',
             displayName: 'Production Gateway',
-            endpoints: [{ url: 'https://gateway.wso2.com' }],
+            vhosts: [
+              {
+                host: 'gateway.wso2.com',
+                httpsPort: 443,
+                basePath: '/test-context',
+              },
+            ],
           },
           {
             name: 'SANDBOX-GATEWAY',
@@ -144,7 +150,9 @@ Test Cases:
         {
           environmentName: 'PROD-GATEWAY',
           environmentType: 'production',
-          urls: ['https://gateway.wso2.com'],
+          gatewayType: 'WSO2',
+          displayName: 'Production Gateway',
+          urls: ['https://gateway.wso2.com/test-context/1.0.0'],
         },
       ]);
 
@@ -200,8 +208,8 @@ ${JSON.stringify(parsed, null, 2)}
           gatewayType: 'self-hosted',
           displayName: 'Custom Self-Hosted env',
           urls: [
-            'https://api-api-456.myorg.com:8443/custom-path/vhost-context/2.0.0',
-            'http://api-api-456.myorg.com/custom-path/vhost-context/2.0.0',
+            'https://api-{apiId}.{tenant-domain}.com:8443/custom-path/vhost-context/2.0.0',
+            'http://api-{apiId}.{tenant-domain}.com/custom-path/vhost-context/2.0.0',
           ],
         },
       ]);
@@ -240,7 +248,6 @@ ${JSON.stringify(parsed[0].urls, null, 2)}
         visibility: 'PUBLIC',
       };
 
-     
       const entity = mapWso2ApiToEntity(
         api,
         'my-namespace',
@@ -266,24 +273,14 @@ ${JSON.stringify(parsed[0].urls, null, 2)}
             'wso2.com/api-version': '1.2.3',
             'wso2.com/api-context': 'customers',
             'wso2.com/api-provider': 'admin-team',
-            'wso2.com/api-type': 'HTTP',
+            'wso2.com/api-type': 'http',
             'wso2.com/api-lifecycle-status': 'PUBLISHED',
             'wso2.com/api-gateway': 'synapse',
-            'wso2.com/is-discovered': 'true',
+            'wso2.com/is-discovered': 'false',
             'wso2.com/api-documents': JSON.stringify(api.documents),
             'wso2.com/api-endpoints': '[]',
             'wso2.com/gateway-endpoints': '[]',
-            'wso2.com/raw-endpoint-urls': '[]',
             'wso2.com/api-wsdl': '',
-            'wso2.com/platform-gateway-endpoints': JSON.stringify([
-              {
-                environmentName: 'MyGate',
-                environmentType: 'PRODUCTION',
-                gatewayType: 'mygate',
-                displayName: 'MyGate',
-                urls: ['https://mygate.com/customers'],
-              },
-            ]),
             'wso2.com/api-throttling-policy': 'Unlimited',
             'wso2.com/api-transports': JSON.stringify(['http', 'https']),
             'wso2.com/api-visibility': 'PUBLIC',

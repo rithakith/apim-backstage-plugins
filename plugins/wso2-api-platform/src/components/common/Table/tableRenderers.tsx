@@ -16,7 +16,15 @@
  * under the License.
  */
 
-import React from 'react';
+import {
+  useState,
+  cloneElement,
+  forwardRef,
+  type ReactNode,
+  type ReactElement,
+  type MouseEvent,
+  type CSSProperties,
+} from 'react';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import Popper from '@material-ui/core/Popper';
@@ -28,7 +36,7 @@ import { Link, Table } from '@backstage/core-components';
 import { Wso2GatewayInfo } from '../../../api';
 import { normalizeGatewayType } from '../../../utils/apiManagerUtils';
 
-export function getApiTypeChipStyle(): React.CSSProperties {
+export function getApiTypeChipStyle(): CSSProperties {
   return {
     height: 22,
     backgroundColor: '#eceff1',
@@ -51,15 +59,21 @@ const useTooltipStyles = makeStyles(theme => ({
     fontFamily: theme.typography.fontFamily,
     lineHeight: '1.4em',
     pointerEvents: 'none',
-  }
+  },
 }));
 
-function PointerTooltip({ title, children }: { title: React.ReactNode, children: React.ReactElement }) {
+function PointerTooltip({
+  title,
+  children,
+}: {
+  title: ReactNode;
+  children: ReactElement;
+}) {
   const classes = useTooltipStyles();
-  const [open, setOpen] = React.useState(false);
-  const [position, setPosition] = React.useState({ x: 0, y: 0 });
+  const [open, setOpen] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: MouseEvent) => {
     setPosition({ x: e.clientX, y: e.clientY });
   };
 
@@ -78,7 +92,7 @@ function PointerTooltip({ title, children }: { title: React.ReactNode, children:
 
   return (
     <>
-      {React.cloneElement(children, {
+      {cloneElement(children, {
         onMouseMove: (e: any) => {
           handleMouseMove(e);
           if (children.props.onMouseMove) children.props.onMouseMove(e);
@@ -93,7 +107,7 @@ function PointerTooltip({ title, children }: { title: React.ReactNode, children:
         onMouseLeave: (e: any) => {
           setOpen(false);
           if (children.props.onMouseLeave) children.props.onMouseLeave(e);
-        }
+        },
       })}
       <Popper
         open={open}
@@ -188,7 +202,7 @@ export function renderTruncatedContext(context?: string): React.ReactNode {
   if (!context) {
     return '';
   }
-  
+
   return (
     <PointerTooltip title={context}>
       <span
@@ -207,7 +221,9 @@ export function renderTruncatedContext(context?: string): React.ReactNode {
   );
 }
 
-export function renderGatewayNames(gateways?: Wso2GatewayInfo[]): React.ReactNode {
+export function renderGatewayNames(
+  gateways?: Wso2GatewayInfo[],
+): React.ReactNode {
   if (!gateways?.length) {
     return 'WSO2';
   }
@@ -227,7 +243,7 @@ export function renderGatewayNames(gateways?: Wso2GatewayInfo[]): React.ReactNod
   );
 }
 
-const HiddenTableIcon = React.forwardRef<SVGSVGElement>(() => null);
+const HiddenTableIcon = forwardRef<SVGSVGElement>(() => null);
 
 export const tableIconsWithoutSearchClear: Icons = {
   ...Table.icons,

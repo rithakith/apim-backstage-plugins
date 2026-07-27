@@ -60,16 +60,19 @@ export const normalizeAsyncOperations = (
   if (Array.isArray(operations)) {
     ops = operations;
   } else if (operations && typeof operations === 'object') {
-    ops = Object.entries(operations).map(([path, channelObj]: [string, any]) => {
-      const hasPub = channelObj && Boolean(channelObj.publish || channelObj.pub);
-      const hasSub =
-        channelObj && Boolean(channelObj.subscribe || channelObj.sub);
-      let verb = fallbackVerb;
-      if (hasPub && !hasSub) verb = 'PUB';
-      else if (hasSub && !hasPub) verb = 'SUB';
-      else if (hasPub && hasSub) verb = 'PUB/SUB';
-      return { verb, path, target: path };
-    });
+    ops = Object.entries(operations).map(
+      ([path, channelObj]: [string, any]) => {
+        const hasPub =
+          channelObj && Boolean(channelObj.publish || channelObj.pub);
+        const hasSub =
+          channelObj && Boolean(channelObj.subscribe || channelObj.sub);
+        let verb = fallbackVerb;
+        if (hasPub && !hasSub) verb = 'PUB';
+        else if (hasSub && !hasPub) verb = 'SUB';
+        else if (hasPub && hasSub) verb = 'PUB/SUB';
+        return { verb, path, target: path };
+      },
+    );
   }
 
   if (ops.length === 0 && fallbackPath) {
@@ -132,7 +135,8 @@ export const useExpandedOperations = () => {
     Record<number, boolean>
   >({});
 
-  const isExpanded = (index: number) => expandedOperations[index] ?? index === 0;
+  const isExpanded = (index: number) =>
+    expandedOperations[index] ?? index === 0;
   const toggleExpanded = (index: number) => {
     setExpandedOperations(prev => ({
       ...prev,

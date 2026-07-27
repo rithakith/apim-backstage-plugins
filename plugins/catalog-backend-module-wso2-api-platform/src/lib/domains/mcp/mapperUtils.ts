@@ -49,7 +49,9 @@ export function mapWso2McpToEntity(
         'wso2.com/api-type': 'MCP',
         'wso2.com/is-mcp-server': 'true',
         'wso2.com/mcp-tools': mcp.tools ? JSON.stringify(mcp.tools) : '[]',
-        'wso2.com/api-documents': mcp.documents ? JSON.stringify(mcp.documents) : '[]',
+        'wso2.com/api-documents': mcp.documents
+          ? JSON.stringify(mcp.documents)
+          : '[]',
       },
       tags: mcp.tags || [],
     },

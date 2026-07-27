@@ -178,8 +178,6 @@ export type Wso2HealthReport = {
   }>;
 };
 
-
-
 export type Wso2ApiPlatformRuntimeConfig = {
   apiManager: {
     enabled: boolean;

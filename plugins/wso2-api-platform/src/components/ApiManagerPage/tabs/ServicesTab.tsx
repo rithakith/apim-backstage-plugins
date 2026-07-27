@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import React from 'react';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
@@ -24,7 +23,8 @@ import { Table, TableColumn, WarningPanel } from '@backstage/core-components';
 import { tableIconsWithoutSearchClear } from '../../common/Table/tableRenderers';
 
 type ServicesTabProps = {
-
+  isGatewayDiscoveryFailureEmptyState?: boolean;
+  gatewayDiscoveryFailureContent?: React.ReactNode;
   servicesListState: any;
   searchToolbar: React.ReactNode;
   visibleServices: any[];
@@ -34,6 +34,8 @@ type ServicesTabProps = {
 };
 
 export const ServicesTab = ({
+  isGatewayDiscoveryFailureEmptyState,
+  gatewayDiscoveryFailureContent,
   servicesListState,
   searchToolbar,
   visibleServices,
@@ -43,6 +45,7 @@ export const ServicesTab = ({
 }: ServicesTabProps) => (
   <>
     {servicesListState.loading &&
+      !isGatewayDiscoveryFailureEmptyState &&
       !servicesListState.value && (
         <Box
           display="flex"
@@ -60,12 +63,14 @@ export const ServicesTab = ({
         </Box>
       )}
     {servicesListState.error && (
-        <WarningPanel
-          title="Failed to load Services"
-          message={servicesListState.error.message}
-        />
-      )}
+      <WarningPanel
+        title="Failed to load Services"
+        message={servicesListState.error.message}
+      />
+    )}
+    {isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryFailureContent}
     {!servicesListState.loading &&
+      !isGatewayDiscoveryFailureEmptyState &&
       (!servicesListState.value?.list ||
         servicesListState.value.list.length === 0) && (
         <Box

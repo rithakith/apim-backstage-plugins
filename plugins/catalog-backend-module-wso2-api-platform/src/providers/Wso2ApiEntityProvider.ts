@@ -82,7 +82,6 @@ export class Wso2ApiEntityProvider implements EntityProvider {
   }
 
   async run(): Promise<void> {
-
     if (!this.connection) {
       throw new Error(
         `${this.getProviderName()} entity provider is not initialized`,
@@ -92,8 +91,9 @@ export class Wso2ApiEntityProvider implements EntityProvider {
     this.logger.debug(`Running ${this.getProviderName()}`);
 
     const namespace =
-      this.config.getOptionalString('catalog.providers.wso2ApiPlatform.namespace') ||
-      'default';
+      this.config.getOptionalString(
+        'catalog.providers.wso2ApiPlatform.namespace',
+      ) || 'default';
     const platformGateways = this.parseWso2PlatformGateways();
     const apiManagerEnabled =
       this.config.getOptionalBoolean('wso2ApiPlatform.enabled') ?? false;
@@ -104,16 +104,18 @@ export class Wso2ApiEntityProvider implements EntityProvider {
         platformGateways,
         apiManagerEnabled,
         onPublisherApiProgress: ({ loaded, total, message }) => {
-          this.logger.debug(`[WSO2 Provider] Progress: ${loaded}/${total} - ${message}`);
+          this.logger.debug(
+            `[WSO2 Provider] Progress: ${loaded}/${total} - ${message}`,
+          );
         },
         onCatalogResourceTotals: totals => {
-          this.logger.debug(`[WSO2 Provider] Totals: ${JSON.stringify(totals)}`);
+          this.logger.debug(
+            `[WSO2 Provider] Totals: ${JSON.stringify(totals)}`,
+          );
         },
       });
       this.logger.info(
-        `${this.getProviderName()} discovery returned ${
-          allEntities.length
-        }`,
+        `${this.getProviderName()} discovery returned ${allEntities.length}`,
       );
 
       await this.connection.applyMutation({
@@ -124,17 +126,13 @@ export class Wso2ApiEntityProvider implements EntityProvider {
         })),
       });
       this.logger.info(
-        `Applied ${
-          allEntities.length
-        } entities to Backstage catalog.`,
+        `Applied ${allEntities.length} entities to Backstage catalog.`,
       );
 
       this.logger.info(
         `[WSO2 Provider] Successfully ingested ${allEntities.length} entities.`,
       );
-      this.logger.info(
-        `${this.getProviderName()} catalog sync finished.`,
-      );
+      this.logger.info(`${this.getProviderName()} catalog sync finished.`);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       this.logger.error(`[WSO2 Provider] Sync Error: ${message}`);
@@ -157,8 +155,7 @@ export class Wso2ApiEntityProvider implements EntityProvider {
       urls: gw.getStringArray('urls'),
       discoveryUrl: gw.getString('discoveryUrl'),
       discoveryAuth:
-        gw.getString('discoveryUsername') &&
-        gw.getString('discoveryPassword')
+        gw.getString('discoveryUsername') && gw.getString('discoveryPassword')
           ? `Basic ${Buffer.from(
               `${gw.getString('discoveryUsername')}:${gw.getString(
                 'discoveryPassword',

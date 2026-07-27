@@ -26,7 +26,8 @@ import { formatGraphQL, formatAsyncApi, isAsyncType } from '../../../../utils';
 const API_ENDPOINTS_ANNOTATION = 'wso2.com/api-endpoints';
 const GATEWAY_ENDPOINTS_ANNOTATION = 'wso2-gateway.com/api-endpoints';
 const WSO2_GATEWAY_ENDPOINTS_ANNOTATION = 'wso2.com/gateway-endpoints';
-const PLATFORM_GATEWAY_ENDPOINTS_ANNOTATION = 'wso2.com/platform-gateway-endpoints';
+const PLATFORM_GATEWAY_ENDPOINTS_ANNOTATION =
+  'wso2.com/platform-gateway-endpoints';
 const API_TYPE_ANNOTATION = 'wso2.com/api-type';
 const API_POLICY_DETAILS_ANNOTATION = 'wso2.com/api-level-policies';
 const API_OPERATIONS_ANNOTATION = 'wso2.com/operation-level-policies';
@@ -52,7 +53,11 @@ export const useTryOutData = (options: {
   gatewayOperations: any[];
   gatewayApiPolicies: any[];
   formattedSource: string;
-  gatewayUrls: Array<{ environmentName: string; url: string; environmentType?: string }>;
+  gatewayUrls: Array<{
+    environmentName: string;
+    url: string;
+    environmentType?: string;
+  }>;
   isDeployed: boolean;
   swaggerSpec: any;
   isPlaceholder: boolean;
@@ -85,7 +90,8 @@ export const useTryOutData = (options: {
     );
 
     const apiKeyHeader = annotations['wso2.com/api-key-header'];
-    const authorizationHeader = annotations['wso2.com/api-authorization-header'];
+    const authorizationHeader =
+      annotations['wso2.com/api-authorization-header'];
 
     return {
       type,
@@ -126,7 +132,12 @@ export const useTryOutData = (options: {
     const val = definitionState.value as any;
     if (!val) return [];
     // AsyncAPI uses `channels`, OpenAPI uses `operations`, and custom K8s CRDs might use `configuration.spec.operations`
-    return val.channels || val.operations || val.configuration?.spec?.operations || [];
+    return (
+      val.channels ||
+      val.operations ||
+      val.configuration?.spec?.operations ||
+      []
+    );
   }, [definitionState.value, details?.operations]);
 
   const gatewayApiPolicies = useMemo(() => {
@@ -151,12 +162,15 @@ export const useTryOutData = (options: {
   }, [definitionState.value, details?.type]);
 
   const gatewayUrls = useMemo(() => {
-    const wso2GatewayEndpoints = entity.metadata.annotations?.[WSO2_GATEWAY_ENDPOINTS_ANNOTATION];
-    const gatewayEndpoints = entity.metadata.annotations?.[GATEWAY_ENDPOINTS_ANNOTATION];
-    const platformEndpoints = entity.metadata.annotations?.[PLATFORM_GATEWAY_ENDPOINTS_ANNOTATION];
-    const standardEndpoints = entity.metadata.annotations?.[API_ENDPOINTS_ANNOTATION];
+    const wso2GatewayEndpoints =
+      entity.metadata.annotations?.[WSO2_GATEWAY_ENDPOINTS_ANNOTATION];
+    const gatewayEndpoints =
+      entity.metadata.annotations?.[GATEWAY_ENDPOINTS_ANNOTATION];
+    const platformEndpoints =
+      entity.metadata.annotations?.[PLATFORM_GATEWAY_ENDPOINTS_ANNOTATION];
+    const standardEndpoints =
+      entity.metadata.annotations?.[API_ENDPOINTS_ANNOTATION];
 
-    
     let allEnvs: any[] = [];
     try {
       if (platformEndpoints) {
@@ -173,7 +187,7 @@ export const useTryOutData = (options: {
             allEnvs = [...parsed];
           }
         }
-        
+
         // Fallback to standard endpoints if no vhosts found
         if (allEnvs.length === 0 && standardEndpoints) {
           const parsed = JSON.parse(standardEndpoints);
@@ -183,9 +197,9 @@ export const useTryOutData = (options: {
     } catch (e) {
       /* ignore */
     }
-    
+
     if (allEnvs.length === 0) return [];
-    
+
     const sortedEnvs = [...allEnvs].sort((a: any, b: any) => {
       const typeA = (a.environmentType || '').toUpperCase();
       const typeB = (b.environmentType || '').toUpperCase();
@@ -203,9 +217,13 @@ export const useTryOutData = (options: {
       } else if (env.endpointUrl) {
         urls = [env.endpointUrl];
       } else if (env.URLs && typeof env.URLs === 'object') {
-        urls = Object.values(env.URLs).filter((u): u is string => typeof u === 'string');
+        urls = Object.values(env.URLs).filter(
+          (u): u is string => typeof u === 'string',
+        );
       } else if (env.Default && typeof env.Default === 'object') {
-        urls = Object.values(env.Default).filter((u): u is string => typeof u === 'string');
+        urls = Object.values(env.Default).filter(
+          (u): u is string => typeof u === 'string',
+        );
       }
 
       // Ensure no null strings or empty values propagate
@@ -232,8 +250,9 @@ export const useTryOutData = (options: {
   }, [apiClient, apiId, isApiPlatform]);
 
   const isDeployed = useMemo(() => {
-    const isGatewayDiscovered = !!entity.metadata.annotations?.['wso2-gateway.com/api-id'];
-    
+    const isGatewayDiscovered =
+      !!entity.metadata.annotations?.['wso2-gateway.com/api-id'];
+
     // For Publisher APIs, we ONLY consider it deployed if there are deployed revisions
     if (!isGatewayDiscovered) {
       const list = (revisionsState.value as any)?.list;
@@ -248,19 +267,22 @@ export const useTryOutData = (options: {
     if (!definitionState.value && !hasOperationsOnly) return undefined;
     const val = definitionState.value;
     let spec: any;
-    
+
     if (hasOperationsOnly) {
       spec = {
         openapi: '3.0.0',
-        info: { title: entity.metadata.title || entity.metadata.name, version: '1.0.0' },
+        info: {
+          title: entity.metadata.title || entity.metadata.name,
+          version: '1.0.0',
+        },
         paths: {},
-        servers: []
+        servers: [],
       };
     } else if (typeof val === 'string') {
       try {
         spec = JSON.parse(val);
       } catch (e) {
-        // If it's not JSON (e.g. YAML), return the string as-is. 
+        // If it's not JSON (e.g. YAML), return the string as-is.
         // SwaggerUI handles YAML strings, but we can't easily override servers without a parser.
         return val;
       }
@@ -296,11 +318,11 @@ export const useTryOutData = (options: {
         }));
       }
     }
-    
+
     if (spec && typeof spec === 'object' && !spec.paths) {
       spec.paths = {};
     }
-    
+
     return spec;
   }, [
     definitionState.value,

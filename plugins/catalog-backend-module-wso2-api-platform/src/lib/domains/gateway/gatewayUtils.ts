@@ -27,24 +27,36 @@ export async function discoverWSO2PlatformGatewayApis(
   client: Wso2Client,
 ): Promise<any[]> {
   const discoveredWso2PlatformGatewayApis: any[] = [];
-  
+
   for (const gw of platformGateways) {
     if (gw.discoveryUrl) {
       try {
-        const data = await client.getGatewayApis(gw.discoveryUrl, gw.discoveryAuth);
-        const wso2PlatformGatewayApis = data.apis || data.list || data.items || (Array.isArray(data) ? data : [data]) || [];
+        const data = await client.getGatewayApis(
+          gw.discoveryUrl,
+          gw.discoveryAuth,
+        );
+        const wso2ApiPlatformGatewayApis =
+          data.apis ||
+          data.list ||
+          data.items ||
+          (Array.isArray(data) ? data : [data]) ||
+          [];
 
-        for (const gatewayApiItem of wso2PlatformGatewayApis) {
+        for (const gatewayApiItem of wso2ApiPlatformGatewayApis) {
           const gatewayApiId = gatewayApiItem.id;
           if (!gatewayApiId) continue;
 
           try {
-            const detailData = await client.getGatewayApiDetail(gw.discoveryUrl, gatewayApiId, gw.discoveryAuth);
-              
+            const detailData = await client.getGatewayApiDetail(
+              gw.discoveryUrl,
+              gatewayApiId,
+              gw.discoveryAuth,
+            );
+
             if (detailData.status !== 'success' || !detailData.api) {
               continue;
             }
-            
+
             const gatewayApiDetails = detailData.api;
 
             const gatewayApi = {

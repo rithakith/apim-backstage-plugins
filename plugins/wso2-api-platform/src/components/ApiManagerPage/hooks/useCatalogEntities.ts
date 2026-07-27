@@ -17,7 +17,10 @@
  */
 
 import { useAsyncRetry } from 'react-use';
-import { extractGateways, retryTransientUnauthorized } from '../../../utils/apiManagerUtils';
+import {
+  extractGateways,
+  retryTransientUnauthorized,
+} from '../../../utils/apiManagerUtils';
 
 const CATALOG_ENTITY_PAGE_SIZE = 500;
 
@@ -94,9 +97,8 @@ export const useCatalogEntities = (catalogApi: any) => {
           provider: (ann['wso2.com/api-provider'] || 'Gateway') as string,
           lifeCycleStatus: (ann['wso2.com/api-lifecycle-status'] ||
             'Published') as string,
-          type: (ann['wso2.com/api-type']) as string,
-          isDiscovered:
-            ann['wso2.com/is-discovered'] === 'true' ,
+          type: ann['wso2.com/api-type'] as string,
+          isDiscovered: ann['wso2.com/is-discovered'] === 'true',
           source: isGatewayDiscovered ? 'Gateway' : 'Publisher',
           gateways: [
             {
@@ -135,7 +137,7 @@ export const useCatalogEntities = (catalogApi: any) => {
         const ann = e.metadata.annotations || {};
         return {
           id: ann['wso2.com/api-id'] as string,
-          name: ann['wso2.com/api-name'] ,
+          name: ann['wso2.com/api-name'],
           namespace: e.metadata.namespace,
           version: ann['wso2.com/api-version'] as string,
           context: ann['wso2.com/api-context'] as string,
@@ -163,7 +165,8 @@ export const useCatalogEntities = (catalogApi: any) => {
             ann['wso2.com/api-version']) as string,
           serviceUrl: (ann['wso2.com/service-url'] ||
             ann['wso2.com/api-context']) as string,
-          usage: (ann['wso2.com/service-usage-count'] || ann['wso2.com/usage']) as string,
+          usage: (ann['wso2.com/service-usage-count'] ||
+            ann['wso2.com/usage']) as string,
           provider: ann['wso2.com/api-provider'] as string,
           lifeCycleStatus: ann['wso2.com/api-lifecycle-status'] as string,
           type: 'SERVICE',

@@ -5,9 +5,11 @@ This repository contains Backstage plugins for integrating with **WSO2 API Manag
 ## Documentation
 
 For a comprehensive guide on installing, configuring, and using these plugins, please refer to the official documentation:
-- [WSO2 API Manager Documentation](https://apim.docs.wso2.com) 
+
+- [WSO2 API Manager Documentation](https://apim.docs.wso2.com)
 
 ### Plugin API Specifications (OpenAPI)
+
 Curious about how these plugins interact with your WSO2 instance? The [api-docs](./api-docs) folder contains the exact OpenAPI specifications and interactive documentation for all the WSO2 API Manager endpoints that these plugins rely on under the hood.
 
 ## Plugin Packages
@@ -15,7 +17,7 @@ Curious about how these plugins interact with your WSO2 instance? The [api-docs]
 This integration suite consists of three interconnected packages. You can find specific details and schemas for each package in their respective README files:
 
 | Package                                                       | Description                                                                                                                                                  | README                                                                  |
-| ---------------------------------------------------------------| --------------------------------------------------------------------------------------------------------------------------------------------------------------| -------------------------------------------------------------------------|
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
 | `@wso2/backstage-plugin-wso2-api-platform`                    | **Frontend Plugin:** Provides the main WSO2 API Platform page, Entity Pages, API Try-Out consoles, and UI components.                                        | [View README](./plugins/wso2-api-platform/README.md)                    |
 | `@wso2/backstage-plugin-wso2-api-platform-backend`            | **Backend Plugin:** Handles secure API proxying, credentials generation, and runtime operations.                                                             | [View README](./plugins/wso2-api-platform-backend/README.md)            |
 | `@wso2/backstage-plugin-catalog-backend-module-wso2-platform` | **Catalog Module:** Responsible for the automatic discovery and ingestion of WSO2 APIs, API Products, MCP Servers, and Services into your Backstage Catalog. | [View README](./plugins/catalog-backend-module-wso2-platform/README.md) |
@@ -34,7 +36,7 @@ flowchart TD
         CM["Catalog Backend Module: wso2-platform"]
         CC["Backstage Core Catalog"]
         BE["WSO2 API Platform Backend Plugin"]
-        
+
         CM --> CC
         CC --> BE
     end
@@ -57,6 +59,7 @@ flowchart TD
 ```
 
 ### How they connect:
+
 1. **Catalog Module (`catalog-backend-module-wso2-platform`)**: Periodically polls your WSO2 API Platform (and Self-Hosted Gateways) to discover APIs, API Products, MCP Servers, and Services. It ingests this data into the **Backstage Core Catalog**.
 2. **Frontend Plugin (`wso2-api-platform`)**: Reads the ingested data from the Core Catalog to render the global API Platform discovery page and the specific Entity tabs. It also sends requests to the Backend Plugin for secure operations (like generating API keys or testing APIs).
 3. **Backend Plugin (`wso2-api-platform-backend`)**: Acts as a secure bridge between the frontend UI and WSO2. It handles sensitive operations such as API Key generation, token management, and proxying requests to the WSO2 APIs (Publisher, DevPortal, and Service Catalog APIs).
@@ -65,7 +68,7 @@ flowchart TD
 
 If you are deploying self-hosted gateways using the [WSO2 API Platform Gateway Operator](https://openchoreo.dev/ecosystem/item/?id=wso2-api-platform-gateway) in your Kubernetes clusters, you can easily discover and display all APIs deployed on them directly within Backstage.
 
-By adding your gateway discovery URLs to the `wso2PlatformGateway` configuration in your `app-config.yaml`, the catalog module will periodically poll the gateway's REST APIs (such as the `config_dump` endpoints) and synchronize your data plane APIs straight into the Backstage Software Catalog.
+By adding your gateway discovery URLs to the `wso2ApiPlatformGateway` configuration in your `app-config.yaml`, the catalog module will periodically poll the gateway's REST APIs (such as the `config_dump` endpoints) and synchronize your data plane APIs straight into the Backstage Software Catalog.
 
 ```mermaid
 flowchart LR
@@ -85,4 +88,5 @@ flowchart LR
 ```
 
 ## License
+
 This project is licensed under the Apache License, Version 2.0.

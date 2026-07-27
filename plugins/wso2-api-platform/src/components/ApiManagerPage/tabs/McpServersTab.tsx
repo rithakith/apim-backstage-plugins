@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import React from 'react';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
@@ -25,6 +24,8 @@ import { Wso2McpSummary } from '../../../api';
 import { tableIconsWithoutSearchClear } from '../../common/Table/tableRenderers';
 
 type McpServersTabProps = {
+  isGatewayDiscoveryFailureEmptyState?: boolean;
+  gatewayDiscoveryFailureContent?: React.ReactNode;
   mcpListState: any;
   searchToolbar: React.ReactNode;
   visibleMcpServers: Wso2McpSummary[];
@@ -34,6 +35,8 @@ type McpServersTabProps = {
 };
 
 export const McpServersTab = ({
+  isGatewayDiscoveryFailureEmptyState,
+  gatewayDiscoveryFailureContent,
   mcpListState,
   searchToolbar,
   visibleMcpServers,
@@ -42,29 +45,34 @@ export const McpServersTab = ({
   resultNotFoundContent,
 }: McpServersTabProps) => (
   <>
-    {mcpListState.loading && (
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        my={10}
-      >
-        <CircularProgress color="primary" size={50} thickness={4} />
-        <Box mt={2}>
-          <Typography variant="h6" color="textSecondary">
-            Fetching MCP Servers...
-          </Typography>
+    {mcpListState.loading &&
+      !isGatewayDiscoveryFailureEmptyState &&
+      (!mcpListState.value?.mcpServers ||
+        mcpListState.value.mcpServers.length === 0) && (
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          my={10}
+        >
+          <CircularProgress color="primary" size={50} thickness={4} />
+          <Box mt={2}>
+            <Typography variant="h6" color="textSecondary">
+              Fetching MCP Servers...
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-    )}
+      )}
     {mcpListState.error && (
       <WarningPanel
         title="Failed to load MCP Servers"
         message={mcpListState.error.message}
       />
     )}
+    {isGatewayDiscoveryFailureEmptyState && gatewayDiscoveryFailureContent}
     {!mcpListState.loading &&
+      !isGatewayDiscoveryFailureEmptyState &&
       (!mcpListState.value?.mcpServers ||
         mcpListState.value.mcpServers.length === 0) && (
         <Box
@@ -80,7 +88,8 @@ export const McpServersTab = ({
               No MCP Servers Available
             </Typography>
             <Typography variant="body1" color="textSecondary">
-              We could not find any Model Control Plane servers in your WSO2 ecosystem.
+              We could not find any Model Control Plane servers in your WSO2
+              ecosystem.
             </Typography>
           </Box>
         </Box>

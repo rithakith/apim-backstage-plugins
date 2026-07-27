@@ -58,9 +58,10 @@ export class Wso2Client {
     this.publisherBasePath = options.config.getString(
       'wso2ApiPlatform.publisherBasePath',
     );
-    this.serviceCatalogBasePath = options.config.getOptionalString(
-      'wso2ApiPlatform.serviceCatalogBasePath',
-    ) ?? '/api/am/service-catalog/v1';
+    this.serviceCatalogBasePath =
+      options.config.getOptionalString(
+        'wso2ApiPlatform.serviceCatalogBasePath',
+      ) ?? '/api/am/service-catalog/v1';
     this.requestTimeoutMs =
       (options.config.getOptionalNumber(
         'wso2ApiPlatform.requestTimeoutSeconds',
@@ -129,7 +130,8 @@ export class Wso2Client {
     body?: any,
   ): Promise<string> {
     return this.requestWithParser(method, path, {
-      accept: 'application/wsdl+xml, text/xml, application/xml, text/plain, */*',
+      accept:
+        'application/wsdl+xml, text/xml, application/xml, text/plain, */*',
       body,
       parse: response => response.text(),
     });
@@ -261,7 +263,9 @@ export class Wso2Client {
     }
 
     this.logger.debug(
-      `[Wso2Client] Successfully obtained ${data.token_type ?? 'Bearer'} access token with scopes: ${data.scope ?? this.scopes}`,
+      `[Wso2Client] Successfully obtained ${
+        data.token_type ?? 'Bearer'
+      } access token with scopes: ${data.scope ?? this.scopes}`,
     );
     this.accessToken = data.access_token;
     this.tokenExpiresAt = Date.now() + (data.expires_in ?? 3600) * 1000;
@@ -278,7 +282,9 @@ export class Wso2Client {
 
     if (apiType === 'GRAPHQL') {
       try {
-        const data = await this.getText(`${basePath}/apis/${apiId}/graphql-schema`);
+        const data = await this.getText(
+          `${basePath}/apis/${apiId}/graphql-schema`,
+        );
         // if the response is actually JSON, try to parse it
         try {
           const parsed = JSON.parse(data);
@@ -288,7 +294,7 @@ export class Wso2Client {
           if (parsed && typeof parsed.schema === 'string') {
             return parsed.schema;
           }
-        } catch(e) {
+        } catch (e) {
           // not json, return as text
         }
         return data;
@@ -379,11 +385,7 @@ export class Wso2Client {
       api = { ...api, ...detailData };
 
       api.documents = await this.getApiDocuments(apiId);
-      api.definition = await this.getApiDefinition(
-        apiId,
-        api.type,
-        api.name,
-      );
+      api.definition = await this.getApiDefinition(apiId, api.type, api.name);
 
       if (['SOAP', 'SOAPTOREST'].includes(api.type)) {
         api.wsdlDefinition = await this.getApiWsdl(apiId);
@@ -400,32 +402,32 @@ export class Wso2Client {
   /**
    * Fetches the list of all APIs from the WSO2 Publisher.
    */
-  async getApiList(
-    options?: {
-      limit?: number;
-      offset?: number;
-    },
-  ): Promise<any> {
+  async getApiList(options?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<any> {
     const basePath = this.getPublisherBasePath();
     const limit = options?.limit ?? 1000;
     const offset = options?.offset ?? 0;
-    
-    return this.get<any>(
-      `${basePath}/apis?limit=${limit}&offset=${offset}`,
-    );
+
+    return this.get<any>(`${basePath}/apis?limit=${limit}&offset=${offset}`);
   }
 
   // --- MCP Endpoints ---
   async getMcpDocuments(mcpId: string): Promise<any[]> {
     const basePath = this.getPublisherBasePath();
     try {
-      const data = await this.get<any>(`${basePath}/mcp-servers/${mcpId}/documents`);
+      const data = await this.get<any>(
+        `${basePath}/mcp-servers/${mcpId}/documents`,
+      );
       return (data.list || []).map((doc: any) => ({
         ...doc,
         id: doc.id || doc.documentId,
       }));
     } catch (error) {
-      this.logger.warn(`[Wso2Client] Error fetching documents for MCP Server ${mcpId}: ${error}`);
+      this.logger.warn(
+        `[Wso2Client] Error fetching documents for MCP Server ${mcpId}: ${error}`,
+      );
     }
     return [];
   }
@@ -436,7 +438,9 @@ export class Wso2Client {
     const mcp = { ...mcpSummary };
     try {
       const basePath = this.getPublisherBasePath();
-      const detailData = await this.get<any>(`${basePath}/mcp-servers/${mcpId}`);
+      const detailData = await this.get<any>(
+        `${basePath}/mcp-servers/${mcpId}`,
+      );
       const operations = detailData.operations || [];
       mcp.tools = operations
         .filter((op: any) => op.feature === 'TOOL')
@@ -452,9 +456,15 @@ export class Wso2Client {
         }));
       mcp.documents = await this.getMcpDocuments(mcpId);
     } catch (error) {
-      this.logger.error(`[Wso2Client] Error fetching detail for MCP Server ${mcpId}: ${error}`);
+      this.logger.error(
+        `[Wso2Client] Error fetching detail for MCP Server ${mcpId}: ${error}`,
+      );
     }
-    this.logger.debug(`[Wso2Client] MCP Server detail "${mcp.name || mcpId}" (${mcpId}) loaded in ${Date.now() - startedAt}ms.`);
+    this.logger.debug(
+      `[Wso2Client] MCP Server detail "${
+        mcp.name || mcpId
+      }" (${mcpId}) loaded in ${Date.now() - startedAt}ms.`,
+    );
     return mcp;
   }
 
@@ -464,13 +474,20 @@ export class Wso2Client {
   }
 
   // --- API Product Endpoints ---
-  async getApiProductDefinition(productId: string, productName: string): Promise<string> {
+  async getApiProductDefinition(
+    productId: string,
+    productName: string,
+  ): Promise<string> {
     const basePath = this.getPublisherBasePath();
     try {
-      const swaggerData = await this.get<any>(`${basePath}/api-products/${productId}/swagger`);
+      const swaggerData = await this.get<any>(
+        `${basePath}/api-products/${productId}/swagger`,
+      );
       return JSON.stringify(swaggerData);
     } catch (error) {
-      this.logger.warn(`[Wso2Client] Error fetching definition for API Product ${productId}: ${error}`);
+      this.logger.warn(
+        `[Wso2Client] Error fetching definition for API Product ${productId}: ${error}`,
+      );
     }
     return `WSO2 API Product definition placeholder for ${productName}`;
   }
@@ -480,11 +497,18 @@ export class Wso2Client {
     const product = { ...productSummary };
     try {
       const basePath = this.getPublisherBasePath();
-      const detailData = await this.get<any>(`${basePath}/api-products/${productId}`);
+      const detailData = await this.get<any>(
+        `${basePath}/api-products/${productId}`,
+      );
       Object.assign(product, detailData);
-      product.definition = await this.getApiProductDefinition(productId, product.name);
+      product.definition = await this.getApiProductDefinition(
+        productId,
+        product.name,
+      );
     } catch (error) {
-      this.logger.error(`[Wso2Client] Error fetching detail for API Product ${productId}: ${error}`);
+      this.logger.error(
+        `[Wso2Client] Error fetching detail for API Product ${productId}: ${error}`,
+      );
     }
     return product;
   }
@@ -498,10 +522,14 @@ export class Wso2Client {
   async getServiceUsage(serviceId: string): Promise<any[]> {
     const basePath = this.getServiceCatalogBasePath();
     try {
-      const data = await this.get<any>(`${basePath}/services/${encodeURIComponent(serviceId)}/usage`);
+      const data = await this.get<any>(
+        `${basePath}/services/${encodeURIComponent(serviceId)}/usage`,
+      );
       return data?.list || [];
     } catch (error: any) {
-      this.logger.warn(`[Wso2Client] Error fetching usage for service ${serviceId}: ${error}`);
+      this.logger.warn(
+        `[Wso2Client] Error fetching usage for service ${serviceId}: ${error}`,
+      );
       return [];
     }
   }
@@ -509,18 +537,29 @@ export class Wso2Client {
   async getServiceDefinition(serviceId: string): Promise<string> {
     const basePath = this.getServiceCatalogBasePath();
     try {
-      return await this.getText(`${basePath}/services/${encodeURIComponent(serviceId)}/definition`);
+      return await this.getText(
+        `${basePath}/services/${encodeURIComponent(serviceId)}/definition`,
+      );
     } catch (error: any) {
-      this.logger.warn(`[Wso2Client] Error fetching definition for service ${serviceId}: ${error}`);
-      return `WSO2 Service Definition content placeholder. Status: ${error.status || 'unknown'}`;
+      this.logger.warn(
+        `[Wso2Client] Error fetching definition for service ${serviceId}: ${error}`,
+      );
+      return `WSO2 Service Definition content placeholder. Status: ${
+        error.status || 'unknown'
+      }`;
     }
   }
 
-  async getServiceList(options?: { limit?: number; offset?: number }): Promise<any> {
+  async getServiceList(options?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<any> {
     const basePath = this.getServiceCatalogBasePath();
     const limit = options?.limit ?? 1000;
     const offset = options?.offset ?? 0;
-    return this.get<any>(`${basePath}/services?limit=${limit}&offset=${offset}`);
+    return this.get<any>(
+      `${basePath}/services?limit=${limit}&offset=${offset}`,
+    );
   }
 
   // --- Global Settings Endpoints ---
@@ -528,10 +567,16 @@ export class Wso2Client {
     const basePath = this.getPublisherBasePath();
     try {
       const data = await this.get<any>(`${basePath}/settings`);
-      this.logger.info(`[Wso2Client] Successfully retrieved global settings with ${data?.environment?.length || 0} environments.`);
+      this.logger.info(
+        `[Wso2Client] Successfully retrieved global settings with ${
+          data?.environment?.length || 0
+        } environments.`,
+      );
       return data;
     } catch (error) {
-      this.logger.error(`[Wso2Client] Error fetching global settings: ${error}`);
+      this.logger.error(
+        `[Wso2Client] Error fetching global settings: ${error}`,
+      );
     }
     return undefined;
   }
@@ -540,19 +585,31 @@ export class Wso2Client {
   async getGatewayApis(discoveryUrl: string, auth?: string): Promise<any> {
     const headers: Record<string, string> = { Accept: 'application/json' };
     if (auth) headers.Authorization = auth;
-    const response = await undiciFetch(discoveryUrl, { headers, dispatcher: this.dispatcher });
+    const response = await undiciFetch(discoveryUrl, {
+      headers,
+      dispatcher: this.dispatcher,
+    });
     if (!response.ok) {
       throw new Error(`Gateway request failed with status ${response.status}`);
     }
     return response.json();
   }
 
-  async getGatewayApiDetail(discoveryUrl: string, apiId: string, auth?: string): Promise<any> {
+  async getGatewayApiDetail(
+    discoveryUrl: string,
+    apiId: string,
+    auth?: string,
+  ): Promise<any> {
     const headers: Record<string, string> = { Accept: 'application/json' };
     if (auth) headers.Authorization = auth;
-    const response = await undiciFetch(`${discoveryUrl}/${apiId}`, { headers, dispatcher: this.dispatcher });
+    const response = await undiciFetch(`${discoveryUrl}/${apiId}`, {
+      headers,
+      dispatcher: this.dispatcher,
+    });
     if (!response.ok) {
-      throw new Error(`Gateway detail request failed with status ${response.status}`);
+      throw new Error(
+        `Gateway detail request failed with status ${response.status}`,
+      );
     }
     return response.json();
   }
