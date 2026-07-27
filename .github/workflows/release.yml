@@ -151,8 +151,7 @@ jobs:
             --base "${BASE}" \
             --head "${BRANCH}" \
             --title "Release v${VERSION}" \
-            --body "Automated version bump to v${VERSION}." \
-            --label "release"
+            --body "Automated version bump to v${VERSION}."
 
   publish:
     name: 📦 Publish
