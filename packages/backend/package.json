@@ -46,7 +46,7 @@
     "@backstage/plugin-techdocs-backend": "^2.2.0",
     "@rithakith/backstage-plugin-catalog-backend-module-wso2-api-platform": "workspace:^",
     "@rithakith/backstage-plugin-wso2-api-platform-backend": "workspace:^",
-    "app": "link:../app",
+    "app": "workspace:^",
     "better-sqlite3": "^12.0.0",
     "node-gyp": "^10.0.0",
     "pg": "^8.11.3"

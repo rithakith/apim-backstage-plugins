@@ -6,20 +6,27 @@
 #
 # --------------------------------------------------------------------------------------
 
-name: 🚀 Release
+name: Release
 
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Release version (e.g. 0.1.0 or 0.1.0-rc.1)'
+      major:
+        description: 'Semver major component'
         required: true
-        type: string
-      create_branch_pr:
-        description: 'Create a version-bump branch + PR instead of publishing directly'
+        type: number
+      minor:
+        description: 'Semver minor component'
+        required: true
+        type: number
+      patch:
+        description: 'Semver patch component'
+        required: true
+        type: number
+      pre_release_id:
+        description: 'Prerelease identifier (e.g. rc.1, beta.2)'
         required: false
-        type: boolean
-        default: false
+        type: string
   push:
     tags:
       - 'v*.*.*'
@@ -37,7 +44,7 @@ env:
 
 jobs:
   validate:
-    name: 🔍 Validate
+    name: Validate
     runs-on: ubuntu-24.04
     outputs:
       version: ${{ steps.resolve.outputs.version }}
@@ -61,14 +68,24 @@ jobs:
             echo "source=tag" >> "$GITHUB_OUTPUT"
             echo "commit_sha=${{ github.sha }}" >> "$GITHUB_OUTPUT"
           else
-            # Triggered by workflow_dispatch — validate and use the input version
-            VERSION="${{ github.event.inputs.version }}"
+            # Triggered by workflow_dispatch — compose from inputs
+            MAJOR=${{ github.event.inputs.major }}
+            MINOR=${{ github.event.inputs.minor }}
+            PATCH=${{ github.event.inputs.patch }}
+            PRERELEASE="${{ github.event.inputs.pre_release_id }}"
 
-            # Validate SemVer format (loose: numbers.numbers.numbers with optional -prerelease)
-            if ! [[ "${VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9._-]+)?$ ]]; then
-              echo "ERROR: Invalid version format: ${VERSION}"
-              echo "Expected format: X.Y.Z or X.Y.Z-prerelease (e.g. 0.1.0 or 0.1.0-rc.1)"
+            if [[ ! "$MAJOR" =~ ^[0-9]+$ ]] || [[ ! "$MINOR" =~ ^[0-9]+$ ]] || [[ ! "$PATCH" =~ ^[0-9]+$ ]]; then
+              echo "ERROR: major, minor, patch must be numbers"
               exit 1
+            fi
+
+            VERSION="${MAJOR}.${MINOR}.${PATCH}"
+            if [ -n "$PRERELEASE" ]; then
+              if [[ ! "$PRERELEASE" =~ ^[a-zA-Z0-9.-]+$ ]]; then
+                echo "ERROR: Invalid prerelease identifier: ${PRERELEASE}"
+                exit 1
+              fi
+              VERSION="${VERSION}-${PRERELEASE}"
             fi
 
             TAG="v${VERSION}"
@@ -93,9 +110,12 @@ jobs:
             exit 1
           fi
 
-  create-branch-pr:
-    name: 📝 Create Version Bump PR
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.create_branch_pr == 'true' }}
+  # ----------------------------------------------------------------
+  # Branch: create release-vX.Y branch for stable releases
+  # ----------------------------------------------------------------
+  branch:
+    name: Create Release Branch
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.pre_release_id == '' }}
     needs: [validate]
     runs-on: ubuntu-24.04
     steps:
@@ -107,56 +127,32 @@ jobs:
 
       - name: Set git identity
         run: |
-          git config user.name "rithakith"
-          git config user.email "rithakith@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version: '22'
-          cache: 'yarn'
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Bump versions and create PR
+      - name: Create release branch
         env:
-          GH_TOKEN: ${{ env.GH_TOKEN }}
           VERSION: ${{ needs.validate.outputs.version }}
-          TAG: ${{ needs.validate.outputs.tag }}
         run: |
-          BRANCH="release-next-v${VERSION}"
-
-          # Determine base branch (main or existing release-vX.Y branch)
           MAJOR="${VERSION%%.*}"
           MINOR="${VERSION#*.}"; MINOR="${MINOR%%.*}"
-          if git ls-remote origin "refs/heads/release-v${MAJOR}.${MINOR}" | head -1 | grep -q .; then
-            BASE="release-v${MAJOR}.${MINOR}"
+          BRANCH="release-v${MAJOR}.${MINOR}"
+
+          if git ls-remote origin "refs/heads/${BRANCH}" | head -1 | grep -q .; then
+            echo "Branch ${BRANCH} already exists, skipping creation."
           else
-            BASE="main"
+            git branch "${BRANCH}"
+            git push origin "${BRANCH}"
+            echo "Created branch: ${BRANCH}"
           fi
 
-          git fetch origin "${BASE}"
-          git checkout -b "${BRANCH}" "origin/${BASE}"
-
-          yarn release:version
-          git add .
-          git commit -m "Version ${VERSION}"
-          git push origin "${BRANCH}"
-
-          gh pr create \
-            --base "${BASE}" \
-            --head "${BRANCH}" \
-            --title "Release v${VERSION}" \
-            --body "Automated version bump to v${VERSION}."
-
+  # ----------------------------------------------------------------
+  # Publish: bump versions, commit, tag, publish, create release
+  # ----------------------------------------------------------------
   publish:
-    name: 📦 Publish
-    if: ${{ !(github.event_name == 'workflow_dispatch' && github.event.inputs.create_branch_pr == 'true') }}
-    needs: [validate]
+    name: Publish
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch') }}
+    needs: [validate, branch]
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -165,11 +161,25 @@ jobs:
           fetch-depth: 0
           token: ${{ env.GH_TOKEN }}
 
-      - name: Set release info
+      - name: Set release info and target branch
         run: |
           echo "RELEASE_TAG=${{ needs.validate.outputs.tag }}" >> $GITHUB_ENV
           echo "IS_PRERELEASE=${{ needs.validate.outputs.is_prerelease }}" >> $GITHUB_ENV
           echo "VERSION=${{ needs.validate.outputs.version }}" >> $GITHUB_ENV
+
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "TARGET_BRANCH=" >> $GITHUB_ENV
+          else
+            VERSION="${{ needs.validate.outputs.version }}"
+            MAJOR="${VERSION%%.*}"
+            MINOR="${VERSION#*.}"; MINOR="${MINOR%%.*}"
+            BRANCH="release-v${MAJOR}.${MINOR}"
+            echo "TARGET_BRANCH=${BRANCH}" >> $GITHUB_ENV
+            git fetch origin "${BRANCH}" 2>/dev/null || true
+            if git branch -r | grep -q "origin/${BRANCH}"; then
+              git checkout "${BRANCH}"
+            fi
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
@@ -199,17 +209,23 @@ jobs:
         run: |
           yarn release:version
 
+      - name: Override versions to exact release version
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          node scripts/set-version.js "${{ needs.validate.outputs.version }}"
+          yarn prettier --write '{packages,plugins}/*/{package.json,CHANGELOG.md}' 'package.json' || true
+          yarn install --mode=update-lockfile
+
       - name: Commit version bump
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          # Unstage .yarnrc.yml so we don't commit the auth token
           git reset .yarnrc.yml || true
           if ! git diff --staged --quiet; then
             git commit -m "chore: version bump to v${VERSION}"
-            git push origin HEAD:${GITHUB_REF}
+            git push origin "HEAD:${TARGET_BRANCH}"
             echo "COMMIT_TO_TAG=$(git rev-parse HEAD)" >> $GITHUB_ENV
           else
             echo "COMMIT_TO_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
