@@ -1,25 +1,24 @@
 {
-  "name": "@rithakith/backstage-plugin-wso2-api-platform",
-  "version": "2.0.0",
+  "name": "@wso2/backstage-plugin-wso2-api-platform",
+  "version": "0.0.1",
   "backstage": {
     "role": "frontend-plugin",
     "pluginId": "wso2-api-platform",
     "pluginPackages": [
-      "@rithakith/backstage-plugin-wso2-api-platform",
-      "@rithakith/backstage-plugin-wso2-api-platform-backend"
+      "@wso2/backstage-plugin-wso2-api-platform",
+      "@wso2/backstage-plugin-wso2-api-platform-backend"
     ]
   },
   "configSchema": "config.d.ts",
   "publishConfig": {
     "access": "public",
     "main": "dist/index.esm.js",
-    "types": "dist/index.d.ts",
-    "registry": "https://npm.pkg.github.com"
+    "types": "dist/index.d.ts"
   },
-  "homepage": "https://github.com/rithakith/apim-backstage-plugins",
+  "homepage": "https://backstage.io",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rithakith/apim-backstage-plugins.git",
+    "url": "https://github.com/backstage/backstage",
     "directory": "plugins/wso2-api-platform"
   },
   "license": "Apache-2.0",

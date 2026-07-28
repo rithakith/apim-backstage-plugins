@@ -1,24 +1,23 @@
 {
-  "name": "@rithakith/backstage-plugin-wso2-api-platform-backend",
-  "version": "2.0.0",
+  "name": "@wso2/backstage-plugin-wso2-api-platform-backend",
+  "version": "0.0.1",
   "backstage": {
     "role": "backend-plugin",
     "pluginId": "wso2-api-platform",
     "pluginPackages": [
-      "@rithakith/backstage-plugin-wso2-api-platform",
-      "@rithakith/backstage-plugin-wso2-api-platform-backend"
+      "@wso2/backstage-plugin-wso2-api-platform",
+      "@wso2/backstage-plugin-wso2-api-platform-backend"
     ]
   },
   "publishConfig": {
     "access": "public",
     "main": "dist/index.cjs.js",
-    "types": "dist/index.d.ts",
-    "registry": "https://npm.pkg.github.com"
+    "types": "dist/index.d.ts"
   },
-  "homepage": "https://github.com/rithakith/apim-backstage-plugins",
+  "homepage": "https://backstage.io",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rithakith/apim-backstage-plugins.git",
+    "url": "https://github.com/backstage/backstage",
     "directory": "plugins/wso2-api-platform-backend"
   },
   "license": "Apache-2.0",
@@ -44,7 +43,7 @@
     "@backstage/errors": "^1.3.1",
     "@backstage/plugin-catalog-node": "^2.2.1",
     "@backstage/plugin-permission-common": "^0.9.9",
-    "@rithakith/backstage-plugin-catalog-backend-module-wso2-api-platform": "workspace:^",
+    "@wso2/backstage-plugin-catalog-backend-module-wso2-api-platform": "workspace:^",
     "express": "^4.17.6",
     "express-promise-router": "^4.1.0",
     "jose": "^5.10.0",

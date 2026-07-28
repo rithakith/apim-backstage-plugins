@@ -1,186 +1,78 @@
-# -------------------------------------------------------------------------------------
-#
-# Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com)
-#
-# Licensed under Apache License, Version 2.0
-#
-# --------------------------------------------------------------------------------------
+name: Release
 
-name: 🚀 Release
+# This workflow only runs when a Changesets "Version PR" is merged to main.
+#
+# The full developer release flow:
+#
+#   1. Developer makes code changes in a feature branch.
+#
+#   2. Before opening the PR, the developer runs:
+#        yarn changeset
+#      This is an interactive prompt asking:
+#        - Which packages changed? (select from list)
+#        - Is it a patch / minor / major bump?
+#        - Write a short description of the change.
+#      A small markdown file is created in .changeset/ and committed with the PR.
+#
+#   3. The PR is reviewed and merged to main as normal (build-and-test.yml runs all checks).
+#
+#   4. The Changesets GitHub Action (below) automatically opens a "Version PR"
+#      that bumps all affected package.json versions and updates CHANGELOGs.
+#      Example: 0.0.1 -> 0.0.2 for a patch bump.
+#
+#   5. The team reviews the Version PR and merges it when ready to release.
+#
+#   6. ONLY at this point does this release.yml trigger — it builds the three
+#      plugins and publishes them to npm.
+#
+# This means:
+#   - Developers can merge many commits without triggering a publish.
+#   - Publishing is always an intentional, reviewed action.
+#   - The version is always bumped before publish (no duplicate version errors).
+#
+# TODO: Before this workflow can run you must:
+#   1. Install Changesets:  yarn add -D @changesets/cli
+#   2. Initialize:          yarn changeset init
+#   3. Configure the npm registry (see options A/B/C below).
+#   4. Add the NPM_TOKEN secret to your GitHub repository settings.
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Release version (e.g. 0.1.0 or 0.1.0-rc.1)'
-        required: true
-        type: string
-      create_branch_pr:
-        description: 'Create a version-bump branch + PR instead of publishing directly'
-        required: false
-        type: boolean
-        default: false
   push:
-    tags:
-      - 'v*.*.*'
-
-concurrency:
-  group: release-${{ github.ref_name }}
-  cancel-in-progress: false
+    branches: [main]
 
 permissions:
   contents: write
   pull-requests: write
 
-env:
-  GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
 jobs:
-  validate:
-    name: 🔍 Validate
-    runs-on: ubuntu-24.04
-    outputs:
-      version: ${{ steps.resolve.outputs.version }}
-      tag: ${{ steps.resolve.outputs.tag }}
-      is_prerelease: ${{ steps.resolve.outputs.is_prerelease }}
-      source: ${{ steps.resolve.outputs.source }}
-      commit_sha: ${{ steps.resolve.outputs.commit_sha }}
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      # ── 1. Checkout (full history needed by Changesets) ────────────────────
+      - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
 
-      - name: Resolve version and source
-        id: resolve
-        run: |
-          if [[ "${{ github.event_name }}" == "push" ]]; then
-            # Triggered by tag push — use the tag as-is
-            TAG="${GITHUB_REF##*/}"
-            VERSION="${TAG#v}"
-            echo "source=tag" >> "$GITHUB_OUTPUT"
-            echo "commit_sha=${{ github.sha }}" >> "$GITHUB_OUTPUT"
-          else
-            # Triggered by workflow_dispatch — validate and use the input version
-            VERSION="${{ github.event.inputs.version }}"
-
-            # Validate SemVer format (loose: numbers.numbers.numbers with optional -prerelease)
-            if ! [[ "${VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9._-]+)?$ ]]; then
-              echo "ERROR: Invalid version format: ${VERSION}"
-              echo "Expected format: X.Y.Z or X.Y.Z-prerelease (e.g. 0.1.0 or 0.1.0-rc.1)"
-              exit 1
-            fi
-
-            TAG="v${VERSION}"
-            echo "source=dispatch" >> "$GITHUB_OUTPUT"
-            echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          fi
-
-          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
-
-          if [[ "${TAG}" == *-* ]]; then
-            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Fail if tag already exists
-        if: steps.resolve.outputs.source == 'dispatch'
-        run: |
-          if git rev-parse "refs/tags/${{ steps.resolve.outputs.tag }}" >/dev/null 2>&1; then
-            echo "ERROR: Tag ${{ steps.resolve.outputs.tag }} already exists!"
-            exit 1
-          fi
-
-  create-branch-pr:
-    name: 📝 Create Version Bump PR
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.create_branch_pr == 'true' }}
-    needs: [validate]
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          token: ${{ env.GH_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set git identity
-        run: |
-          git config user.name "rithakith"
-          git config user.email "rithakith@users.noreply.github.com"
-
+      # ── 2. Setup Node ──────────────────────────────────────────────────────
       - name: Setup Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '22'
           cache: 'yarn'
+          # TODO: Set this to your registry:
+          # Option A — Public npm:      https://registry.npmjs.org
+          # Option B — GitHub Packages: https://npm.pkg.github.com
+          # Option C — Private registry: your internal URL
+          registry-url: 'https://registry.npmjs.org'
 
+      # ── 3. Enable Corepack (required for Yarn 4) ───────────────────────────
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Bump versions and create PR
-        env:
-          GH_TOKEN: ${{ env.GH_TOKEN }}
-          VERSION: ${{ needs.validate.outputs.version }}
-          TAG: ${{ needs.validate.outputs.tag }}
-        run: |
-          BRANCH="release-next-v${VERSION}"
-
-          # Determine base branch (main or existing release-vX.Y branch)
-          MAJOR="${VERSION%%.*}"
-          MINOR="${VERSION#*.}"; MINOR="${MINOR%%.*}"
-          if git ls-remote origin "refs/heads/release-v${MAJOR}.${MINOR}" | head -1 | grep -q .; then
-            BASE="release-v${MAJOR}.${MINOR}"
-          else
-            BASE="main"
-          fi
-
-          git fetch origin "${BASE}"
-          git checkout -b "${BRANCH}" "origin/${BASE}"
-
-          yarn release:version
-          git add .
-          git commit -m "Version ${VERSION}"
-          git push origin "${BRANCH}"
-
-          gh pr create \
-            --base "${BASE}" \
-            --head "${BRANCH}" \
-            --title "Release v${VERSION}" \
-            --body "Automated version bump to v${VERSION}."
-
-  publish:
-    name: 📦 Publish
-    if: ${{ !(github.event_name == 'workflow_dispatch' && github.event.inputs.create_branch_pr == 'true') }}
-    needs: [validate]
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          fetch-depth: 0
-          token: ${{ env.GH_TOKEN }}
-
-      - name: Set release info
-        run: |
-          echo "RELEASE_TAG=${{ needs.validate.outputs.tag }}" >> $GITHUB_ENV
-          echo "IS_PRERELEASE=${{ needs.validate.outputs.is_prerelease }}" >> $GITHUB_ENV
-          echo "VERSION=${{ needs.validate.outputs.version }}" >> $GITHUB_ENV
-
-      - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version: '22'
-          cache: 'yarn'
-          registry-url: 'https://npm.pkg.github.com'
-
-      - name: Enable Corepack
-        run: corepack enable
-
+      # ── 4. Install dependencies ────────────────────────────────────────────
       - name: Install dependencies
         run: yarn install --immutable
 
@@ -192,56 +84,39 @@ jobs:
       - name: Type check (generate type declarations)
         run: yarn tsc
 
-      - name: Build all workspaces
-        run: yarn build:all
-
-      - name: Bump versions with changesets
-        run: |
-          yarn release:version
-
-      - name: Commit version bump
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          # Unstage .yarnrc.yml so we don't commit the auth token
-          git reset .yarnrc.yml || true
-          if ! git diff --staged --quiet; then
-            git commit -m "chore: version bump to v${VERSION}"
-            git push origin HEAD:${GITHUB_REF}
-            echo "COMMIT_TO_TAG=$(git rev-parse HEAD)" >> $GITHUB_ENV
-          else
-            echo "COMMIT_TO_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
-          fi
-
-      - name: Publish to GitHub Packages
-        run: |
-          TAG=latest
-          if [ "${IS_PRERELEASE}" = "true" ]; then
-            TAG=next
-          fi
-          yarn workspaces foreach --all --no-private --topological --verbose \
-            npm publish --tolerate-republish --access public --tag "${TAG}"
+      # ── 5. Create Version PR OR publish ───────────────────────────────────
+      #    The Changesets action does two different things depending on state:
+      #
+      #    STATE A — There are unconsumed .changeset/*.md files on main:
+      #      -> Opens (or updates) a "Version Packages PR" that bumps versions
+      #         and updates CHANGELOG.md files. Nothing is published yet.
+      #
+      #    STATE B — A Version PR was just merged (changesets are consumed):
+      #      -> Builds and publishes the packages to npm.
+      #
+      - name: Create Version PR or Publish
+        uses: changesets/action@v1
+        with:
+          # The command Changesets runs to publish when versions are ready.
+          publish: yarn changeset publish
+          # Optional: commit message for the version bump PR.
+          commit: 'chore: version packages'
+          title: 'chore: version packages'
         env:
-          NODE_AUTH_TOKEN: ${{ env.GH_TOKEN }}
+          # TODO: Add NPM_TOKEN as a secret in GitHub repository settings.
+          # Option A (npm):             NODE_AUTH_TOKEN = NPM_TOKEN secret
+          # Option B (GitHub Packages): NODE_AUTH_TOKEN = GITHUB_TOKEN (built-in)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Create git tag
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Use the new commit if we bumped versions, else the original SHA
-          TARGET_SHA="${COMMIT_TO_TAG:-$GITHUB_SHA}"
-          git tag "${RELEASE_TAG}" "${TARGET_SHA}"
-          git push origin "${RELEASE_TAG}"
-
-      - name: Create GitHub Release
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: |
-          gh release create "${RELEASE_TAG}" \
-            --title "v${VERSION}" \
-            --generate-notes \
-            --prerelease="${IS_PRERELEASE}"
-        env:
-          GH_TOKEN: ${{ env.GH_TOKEN }}
+      # ── What yarn changeset publish does internally ────────────────────────
+      #    It detects which packages had version bumps and for each one runs:
+      #
+      #    yarn workspace @wso2/backstage-plugin-wso2-api-platform build
+      #    yarn workspace @wso2/backstage-plugin-wso2-api-platform npm publish
+      #
+      #    yarn workspace @wso2/backstage-plugin-wso2-api-platform-backend build
+      #    yarn workspace @wso2/backstage-plugin-wso2-api-platform-backend npm publish
+      #
+      #    yarn workspace @wso2/backstage-plugin-catalog-backend-module-wso2-api-platform build
+      #    yarn workspace @wso2/backstage-plugin-catalog-backend-module-wso2-api-platform npm publish
