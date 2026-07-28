@@ -1,6 +1,6 @@
 {
   "name": "@wso2/backstage-plugin-wso2-api-platform",
-  "version": "2.0.0",
+  "version": "0.0.1",
   "backstage": {
     "role": "frontend-plugin",
     "pluginId": "wso2-api-platform",
