@@ -3,7 +3,7 @@
 This is the catalog backend module for the **WSO2 API Manager** integration. It provides a Backstage `EntityProvider` that automatically discovers and ingests APIs, API Products, Services, and MCP Servers from WSO2 directly into the Backstage Software Catalog.
 
 > [!IMPORTANT] > **This package is part of the WSO2 suite.**
-> Please see the [Main Plugin Page](https://npmjs.com/package/@rithakith/backstage-plugin-wso2-api-platform) for full installation and configuration instructions.
+> Please see the [Main Plugin Page](https://npmjs.com/package/@wso2/backstage-plugin-wso2-api-platform) for full installation and configuration instructions.
 
 ## Polling and Scheduling
 

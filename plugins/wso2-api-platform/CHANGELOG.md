@@ -1,4 +1,4 @@
-# @rithakith/backstage-plugin-wso2-api-platform
+# @wso2/backstage-plugin-wso2-api-platform
 
 ## 2.0.0
 

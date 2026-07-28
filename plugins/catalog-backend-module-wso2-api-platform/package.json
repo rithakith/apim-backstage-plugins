@@ -1,10 +1,10 @@
 {
-  "name": "@rithakith/backstage-plugin-catalog-backend-module-wso2-api-platform",
+  "name": "@wso2/backstage-plugin-catalog-backend-module-wso2-api-platform",
   "version": "2.0.0",
   "backstage": {
     "role": "backend-plugin-module",
     "pluginId": "catalog",
-    "pluginPackage": "@rithakith/backstage-plugin-catalog-backend-module-wso2-api-platform"
+    "pluginPackage": "@wso2/backstage-plugin-catalog-backend-module-wso2-api-platform"
   },
   "publishConfig": {
     "access": "public",
@@ -12,10 +12,10 @@
     "types": "dist/index.d.ts",
     "registry": "https://npm.pkg.github.com"
   },
-  "homepage": "https://github.com/rithakith/apim-backstage-plugins",
+  "homepage": "https://github.com/wso2/apim-backstage-plugins",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rithakith/apim-backstage-plugins.git",
+    "url": "https://github.com/wso2/apim-backstage-plugins.git",
     "directory": "plugins/catalog-backend-module-wso2-api-platform"
   },
   "license": "Apache-2.0",

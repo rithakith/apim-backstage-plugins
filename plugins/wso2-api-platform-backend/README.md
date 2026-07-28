@@ -4,7 +4,7 @@ This is the backend plugin for **WSO2 API Manager** in Backstage. It acts as a s
 
 > [!IMPORTANT]
 > **This package is part of the WSO2 suite.**
-> Please see the [Main Plugin Page](https://npmjs.com/package/@rithakith/backstage-plugin-wso2-api-platform) for full installation and configuration instructions.
+> Please see the [Main Plugin Page](https://npmjs.com/package/@wso2/backstage-plugin-wso2-api-platform) for full installation and configuration instructions.
 
 ## Responsibilities
 

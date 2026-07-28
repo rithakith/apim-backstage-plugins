@@ -54,12 +54,12 @@ function main() {
       dirty = true;
     }
 
-    // Rewrite internal @rithakith/* deps to ^VERSION
+    // Rewrite internal @wso2/* deps to ^VERSION
     for (const field of DEP_FIELDS) {
       const deps = pkg[field];
       if (!deps) continue;
       for (const [name, range] of Object.entries(deps)) {
-        if (!name.startsWith('@rithakith/')) continue;
+        if (!name.startsWith('@wso2/')) continue;
         if (range.startsWith('workspace:') || range.startsWith('link:'))
           continue;
         const next = `^${VERSION}`;

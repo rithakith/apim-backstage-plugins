@@ -197,8 +197,8 @@ jobs:
 
       - name: Configure Yarn npm auth for GitHub Packages
         run: |
-          yarn config set npmScopes.rithakith.npmRegistryServer "https://npm.pkg.github.com"
-          yarn config set npmScopes.rithakith.npmAuthToken "${GH_TOKEN}"
+          yarn config set npmScopes.wso2.npmRegistryServer "https://npm.pkg.github.com"
+          yarn config set npmScopes.wso2.npmAuthToken "${GH_TOKEN}"
 
       - name: Type check (generate type declarations)
         run: yarn tsc

@@ -1,4 +1,4 @@
-# @rithakith/backstage-plugin-wso2-api-platform-backend
+# @wso2/backstage-plugin-wso2-api-platform-backend
 
 ## 2.0.0
 
@@ -9,7 +9,7 @@
 ### Patch Changes
 
 - Updated dependencies [d366c5b]
-  - @rithakith/backstage-plugin-catalog-backend-module-wso2-api-platform@2.0.0
+  - @wso2/backstage-plugin-catalog-backend-module-wso2-api-platform@2.0.0
 
 ## 1.0.0
 
@@ -20,7 +20,7 @@
 ### Patch Changes
 
 - Updated dependencies [3c81f82]
-  - @rithakith/backstage-plugin-catalog-backend-module-wso2-api-platform@1.0.0
+  - @wso2/backstage-plugin-catalog-backend-module-wso2-api-platform@1.0.0
 
 ## 0.1.0
 
@@ -30,4 +30,4 @@
 - Updated dependencies [b3545b0]
 - Updated dependencies [313f305]
 - Updated dependencies [b99c558]
-  - @rithakith/backstage-plugin-catalog-backend-module-wso2-api-platform@0.1.0
+  - @wso2/backstage-plugin-catalog-backend-module-wso2-api-platform@0.1.0
