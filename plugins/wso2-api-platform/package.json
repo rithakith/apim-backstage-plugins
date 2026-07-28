@@ -1,6 +1,6 @@
 {
   "name": "@rithakith/backstage-plugin-wso2-api-platform",
-  "version": "3.1.2",
+  "version": "3.1.2-rc.2",
   "backstage": {
     "role": "frontend-plugin",
     "pluginId": "wso2-api-platform",
