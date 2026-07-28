@@ -4,7 +4,12 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT_DIR = path.join(__dirname, '..');
-const DEP_FIELDS = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'];
+const DEP_FIELDS = [
+  'dependencies',
+  'devDependencies',
+  'peerDependencies',
+  'optionalDependencies',
+];
 
 const VERSION = process.argv[2];
 if (!VERSION || !/^\d+\.\d+\.\d+(-[A-Za-z0-9.-]+)?$/.test(VERSION)) {
@@ -55,7 +60,8 @@ function main() {
       if (!deps) continue;
       for (const [name, range] of Object.entries(deps)) {
         if (!name.startsWith('@rithakith/')) continue;
-        if (range.startsWith('workspace:') || range.startsWith('link:')) continue;
+        if (range.startsWith('workspace:') || range.startsWith('link:'))
+          continue;
         const next = `^${VERSION}`;
         if (deps[name] !== next) {
           deps[name] = next;
@@ -71,7 +77,9 @@ function main() {
     }
   }
 
-  console.log(`\nset-version: updated ${changed} package.json file(s) to ${VERSION}`);
+  console.log(
+    `\nset-version: updated ${changed} package.json file(s) to ${VERSION}`,
+  );
 }
 
 main();
