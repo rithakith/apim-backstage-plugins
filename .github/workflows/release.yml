@@ -115,7 +115,7 @@ jobs:
   # ----------------------------------------------------------------
   branch:
     name: Create Release Branch
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.pre_release_id == '' }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     needs: [validate]
     runs-on: ubuntu-24.04
     steps:
@@ -130,7 +130,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create release branch
+      - name: Create release branch (stable releases only)
+        if: ${{ github.event.inputs.pre_release_id == '' }}
         env:
           VERSION: ${{ needs.validate.outputs.version }}
         run: |
@@ -151,7 +152,7 @@ jobs:
   # ----------------------------------------------------------------
   publish:
     name: Publish
-    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch') }}
+    if: ${{ always() && needs.validate.result == 'success' && needs.branch.result != 'failure' && !cancelled() && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
     needs: [validate, branch]
     runs-on: ubuntu-24.04
     steps:
