@@ -1,6 +1,6 @@
 {
   "name": "@rithakith/backstage-plugin-catalog-backend-module-wso2-api-platform",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "backstage": {
     "role": "backend-plugin-module",
     "pluginId": "catalog",
