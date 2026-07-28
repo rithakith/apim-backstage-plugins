@@ -1,5 +1,11 @@
 # @rithakith/backstage-plugin-wso2-api-platform
 
+## 2.0.0
+
+### Major Changes
+
+- d366c5b: fghghgh
+
 ## 1.0.0
 
 ### Major Changes

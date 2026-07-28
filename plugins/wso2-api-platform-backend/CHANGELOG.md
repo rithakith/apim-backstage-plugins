@@ -1,5 +1,16 @@
 # @rithakith/backstage-plugin-wso2-api-platform-backend
 
+## 2.0.0
+
+### Major Changes
+
+- d366c5b: fghghgh
+
+### Patch Changes
+
+- Updated dependencies [d366c5b]
+  - @rithakith/backstage-plugin-catalog-backend-module-wso2-api-platform@2.0.0
+
 ## 1.0.0
 
 ### Major Changes
