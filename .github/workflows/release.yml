@@ -12,15 +12,15 @@ on:
   workflow_dispatch:
     inputs:
       major:
-        description: 'Semver major component'
+        description: 'Major Version'
         required: true
         type: number
       minor:
-        description: 'Semver minor component'
+        description: 'Minor Version'
         required: true
         type: number
       patch:
-        description: 'Semver patch component'
+        description: 'Patch Version'
         required: true
         type: number
       pre_release_id:
